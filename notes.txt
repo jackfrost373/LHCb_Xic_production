@@ -1,0 +1,4 @@
+
+
+stripping line: http://lhcbdoc.web.cern.ch/lhcbdoc/stripping/config/stripping29r2/charm/strippinglambdacforpromptcharm.html
+
