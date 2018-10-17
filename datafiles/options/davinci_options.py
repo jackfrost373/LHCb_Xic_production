@@ -92,7 +92,7 @@ DaVinci().DataType = '2017'
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
-DaVinci().EvtMax = 10000
+DaVinci().EvtMax = -1
 #DaVinci().DDDBtag   = "dddb-20170721-3"         # Gauss-2016 (sim09b)
 #DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
 #DaVinci().appendToMainSequence(tuples)
