@@ -97,4 +97,8 @@ DaVinci().EvtMax = -1
 #DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
 #DaVinci().appendToMainSequence(tuples)
 
+# output
+fName = "charm_29r2_g" 
+DaVinci().TupleFile = "output/{0}.root".format(fName)
+DaVinci().HistogramFile = 'output/{0}-histos.root'.format(fName)
 
