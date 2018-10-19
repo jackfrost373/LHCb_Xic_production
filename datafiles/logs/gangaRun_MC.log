@@ -1,0 +1,48 @@
+
+*** Welcome to Ganga ***
+Version: 7.1.4
+Documentation and support: http://cern.ch/ganga
+Type help() or help('index') for online help.
+
+This is free software (GPL), and you are welcome to redistribute it
+under certain conditions; type license() for details.
+
+
+[0;0mINFO     reading config file /user/jdevries/.gangarc[0;0m
+[0;0mINFO     reading config file /cvmfs/ganga.cern.ch/Ganga/install/7.1.4/lib/python2.7/site-packages/ganga/GangaLHCb/LHCb.ini[0;0m
+[0;0mINFO     reading config file /cvmfs/lhcb.cern.ch/lib/GangaConfig/config/6-7-2/GangaLHCb.ini[0;0m
+[0;0mINFO     Using LHCbDirac version v9r2p7[0;0m
+ === Welcome to Ganga on CVMFS. In case of problems contact lhcb-distributed-analysis@cern.ch === 
+Using /MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim08a/Digi13/Trig0x409f0045/Reco14/Stripping20NoPrescalingFlagged/25103006/ALLSTREAMS.DST
+Querying for data /MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim08a/Digi13/Trig0x409f0045/Reco14/Stripping20NoPrescalingFlagged/25103006/ALLSTREAMS.DST
+[0;0mINFO     Constructing LHCbDataset[0;0m
+[0;0mINFO     submitting job 8[0;0m
+[0;0mINFO     job 8 status changed to "submitting"[0;0m
+[0;0mINFO     Preparing GaudiExec application.[0;0m
+[0;0mINFO     Make-ing target 'ganga-input-sandbox'     (This may take a few minutes depending on the size of your project)[0;0m
+[0;0mINFO     Built /project/bfys/jdevries/cmtuser/DaVinciDev_v44r5/build.x86_64-slc6-gcc62-opt/ganga/cmake-input-sandbox.tgz[0;0m
+[0;0mINFO     Created shared directory: conf-9a378e38-c858-4dd3-aa74-fab88c22f0ea[0;0m
+[0;0mINFO     Splitting Job: 8[0;0m
+[0;0mINFO     Constructing subjobs[0;0m
+[0;0mINFO     Requesting LFN replica info[0;0m
+[0;0mINFO     Got Replica Info: [0:63] of 63[0;0m
+[0;0mINFO     Got all good replicas[0;0m
+[0;0mINFO     found all replicas[0;0m
+[0;0mINFO     Calculating site<->SE Mapping[0;0m
+[0;0mINFO     Calculating best data subsets[0;0m
+[0;0mINFO     Average Subset size is: 1.0[0;0m
+[0;0mINFO     File count checked! Ready to Submit[0;0m
+[0;0mINFO     Created 63 subsets[0;0m
+[0;0mINFO     Finished Splitting[0;0m
+[0;0mINFO     submitting 63 subjobs[0;0m
+[0;0mINFO     Uploading file '/tmp/diracInputFiles_7203c276-db56-41da-aa20-53886a5f3fa7.tgz' to 'CERN-USER' as '/lhcb/user/j/jadevrie/GangaFiles_17.37_Friday_19_October_2018/diracInputFiles_7203c276-db56-41da-aa20-53886a5f3fa7.tgz'[0;0m
+[0;0mINFO     Uploading file '/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/8/input/jobScripts-2f4e1b19-0887-42b9-85b5-a069d1c9750f.tar.gz' to 'GRIDKA-USER' as '/lhcb/user/j/jadevrie/GangaFiles_17.37_Friday_19_October_2018/jobScripts-2f4e1b19-0887-42b9-85b5-a069d1c9750f.tar.gz'[0;0m
+[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_17.37_Friday_19_October_2018/jobScripts-2f4e1b19-0887-42b9-85b5-a069d1c9750f.tar.gz to IN2P3-USER[0;0m
+[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_17.37_Friday_19_October_2018/diracInputFiles_7203c276-db56-41da-aa20-53886a5f3fa7.tgz to IN2P3-USER[0;0m
+[0;0mINFO     Preparing subjobs[0;0m
+[0;0mINFO     Submitting subjobs 0 to 62[0;0m
+[0;0mINFO     job 8 status changed to "submitted"[0;0m
+[0;0mINFO     Submitted subjobs 0 to 62[0;0m
+[0;0mINFO     Stopping Job processing before shutting down Repositories[0;0m
+[0;0mINFO     Shutting Down Ganga Repositories[0;0m
+[0;0mINFO     Registry Shutdown[0;0m

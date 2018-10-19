@@ -1,8 +1,30 @@
 
+# define data type
+magnet = "MagDown"
+pythia = "Pythia8"
+year = "2012"
+
+# Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
+#eventtype = 25103036 # Lc -> p K pi but with changed mass/momenta (from Xi_c decay).
+#eventtype = 25103000 # Lc -> p K pi with DecProdCut
+eventtype = 25103006 # Lc -> p K pi with TightCut
+#eventtype = 25103010 = Xic -> p K pi with TightCut
+
+
+
+############################################################
+
+# Find the right data file options from the database
+execfile('mcdatabase.py') # needs to be in ganga inputsandbox
+datafile = getFileFromDB(eventtype, [magnet,pythia,year])
+dddbtag = datafile[1]
+conddbtag = datafile[2]
+
 
 from Configurables import DaVinci, LHCbApp
 from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
+
 
 ####################
 ## Define ntuples
@@ -44,7 +66,7 @@ tupletools.append("TupleToolEventInfo")  # Runnr, eventnr, gpstime, magpol, BX
 tupletools.append("TupleToolPropertime") # Proper lifetime TAU in ns 
 tupletools.append("TupleToolTrackInfo")  # TRACK info
 tupletools.append("TupleToolPrimaries")  # nPV, PV pos, PVnTracks
-#tupletools.append("TupleToolMCTruth")    # MC Truth information
+tupletools.append("TupleToolMCTruth")    # MC Truth information
 
 triggerlist = ["Hlt1TrackAllL0Decision","Hlt1GlobalDecision",
  "Hlt2CharmHadD2HHHDecision", "Hlt2GlobalDecision",
@@ -85,20 +107,19 @@ fltrs = LoKi_Filters (
 DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
-stream = "Charm"
-DaVinci().RootInTES = "/Event/{0}".format(stream)
-DaVinci().InputType="MDST"
-DaVinci().DataType = '2017'
-DaVinci().Simulation = False
-DaVinci().Lumi = True
+stream = "AllStreams"
+#DaVinci().RootInTES = "/Event/{0}".format(stream)
+DaVinci().InputType="DST"
+DaVinci().DataType = "MC{0}".format(year[2:])
+DaVinci().Simulation = True
+DaVinci().Lumi = False
 DaVinci().PrintFreq = 1000
 DaVinci().EvtMax = -1
-#DaVinci().DDDBtag   = "dddb-20170721-3"         # Gauss-2016 (sim09b)
-#DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
-#DaVinci().appendToMainSequence(tuples)
+DaVinci().DDDBtag  = dddbtag 
+DaVinci().CondDBtag = conddbtag
 
 # output
-fName = "Lc2pKpiTuple" 
+fName = "MC_Lc2pKpiTuple_{0}".format(eventtype) 
 #DaVinci().TupleFile = "output/{0}.root".format(fName)
 #DaVinci().HistogramFile = 'output/{0}-histos.root'.format(fName)
 DaVinci().TupleFile = "{0}.root".format(fName)
