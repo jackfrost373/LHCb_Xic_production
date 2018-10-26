@@ -1,0 +1,8 @@
+
+    fqid |    status |      name | subjobs |    application |        backend |                             backend.actualCE |                       comment |  subjob status 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+       4 | completed |Lc2pKpi_20 |    1844 |      GaudiExec |          Dirac |                                         None |2017_MagDown_reco17_stripping2 |    1844 / 1844 
+       9 | submitted |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |        49 / 63 
+      10 | submitted |MC_Lc2pKpi |      36 |      GaudiExec |          Dirac |                                         None | 25103010_MagDown_Pythia8_2012 |        31 / 36 
+      11 | submitted |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |        21 / 26 
+
