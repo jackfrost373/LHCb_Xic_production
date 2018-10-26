@@ -7,9 +7,11 @@ year = "2012"
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103036 # Lc -> p K pi but with changed mass/momenta (from Xi_c decay).
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
-eventtype = 25103006 # Lc -> p K pi with TightCut
-#eventtype = 25103010 = Xic -> p K pi with TightCut
-
+#eventtype = 25103006 # Lc -> p K pi with TightCut
+#eventtype = 25103010 # Xic -> p K pi with TightCut
+eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
+#eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
+#eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
 
 ############################################################
@@ -110,7 +112,7 @@ DaVinci().EventPreFilters = fltrs.filters('Filters')
 stream = "AllStreams"
 #DaVinci().RootInTES = "/Event/{0}".format(stream)
 DaVinci().InputType="DST"
-DaVinci().DataType = "MC{0}".format(year[2:])
+DaVinci().DataType = year
 DaVinci().Simulation = True
 DaVinci().Lumi = False
 DaVinci().PrintFreq = 1000

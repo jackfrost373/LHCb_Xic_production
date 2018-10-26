@@ -4,6 +4,8 @@ from Configurables import DaVinci, LHCbApp
 from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
+year = "2017"
+
 ####################
 ## Define ntuples
 
@@ -88,7 +90,7 @@ DaVinci().EventPreFilters = fltrs.filters('Filters')
 stream = "Charm"
 DaVinci().RootInTES = "/Event/{0}".format(stream)
 DaVinci().InputType="MDST"
-DaVinci().DataType = '2017'
+DaVinci().DataType = year
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
