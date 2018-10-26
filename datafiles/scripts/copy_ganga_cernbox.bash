@@ -3,7 +3,7 @@
 jobID=4
 
 gangadir=/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/${jobID}
-cernboxdir=/eos/user/j/jadevrie/LcAnalysis_Simon/datafiles/ganga/${jobID}
+cernboxdir=/eos/user/j/jadevrie/LcAnalysis_Simon/datafiles/ganga/
 
 echo "Will copy job ${jobID} which has the following subjobs:"
 du -lh --max-depth 1 $gangadir
