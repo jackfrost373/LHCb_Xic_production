@@ -1,0 +1,739 @@
+ +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+ | Location                                                                                     |   Total  |       Mean      |   rms   |  min |   max  |
+ +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+ |  AllStreams/Hlt2/DisplVerticesHLTPS/VeloProtoP                                               |       15 |     1.7+-0.2    | 0.7     |    1 | 3      |
+ |  AllStreams/Hlt2/DisplVerticesWithVeloCandidates/VeloProtoP                                  |       66 |     1.7+-0.1    | 0.9     |    1 | 4      |
+ |  AllStreams/Phys/DisplVerticesVeloFilteredTracks/Particles                                   |       66 |     1.7+-0.1    | 0.9     |    1 | 4      |
+ |  AllStreams/pPhys/Particles                                                                  |    27620 |     5.5+-0.2    | 11.3    |    0 | 171    |
+ |  AllStreams/pPhys/RecVertices                                                                |     1904 |     2.6+-0.1    | 2.4     |    1 | 25     |
+ |  AllStreams/pPhys/Relations                                                                  |     6357 |     2.7+-0.1    | 2.6     |    1 | 23     |
+ |  AllStreams/pPhys/Vertices                                                                   |    10639 |     4.5+-0.1    | 6.9     |    1 | 88     |
+ |  AllStreams/pRec/Vertex/Primary                                                              |     6385 |     2.7+-0.0    | 1.2     |    1 | 8      |
+ |  Calo/RawEvent                                                                               |    30000 |       6         |         |      |        |
+ |  DAQ/ODIN                                                                                    |     5000 |       1         |         |      |        |
+ |  Gen/BeamParameters                                                                          |     5000 |       1         |         |      |        |
+ |  Gen/Collisions                                                                              |    17394 |     3.5+-0.0    | 1.6     |    1 | 10     |
+ |  Gen/Header                                                                                  |     5000 |       1         |         |      |        |
+ |  Link/MC                                                                                     |        0 |       0         |         |      |        |
+ |  Link/Raw/Ecal/Digits                                                                        |     5000 |       1         |         |      |        |
+ |  Link/Raw/Hcal/Digits                                                                        |     5000 |       1         |         |      |        |
+ |  Link/Raw/IT                                                                                 |        0 |       0         |         |      |        |
+ |  Link/Raw/Muon                                                                               |        0 |       0         |         |      |        |
+ |  Link/Raw/OT                                                                                 |        0 |       0         |         |      |        |
+ |  Link/Raw/TT                                                                                 |        0 |       0         |         |      |        |
+ |  Link/Raw/Velo                                                                               |        0 |       0         |         |      |        |
+ |  Link/Rec/Calo/Electrons                                                                     |     5000 |       1         |         |      |        |
+ |  Link/Rec/Calo/MergedPi0s                                                                    |     5000 |       1         |         |      |        |
+ |  Link/Rec/Calo/Photons                                                                       |     5000 |       1         |         |      |        |
+ |  Link/Rec/Calo/SplitPhotons                                                                  |     5000 |       1         |         |      |        |
+ |  Link/Rec/Track/Best                                                                         |     5000 |       1         |         |      |        |
+ |  MC/DigiHeader                                                                               |     5000 |       1         |         |      |        |
+ |  MC/Header                                                                                   |     5000 |       1         |         |      |        |
+ |  MC/TrackInfo                                                                                |     5000 |       1         |         |      |        |
+ |  Muon/RawEvent                                                                               |    70000 |      14         |         |      |        |
+ |  Other/RawEvent                                                                              | 1.15237e+06 |   230.5+-0.0    | 2.3     |  176 | 231    |
+ |  Rec/Header                                                                                  |     5000 |       1         |         |      |        |
+ |  Rec/Status                                                                                  |     5000 |       1         |         |      |        |
+ |  Rec/Summary                                                                                 |     5000 |       1         |         |      |        |
+ |  Rich/RawEvent                                                                               |   120000 |      24         |         |      |        |
+ |  Strip/pPhys/DecReports                                                                      |     8555 |     1.7+-0.0    | 2.4     |    0 | 24     |
+ |  Trigger/RawEvent                                                                            |    75000 |      15         |         |      |        |
+ |  pRec/Calo/Electrons                                                                         |   127243 |    25.4+-0.3    | 19.1    |    0 | 128    |
+ |  pRec/Calo/MergedPi0s                                                                        |     2432 |     0.5+-0.0    | 0.8     |    0 | 7      |
+ |  pRec/Calo/Photons                                                                           |   296972 |    59.4+-0.4    | 27.7    |    3 | 157    |
+ |  pRec/Calo/SplitPhotons                                                                      |     4864 |     1.0+-0.0    | 1.7     |    0 | 14     |
+ |  pRec/Muon/MuonPID                                                                           |   234249 |    46.8+-0.4    | 30.4    |    2 | 235    |
+ |  pRec/ProtoP/Charged                                                                         |   345962 |    69.2+-0.6    | 39.4    |    4 | 273    |
+ |  pRec/ProtoP/Neutrals                                                                        |   304268 |    60.9+-0.4    | 28.7    |    3 | 160    |
+ |  pRec/Rich/PIDs                                                                              |   385663 |    77.1+-0.6    | 44.1    |    5 | 339    |
+ |  pRec/Track/Best                                                                             |   712932 |   142.6+-1.1    | 80.2    |   12 | 672    |
+ |  pRec/Track/Muon                                                                             |    18776 |     3.8+-0.1    | 5.5     |    0 | 73     |
+ |  pRec/Vertex/Primary                                                                         |    12279 |     2.5+-0.0    | 1.2     |    1 | 8      |
+ |  pRec/Vertex/V0                                                                              |     5269 |     1.1+-0.0    | 1.6     |    0 | 17     |
+ |  pSim/Ecal                                                                                   |        0 |       0         |         |      |        |
+ |  pSim/Hcal                                                                                   |        0 |       0         |         |      |        |
+ |  pSim/IT                                                                                     |        0 |       0         |         |      |        |
+ |  pSim/MCParticles                                                                            | 1.62604e+07 |  3252.1+-23.9   | 1688.6  |  148 | 11276  |
+ |  pSim/MCVertices                                                                             | 1.78311e+07 |  3566.2+-26.5   | 1876.0  |  170 | 12389  |
+ |  pSim/Muon                                                                                   |        0 |       0         |         |      |        |
+ |  pSim/OT                                                                                     |        0 |       0         |         |      |        |
+ |  pSim/Prs                                                                                    |        0 |       0         |         |      |        |
+ |  pSim/PuVeto                                                                                 |        0 |       0         |         |      |        |
+ |  pSim/Rich                                                                                   |        0 |       0         |         |      |        |
+ |  pSim/Spd                                                                                    |        0 |       0         |         |      |        |
+ |  pSim/TT                                                                                     |        0 |       0         |         |      |        |
+ |  pSim/Velo                                                                                   |        0 |       0         |         |      |        |
+ | *AllStreams/Phys/B02DKLTUBD2HHHBeauty2CharmLine/Particle2VertexRelations                     |      196 |    17.8+-4.4    | 14.6    |    6 | 49     |
+ | *AllStreams/Phys/B02DKLTUBD2HHHBeauty2CharmLine/Particles                                    |       48 |     4.4+-1.5    | 4.9     |    1 | 15     |
+ | *AllStreams/Phys/B02DKLTUBD2HHHBeauty2CharmLine/decayVertices                                |       48 |     4.4+-1.5    | 4.9     |    1 | 15     |
+ | *AllStreams/Phys/B0q2DplusMuXPresel/Particle2VertexRelations                                 |       93 |    11.6+-2.5    | 7.1     |    6 | 27     |
+ | *AllStreams/Phys/B0q2DplusMuXPresel/Particles                                                |       13 |     1.6+-0.3    | 0.9     |    1 | 3      |
+ | *AllStreams/Phys/B0q2DplusMuXPresel/decayVertices                                            |       13 |     1.6+-0.3    | 0.9     |    1 | 3      |
+ | *AllStreams/Phys/B2D0KD2HHHHBeauty2CharmLine/Particle2VertexRelations                        |       21 |      21         |         |      |        |
+ | *AllStreams/Phys/B2D0KD2HHHHBeauty2CharmLine/Particles                                       |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/B2D0KD2HHHHBeauty2CharmLine/decayVertices                                   |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/B2D0PiD2HHHHBeauty2CharmLine/Particle2VertexRelations                       |       20 |      20         |         |      |        |
+ | *AllStreams/Phys/B2D0PiD2HHHHBeauty2CharmLine/Particles                                      |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/B2D0PiD2HHHHBeauty2CharmLine/decayVertices                                  |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/B2HHBkgLine/Particle2VertexRelations                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/B2HHBkgLine/Particles                                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/B2HHBkgLine/decayVertices                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/B2KShhDDLine/Particle2VertexRelations                                       |       18 |     9.0+-2.1    | 3.0     |    6 | 12     |
+ | *AllStreams/Phys/B2KShhDDLine/Particles                                                      |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/B2KShhDDLine/decayVertices                                                  |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/B2XEtaB2etaKSDDLine/Particle2VertexRelations                                |       52 |     8.7+-0.4    | 0.9     |    8 | 10     |
+ | *AllStreams/Phys/B2XEtaB2etaKSDDLine/Particles                                               |       12 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XEtaB2etaKSDDLine/decayVertices                                           |       12 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XEtaB2etaKSLLLine/Particle2VertexRelations                                |       69 |    11.5+-1.1    | 2.6     |    9 | 17     |
+ | *AllStreams/Phys/B2XEtaB2etaKSLLLine/Particles                                               |       12 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XEtaB2etaKSLLLine/decayVertices                                           |       12 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XMuMu_Kstar_SubPIDAlg2/Particles                                          |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XMuMu_Lambdastar_SubPIDAlg1/Particles                                     |        4 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XMuMu_Lambdastar_SubPIDAlg2/Particles                                     |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XMuMu_Line/Particle2VertexRelations                                       |       72 |    36.0+-9.2    | 13.0    |   23 | 49     |
+ | *AllStreams/Phys/B2XMuMu_Line/Particles                                                      |        9 |     4.5+-2.5    | 3.5     |    1 | 8      |
+ | *AllStreams/Phys/B2XMuMu_Line/decayVertices                                                  |        9 |     4.5+-2.5    | 3.5     |    1 | 8      |
+ | *AllStreams/Phys/B2XMuMu_Phi_SubPIDAlg/Particles                                             |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/B2XuMuNuBs2KSSLine/Particle2VertexRelations                                 |        4 |       4         |         |      |        |
+ | *AllStreams/Phys/B2XuMuNuBs2KSSLine/Particles                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/B2XuMuNuBs2KSSLine/_RefitPVs                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/B2XuMuNuBs2KSSLine/decayVertices                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/B2hhLTUnbiasedDetachedLooseKaonSel/Particles                                |       59 |     2.0+-0.0    | 0.2     |    2 | 3      |
+ | *AllStreams/Phys/B2hhLTUnbiasedDetachedLooseLine/Particle2VertexRelations                    |       91 |     3.1+-0.1    | 0.4     |    3 | 5      |
+ | *AllStreams/Phys/B2hhLTUnbiasedDetachedLooseLine/Particles                                   |       30 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/B2hhLTUnbiasedDetachedLooseLine/decayVertices                               |       30 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/B2hhLTUnbiasedLoose/decayVertices                                           |       10 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/B2hhLTUnbiasedLooseKaonSel/Particles                                        |     1009 |     2.4+-0.0    | 1.0     |    2 | 9      |
+ | *AllStreams/Phys/B2hhLTUnbiasedLooseLine/Particle2VertexRelations                            |     1605 |     3.8+-0.1    | 1.8     |    3 | 16     |
+ | *AllStreams/Phys/B2hhLTUnbiasedLooseLine/Particles                                           |      546 |     1.3+-0.0    | 0.7     |    1 | 7      |
+ | *AllStreams/Phys/B2hhLTUnbiasedLooseLine/decayVertices                                       |      546 |     1.3+-0.0    | 0.7     |    1 | 7      |
+ | *AllStreams/Phys/B2hhLTUnbiasedNeuroBayesLine/Particle2VertexRelations                       |       33 |     3.7+-0.5    | 1.6     |    3 | 8      |
+ | *AllStreams/Phys/B2hhLTUnbiasedNeuroBayesLine/Particles                                      |       10 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/Bd2DTauNuWSForB2XTauNu/Particle2VertexRelations                             |       17 |      17         |         |      |        |
+ | *AllStreams/Phys/Bd2DTauNuWSForB2XTauNu/Particles                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Bd2DTauNuWSForB2XTauNu/decayVertices                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Bd2JpsiPi0BetaS/_RefitPVs                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2JpsieeKstarLine/Particle2VertexRelations                                 |       45 |      45         |         |      |        |
+ | *AllStreams/Phys/Bd2JpsieeKstarLine/Particles                                                |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Bd2JpsieeKstarLine/decayVertices                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine/Particle2VertexRelations                                  |       28 |    14.0+-4.9    | 7.0     |    7 | 21     |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine/Particles                                                 |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine/decayVertices                                             |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine2/Particle2VertexRelations                                 |       28 |    14.0+-4.9    | 7.0     |    7 | 21     |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine2/Particles                                                |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarBDTLine2/decayVertices                                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarLine/Particle2VertexRelations                                     |       11 |      11         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarLine/Particles                                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Bd2eeKstarLine/decayVertices                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSBd2JpsiPi0DetachedLine/Particle2VertexRelations                        |        7 |       7         |         |      |        |
+ | *AllStreams/Phys/BetaSBd2JpsiPi0DetachedLine/Particles                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSBd2JpsiPi0DetachedLine/decayVertices                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSBs2PhiKstNominalLine/Particle2VertexRelations                          |       15 |      15         |         |      |        |
+ | *AllStreams/Phys/BetaSBs2PhiKstNominalLine/Particles                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSBs2PhiKstNominalLine/_RefitPVs                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSBs2PhiKstNominalLine/decayVertices                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuDetachedLine/Particle2VertexRelations                         |        4 |       4         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuDetachedLine/Particles                                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuDetachedLine/decayVertices                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuLine/Particle2VertexRelations                                 |        4 |       4         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuLine/Particles                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSJpsi2MuMuLine/decayVertices                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSPsi2SMuMu_InclPsi2SToMuMuLine/Particle2VertexRelations                 |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/BetaSPsi2SMuMu_InclPsi2SToMuMuLine/Particles                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSPsi2SMuMu_InclPsi2SToMuMuLine/decayVertices                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BetaSPsi2SMuMu_Psi2SToMuMu/_RefitPVs                                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Bs2MuMuLinesNoMuIDLooseLine/Particle2VertexRelations                        |       44 |     3.1+-0.1    | 0.5     |    3 | 5      |
+ | *AllStreams/Phys/Bs2MuMuLinesNoMuIDLooseLine/Particles                                       |       15 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/Bs2MuMuLinesNoMuIDLooseLine/_RefitPVs                                       |       15 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/Bs2MuMuLinesNoMuIDLooseLine/decayVertices                                   |       15 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/BsPhiRhoLine/Particle2VertexRelations                                       |        7 |       7         |         |      |        |
+ | *AllStreams/Phys/BsPhiRhoLine/Particles                                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/BsPhiRhoLine/decayVertices                                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiBs2TriPhiLine/Particle2VertexRelations                             |       19 |      19         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiBs2TriPhiLine/Particles                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiBs2TriPhiLine/_RefitPVs                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiBs2TriPhiLine/decayVertices                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiKKDetachedLine/Particle2VertexRelations                            |        6 |       6         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiKKDetachedLine/Particles                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiKKDetachedLine/_RefitPVs                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiKKDetachedLine/decayVertices                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PhiPhiDetachedLine/Particle2VertexRelations                           |       29 |    14.5+-2.5    | 3.5     |   11 | 18     |
+ | *AllStreams/Phys/Ccbar2PhiPhiDetachedLine/Particles                                          |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Ccbar2PhiPhiDetachedLine/_RefitPVs                                          |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Ccbar2PhiPhiDetachedLine/decayVertices                                      |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Ccbar2PpbarDetachedLine/Particle2VertexRelations                            |       12 |       3         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PpbarDetachedLine/Particles                                           |        4 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PpbarDetachedLine/decayVertices                                       |        4 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PpbarLine/Particle2VertexRelations                                    |        6 |       3         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PpbarLine/Particles                                                   |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Ccbar2PpbarLine/decayVertices                                               |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmForVubPrescaledHMuNuLine/Particle2VertexRelations                      |        5 |       5         |         |      |        |
+ | *AllStreams/Phys/CharmForVubPrescaledHMuNuLine/Particles                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmForVubPrescaledHMuNuLine/decayVertices                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyD0/Particles                            |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyD0/decayVertices                        |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyDplus/Particles                         |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyDplus/decayVertices                     |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyDstar0D0pi0/Particles                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyDstar0D0pi0/decayVertices               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopyP/Particles                             |       15 |     1.5+-0.3    | 0.9     |    1 | 4      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPm/Particle2VertexRelations          |       26 |     8.7+-1.4    | 2.4     |    7 | 12     |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPm/Particles                         |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPm/decayVertices                     |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPp/Particle2VertexRelations          |       36 |    12.0+-2.1    | 3.6     |    7 | 15     |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPp/Particles                         |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DpPp/decayVertices                     |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_Dstar0P/Particle2VertexRelations       |        9 |       9         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_Dstar0P/Particles                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_Dstar0P/decayVertices                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzP/Particle2VertexRelations           |       26 |     8.7+-1.2    | 2.1     |    6 | 11     |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzP/Particles                          |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzP/decayVertices                      |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzPWS/Particle2VertexRelations         |       24 |     8.0+-0.8    | 1.4     |    6 | 9      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzPWS/Particles                        |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopy_DzPWS/decayVertices                    |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/CharmedAndCharmedStrangeSpectroscopypi0/Particles                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D+2HHHSubPIDSelBeauty2Charm/Particles                                       |       24 |     4.8+-1.6    | 3.6     |    3 | 12     |
+ | *AllStreams/Phys/D-2HHHSubPIDSelBeauty2Charm/Particles                                       |       42 |     5.2+-1.2    | 3.3     |    3 | 12     |
+ | *AllStreams/Phys/D02HHForPromptCharm/Particle2VertexRelations                                |       48 |     4.8+-0.7    | 2.4     |    3 | 10     |
+ | *AllStreams/Phys/D02HHForPromptCharm/Particles                                               |       10 |       1         |         |      |        |
+ | *AllStreams/Phys/D02HHForPromptCharm/decayVertices                                           |       10 |       1         |         |      |        |
+ | *AllStreams/Phys/D02K3PiD0ForBXXLine/Particle2VertexRelations                                |       79 |     6.6+-0.5    | 1.9     |    5 | 11     |
+ | *AllStreams/Phys/D02K3PiD0ForBXXLine/Particles                                               |       13 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D02K3PiD0ForBXXLine/decayVertices                                           |       13 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D02KPiD0ForBXXLine/Particle2VertexRelations                                 |        9 |       3         |         |      |        |
+ | *AllStreams/Phys/D02KPiD0ForBXXLine/Particles                                                |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D02KPiD0ForBXXLine/decayVertices                                            |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D02KPiPi0_R/Particle2VertexRelations                                        |       51 |     6.4+-0.4    | 1.0     |    6 | 9      |
+ | *AllStreams/Phys/D02KPiPi0_R/Particles                                                       |        9 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D02KPiPi0_R/decayVertices                                                   |        9 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D02KSKSLLLine/Particle2VertexRelations                                      |        7 |       7         |         |      |        |
+ | *AllStreams/Phys/D02KSKSLLLine/Particles                                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D02KSKSLLLine/decayVertices                                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D02Kpipi0ForDstarD02Kpipi0/Particles                                        |       16 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/D02Kpipi0ForDstarD02Kpipi0/decayVertices                                    |       28 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHHH/Particles                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHHH/decayVertices                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHHHNoPID/Particles                             |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHHHNoPID/decayVertices                         |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHMuMuControl/Particles                         |       87 |     2.4+-0.3    | 1.7     |    1 | 7      |
+ | *AllStreams/Phys/D02hhhhForDstarPromptWithD02HHMuMuControl/decayVertices                     |       87 |     2.4+-0.3    | 1.7     |    1 | 7      |
+ | *AllStreams/Phys/D0HMuNuForCharmForVubPrescaled/Particles                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D0HMuNuForCharmForVubPrescaled/decayVertices                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D0WSForDstarD02Kpipi0/Particles                                             |       13 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/D2HHHCFPIDBeauty2CharmFilter/Particles                                      |       22 |     2.0+-0.5    | 1.8     |    1 | 6      |
+ | *AllStreams/Phys/D2HHHCFPIDBeauty2CharmFilter/decayVertices                                  |       22 |     2.0+-0.5    | 1.8     |    1 | 6      |
+ | *AllStreams/Phys/D2HHHHBeauty2CharmFilter/Particles                                          |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/D2HHHHBeauty2CharmFilter/decayVertices                                      |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/D2HHHHSubPIDSelBeauty2Charm/Particles                                       |       12 |      12         |         |      |        |
+ | *AllStreams/Phys/D2KS0HBachelorKaonsForD2KS0H/Particles                                      |       22 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HBachelorPionsForD2KS0H/Particles                                      |       11 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKS0DDForD2KS0H/Particles                                              |       32 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKS0DDForD2KS0H/decayVertices                                          |       32 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKS0LLForD2KS0H/Particles                                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKS0LLForD2KS0H/decayVertices                                          |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKaonLine/Particle2VertexRelations                                     |        9 |       9         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKaonLine/Particles                                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKaonLine/decayVertices                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKaonLineDD/Particle2VertexRelations                                   |      127 |     6.0+-0.4    | 1.8     |    5 | 10     |
+ | *AllStreams/Phys/D2KS0HKaonLineDD/Particles                                                  |       21 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HKaonLineDD/decayVertices                                              |       21 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HPionLineDD/Particle2VertexRelations                                   |       65 |     5.9+-0.2    | 0.8     |    5 | 7      |
+ | *AllStreams/Phys/D2KS0HPionLineDD/Particles                                                  |       11 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KS0HPionLineDD/decayVertices                                              |       11 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KSKPLLForDstarD2KShh/Particles                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KSKPLLForDstarD2KShh/decayVertices                                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KSKPLLForDstarD2KShhCompleteEvent/Particles                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2KSKPLLForDstarD2KShhCompleteEvent/decayVertices                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2XMuMu_2KPiLine/Particle2VertexRelations                                   |     3802 |     9.4+-0.2    | 4.4     |    4 | 30     |
+ | *AllStreams/Phys/D2XMuMu_2KPiLine/Particles                                                  |      648 |     1.6+-0.0    | 0.9     |    1 | 8      |
+ | *AllStreams/Phys/D2XMuMu_2KPiLine/_RefitPVs                                                  |      648 |     1.6+-0.0    | 0.9     |    1 | 8      |
+ | *AllStreams/Phys/D2XMuMu_2KPiLine/decayVertices                                              |      648 |     1.6+-0.0    | 0.9     |    1 | 8      |
+ | *AllStreams/Phys/D2XMuMu_K2PiLine/Particle2VertexRelations                                   |     2461 |     9.1+-0.3    | 4.2     |    4 | 28     |
+ | *AllStreams/Phys/D2XMuMu_K2PiLine/Particles                                                  |      287 |     1.1+-0.0    | 0.3     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_K2PiLine/_RefitPVs                                                  |      287 |     1.1+-0.0    | 0.3     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_K2PiLine/decayVertices                                              |      287 |     1.1+-0.0    | 0.3     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_K3PiLine/Particle2VertexRelations                                   |      318 |    10.3+-0.9    | 5.2     |    5 | 23     |
+ | *AllStreams/Phys/D2XMuMu_K3PiLine/Particles                                                  |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_K3PiLine/_RefitPVs                                                  |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_K3PiLine/decayVertices                                              |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_KKPiPiLine/Particle2VertexRelations                                 |      161 |    11.5+-1.6    | 5.8     |    5 | 22     |
+ | *AllStreams/Phys/D2XMuMu_KKPiPiLine/Particles                                                |       22 |     1.6+-0.2    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_KKPiPiLine/_RefitPVs                                                |       22 |     1.6+-0.2    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_KKPiPiLine/decayVertices                                            |       22 |     1.6+-0.2    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_Lambdac2PPiPiLine/Particle2VertexRelations                          |     1166 |     7.2+-0.3    | 3.3     |    4 | 24     |
+ | *AllStreams/Phys/D2XMuMu_Lambdac2PPiPiLine/Particles                                         |      183 |     1.1+-0.0    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D2XMuMu_Lambdac2PPiPiLine/_RefitPVs                                         |      183 |     1.1+-0.0    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D2XMuMu_Lambdac2PPiPiLine/decayVertices                                     |      183 |     1.1+-0.0    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/D2XMuMu_PiCalLine/Particle2VertexRelations                                  |     1752 |    14.5+-0.6    | 6.5     |    7 | 43     |
+ | *AllStreams/Phys/D2XMuMu_PiCalLine/Particles                                                 |      464 |     3.8+-0.2    | 2.4     |    2 | 16     |
+ | *AllStreams/Phys/D2XMuMu_PiCalLine/_RefitPVs                                                 |      464 |     3.8+-0.2    | 2.4     |    2 | 16     |
+ | *AllStreams/Phys/D2XMuMu_PiCalLine/decayVertices                                             |      464 |     3.8+-0.2    | 2.4     |    2 | 16     |
+ | *AllStreams/Phys/D2XMuMu_PiPiPiPiLine/Particle2VertexRelations                               |      318 |    10.3+-0.9    | 5.2     |    5 | 23     |
+ | *AllStreams/Phys/D2XMuMu_PiPiPiPiLine/Particles                                              |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_PiPiPiPiLine/_RefitPVs                                              |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2XMuMu_PiPiPiPiLine/decayVertices                                          |       40 |     1.3+-0.1    | 0.5     |    1 | 3      |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKLine/Particle2VertexRelations                    |        9 |       3         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKLine/Particles                                   |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKSel/decayVertices                                |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKTISLine/Particle2VertexRelations                 |       21 |       3         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKTISLine/Particles                                |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KKTISSel/decayVertices                             |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KPiTISLine/Particle2VertexRelations                |        8 |       8         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KPiTISLine/Particles                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhCompleteEventPromptD2KPiTISSel/decayVertices                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhPromptD2KKLine/Particle2VertexRelations                                 |        9 |       3         |         |      |        |
+ | *AllStreams/Phys/D2hhPromptD2KKLine/Particles                                                |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhPromptD2KKSel/decayVertices                                             |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhWSCompleteEventPromptD2KKLine/Particle2VertexRelations                  |        9 |       3         |         |      |        |
+ | *AllStreams/Phys/D2hhWSCompleteEventPromptD2KKLine/Particles                                 |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhWSCompleteEventPromptD2KKSel/decayVertices                              |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhhControl_HHHIncLine/Particle2VertexRelations                            |     1455 |     6.0+-0.2    | 2.9     |    4 | 23     |
+ | *AllStreams/Phys/D2hhhControl_HHHIncLine/Particles                                           |      305 |     1.3+-0.0    | 0.5     |    1 | 4      |
+ | *AllStreams/Phys/D2hhhControl_HHHIncLine/decayVertices                                       |      305 |     1.3+-0.0    | 0.5     |    1 | 4      |
+ | *AllStreams/Phys/D2hhhControl_KKPLine/Particle2VertexRelations                               |      295 |     5.5+-0.3    | 2.4     |    4 | 19     |
+ | *AllStreams/Phys/D2hhhControl_KKPLine/Particles                                              |       55 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/D2hhhControl_KKPLine/decayVertices                                          |       55 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/D2hhhControl_KPPLine/Particle2VertexRelations                               |      173 |     6.7+-0.7    | 3.4     |    4 | 14     |
+ | *AllStreams/Phys/D2hhhControl_KPPLine/Particles                                              |       27 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/D2hhhControl_KPPLine/decayVertices                                          |       27 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/D2hhhControl_KPPosLine/Particle2VertexRelations                             |       32 |     6.4+-1.3    | 2.9     |    4 | 12     |
+ | *AllStreams/Phys/D2hhhControl_KPPosLine/Particles                                            |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhhControl_KPPosLine/decayVertices                                        |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhhControl_PPPLine/Particle2VertexRelations                               |       31 |     4.4+-0.2    | 0.5     |    4 | 5      |
+ | *AllStreams/Phys/D2hhhControl_PPPLine/Particles                                              |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhhControl_PPPLine/decayVertices                                          |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_HHHIncLine/Particle2VertexRelations                                   |     1167 |     6.0+-0.2    | 3.1     |    4 | 23     |
+ | *AllStreams/Phys/D2hhh_HHHIncLine/Particles                                                  |      220 |     1.1+-0.0    | 0.4     |    1 | 3      |
+ | *AllStreams/Phys/D2hhh_HHHIncLine/decayVertices                                              |      220 |     1.1+-0.0    | 0.4     |    1 | 3      |
+ | *AllStreams/Phys/D2hhh_KKPLine/Particle2VertexRelations                                      |      287 |     5.4+-0.3    | 2.4     |    4 | 19     |
+ | *AllStreams/Phys/D2hhh_KKPLine/Particles                                                     |       53 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_KKPLine/decayVertices                                                 |       53 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_KPPLine/Particle2VertexRelations                                      |      173 |     6.7+-0.7    | 3.4     |    4 | 14     |
+ | *AllStreams/Phys/D2hhh_KPPLine/Particles                                                     |       27 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/D2hhh_KPPLine/decayVertices                                                 |       27 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/D2hhh_KPPosLine/Particle2VertexRelations                                    |       11 |     5.5+-0.4    | 0.5     |    5 | 6      |
+ | *AllStreams/Phys/D2hhh_KPPosLine/Particles                                                   |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_KPPosLine/decayVertices                                               |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_PPPLine/Particle2VertexRelations                                      |       13 |     4.3+-0.3    | 0.5     |    4 | 5      |
+ | *AllStreams/Phys/D2hhh_PPPLine/Particles                                                     |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/D2hhh_PPPLine/decayVertices                                                 |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/DForPromptCharm/Particle2VertexRelations                                    |       49 |     9.8+-1.6    | 3.5     |    6 | 16     |
+ | *AllStreams/Phys/DForPromptCharm/Particles                                                   |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/DForPromptCharm/decayVertices                                               |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/DY2MuMuLine1/Particles                                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DY2MuMuLine1/decayVertices                                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DY2MuMuLine1Hlt/Particles                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DY2MuMuLine1Hlt/decayVertices                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DetachedPhiForCcbar2Phi/Particles                                           |       10 |     3.3+-1.5    | 2.6     |    1 | 7      |
+ | *AllStreams/Phys/DetachedPhiForCcbar2Phi/decayVertices                                       |       10 |     3.3+-1.5    | 2.6     |    1 | 7      |
+ | *AllStreams/Phys/DiTracksForCharmlessBBsPhiRho/Particles                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DiTracksForCharmlessBBsPhiRho/decayVertices                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesDownCandidates/Particles                                       |       16 |       8         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesHLTPS/Particles                                                |      145 |     9.7+-1.0    | 3.8     |    6 | 18     |
+ | *AllStreams/Phys/DisplVerticesHLTPS/decayVertices                                            |       15 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesSingle/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesSingle/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesSingleDown/Particles                                           |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesSingleDown/decayVertices                                       |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/DisplVerticesSinglePS/Particles                                             |       64 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/DisplVerticesSinglePS/decayVertices                                         |       64 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/DisplVerticesWithVeloCandidates/Particles                                   |      474 |     7.5+-0.4    | 3.0     |    5 | 17     |
+ | *AllStreams/Phys/DsForPromptCharm/Particle2VertexRelations                                   |       21 |       7         |         |      |        |
+ | *AllStreams/Phys/DsForPromptCharm/Particles                                                  |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/DsForPromptCharm/decayVertices                                              |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKKLine/Particle2VertexRelations                  |       22 |      22         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKKLine/Particles                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKKLine/decayVertices                             |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKMinusPiPlusLine/Particle2VertexRelations        |       24 |      24         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKMinusPiPlusLine/Particles                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKMinusPiPlusLine/decayVertices                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKPlusPiMinusLine/Particle2VertexRelations        |       24 |      24         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKPlusPiMinusLine/Particles                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffKPlusPiMinusLine/decayVertices                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffPiPiLine/Particle2VertexRelations                |       13 |      13         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffPiPiLine/Particles                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02KShh_ForTrackingEffPiPiLine/decayVertices                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02Kpipi0RS/Particle2VertexRelations                                   |      160 |    13.3+-1.8    | 6.2     |    8 | 25     |
+ | *AllStreams/Phys/DstarD02Kpipi0RS/Particles                                                  |       16 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarD02Kpipi0RS/decayVertices                                              |       16 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarD02Kpipi0WS/Particle2VertexRelations                                   |      112 |    11.2+-1.0    | 3.1     |    8 | 17     |
+ | *AllStreams/Phys/DstarD02Kpipi0WS/Particles                                                  |       16 |     1.6+-0.3    | 0.9     |    1 | 4      |
+ | *AllStreams/Phys/DstarD02Kpipi0WS/decayVertices                                              |       16 |     1.6+-0.3    | 0.9     |    1 | 4      |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02KpiBox/Particle2VertexRelations                          |        5 |       5         |         |      |        |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02KpiBox/Particles                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02KpiBox/decayVertices                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02Kpi_untagged_Box/Particle2VertexRelations                |       17 |     5.7+-1.8    | 3.1     |    3 | 10     |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02Kpi_untagged_Box/Particles                               |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarD02xxDst2PiD02Kpi_untagged_Box/decayVertices                           |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarD02xxseq_D02KpiforTag_selection/Particles                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD02xxseq_D02KpiforTag_selection/decayVertices                          |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhCompleteEventKPLLLine/Particle2VertexRelations                   |       41 |      41         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhCompleteEventKPLLLine/Particles                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhCompleteEventKPLLLine/decayVertices                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhKPLLLine/Particle2VertexRelations                                |       41 |      41         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhKPLLLine/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarD2KShhKPLLLine/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarForPromptCharm/Particle2VertexRelations                                |       31 |    10.3+-2.9    | 5.0     |    5 | 17     |
+ | *AllStreams/Phys/DstarForPromptCharm/Particles                                               |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarForPromptCharm/decayVertices                                           |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHLine/Particle2VertexRelations                         |       13 |      13         |         |      |        |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHLine/Particles                                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHLine/decayVertices                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHNoPIDLine/Particle2VertexRelations                    |       18 |     9.0+-1.4    | 2.0     |    7 | 11     |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHNoPIDLine/Particles                                   |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarPromptWithD02HHHHNoPIDLine/decayVertices                               |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/DstarPromptWithD02HHMuMuControlLine/Particle2VertexRelations                |      490 |    13.2+-1.1    | 6.4     |    7 | 30     |
+ | *AllStreams/Phys/DstarPromptWithD02HHMuMuControlLine/Particles                               |      105 |     2.8+-0.4    | 2.3     |    1 | 11     |
+ | *AllStreams/Phys/DstarPromptWithD02HHMuMuControlLine/decayVertices                           |      105 |     2.8+-0.4    | 2.3     |    1 | 11     |
+ | *AllStreams/Phys/EtaforB2XEta/Particles                                                      |       12 |       1         |         |      |        |
+ | *AllStreams/Phys/FullDSTDiElectronBiasedIncDiElectronLowMassLine/Particle2VertexRelations    |       20 |     3.3+-0.3    | 0.7     |    3 | 5      |
+ | *AllStreams/Phys/FullDSTDiElectronBiasedIncDiElectronLowMassLine/Particles                   |        7 |     1.2+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/FullDSTDiElectronBiasedIncDiElectronLowMassLine/decayVertices               |        7 |     1.2+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/FullDSTDiElectronDiElectronLowMassLine/Particle2VertexRelations             |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/FullDSTDiElectronDiElectronLowMassLine/Particles                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/FullDSTDiElectronDiElectronLowMassLine/decayVertices                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/HadFor3bodyCSAndForD2XMuMu/Particles                                        |     1075 |     2.4+-0.0    | 0.9     |    1 | 6      |
+ | *AllStreams/Phys/HadFor4bodyCSAndForD2XMuMu/Particles                                        |       74 |     1.8+-0.2    | 1.0     |    1 | 4      |
+ | *AllStreams/Phys/K0SDDLineV0ForPID/Particle2VertexRelations                                  |     1977 |     3.4+-0.0    | 1.2     |    3 | 14     |
+ | *AllStreams/Phys/K0SDDLineV0ForPID/Particles                                                 |      659 |     1.1+-0.0    | 0.4     |    1 | 5      |
+ | *AllStreams/Phys/K0SDDLineV0ForPID/decayVertices                                             |      659 |     1.1+-0.0    | 0.4     |    1 | 5      |
+ | *AllStreams/Phys/K0SLLLineV0ForPID/Particle2VertexRelations                                  |     2118 |     3.7+-0.1    | 1.9     |    3 | 24     |
+ | *AllStreams/Phys/K0SLLLineV0ForPID/Particles                                                 |      627 |     1.1+-0.0    | 0.3     |    1 | 4      |
+ | *AllStreams/Phys/K0SLLLineV0ForPID/decayVertices                                             |      627 |     1.1+-0.0    | 0.3     |    1 | 4      |
+ | *AllStreams/Phys/KForDstarD02KShh_ForTrackingEff/Particles                                   |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/KForDstarD2KShh/Particles                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KForDstarD2KShhCompleteEvent/Particles                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KInputsBeauty2CharmFilter/Particles                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KKTracksForCharmlessBBsPhiRho/Particles                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KKTracksForCharmlessBBsPhiRho/decayVertices                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KS02MuMuNoMuIDLine/Particle2VertexRelations                                 |      681 |     3.6+-0.1    | 1.3     |    3 | 8      |
+ | *AllStreams/Phys/KS02MuMuNoMuIDLine/Particles                                                |      194 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/KS02MuMuNoMuIDLine/_RefitPVs                                                |      194 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/KS02MuMuNoMuIDLine/decayVertices                                            |      194 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/KSforB2KShhDD/Particles                                                     |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/KSforB2KShhDD/decayVertices                                                 |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/KSforB2XEtaB2etapKSDD/Particles                                             |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/KSforB2XEtaB2etapKSDD/decayVertices                                         |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/KSforB2XEtaB2etapKSLL/Particles                                             |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/KSforB2XEtaB2etapKSLL/decayVertices                                         |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/KTopoInputsBeauty2CharmFilter/Particles                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/K_forB2XuMuNu/Particles                                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KaonForCcbar2Phi/Particles                                                  |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/KaonsForCharmForVubPrescaled/Particles                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KsLLForDstarD2KShh/Particles                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KsLLForDstarD2KShh/decayVertices                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KsLLForDstarD2KShhCompleteEvent/Particles                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KsLLForDstarD2KShhCompleteEvent/decayVertices                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kst2KpiForBetaSBs2PhiKst/Particles                                          |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kst2KpiForBetaSBs2PhiKst/decayVertices                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KKDstarD02KShh_ForTrackingEff/Particles                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KKDstarD02KShh_ForTrackingEff/decayVertices                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KMinusPiPlusDstarD02KShh_ForTrackingEff/Particles                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KMinusPiPlusDstarD02KShh_ForTrackingEff/decayVertices                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KPlusPiMinusDstarD02KShh_ForTrackingEff/Particles                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2KPlusPiMinusDstarD02KShh_ForTrackingEff/decayVertices                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2PiPiDstarD02KShh_ForTrackingEff/Particles                             |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Kstar2PiPiDstarD02KShh_ForTrackingEff/decayVertices                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2JpsieeKstar/Particles                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2JpsieeKstar/decayVertices                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2eeKstar/Particles                                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2eeKstar/decayVertices                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2eeKstarBDT/Particles                                             |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/KstarForBd2eeKstarBDT/decayVertices                                         |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lam0DDIsMUONLineV0ForPID/Particle2VertexRelations                           |       15 |     3.8+-0.4    | 0.8     |    3 | 5      |
+ | *AllStreams/Phys/Lam0DDIsMUONLineV0ForPID/Particles                                          |        4 |       1         |         |      |        |
+ | *AllStreams/Phys/Lam0DDIsMUONLineV0ForPID/decayVertices                                      |        4 |       1         |         |      |        |
+ | *AllStreams/Phys/Lam0DDLineV0ForPID/Particle2VertexRelations                                 |      422 |     3.7+-0.1    | 1.3     |    3 | 10     |
+ | *AllStreams/Phys/Lam0DDLineV0ForPID/Particles                                                |      119 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/Lam0DDLineV0ForPID/decayVertices                                            |      119 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/Lam0LLLine1V0ForPID/Particle2VertexRelations                                |      241 |     3.8+-0.2    | 1.7     |    3 | 12     |
+ | *AllStreams/Phys/Lam0LLLine1V0ForPID/Particles                                               |       67 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/Lam0LLLine1V0ForPID/decayVertices                                           |       67 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/Lam0LLLine2V0ForPID/Particle2VertexRelations                                |       10 |     5.0+-1.4    | 2.0     |    3 | 7      |
+ | *AllStreams/Phys/Lam0LLLine2V0ForPID/Particles                                               |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lam0LLLine2V0ForPID/decayVertices                                           |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambda0forLb2V0hhDD/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambda0forLb2V0hhDD/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/LambdaCForPromptCharm/Particle2VertexRelations                              |     1077 |     8.4+-0.2    | 1.9     |    7 | 19     |
+ | *AllStreams/Phys/LambdaCForPromptCharm/Particles                                             |      130 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/LambdaCForPromptCharm/decayVertices                                         |      130 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/LambdaCstarForPromptCharm/Particle2VertexRelations                          |     1530 |    21.5+-1.6    | 13.7    |   10 | 91     |
+ | *AllStreams/Phys/LambdaCstarForPromptCharm/Particles                                         |      405 |     5.7+-1.1    | 9.1     |    1 | 58     |
+ | *AllStreams/Phys/LambdaCstarForPromptCharm/decayVertices                                     |      405 |     5.7+-1.1    | 9.1     |    1 | 58     |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKK/decayVertices                                        |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKKLine/Particle2VertexRelations                         |       10 |     5.0+-0.7    | 1.0     |    4 | 6      |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKKLine/Particles                                        |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKPi/decayVertices                                       |      108 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKPiLine/Particle2VertexRelations                        |      722 |     6.7+-0.3    | 3.1     |    4 | 20     |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PKPiLine/Particles                                       |      108 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiKWS/decayVertices                                     |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiKWSLine/Particle2VertexRelations                      |       18 |       9         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiKWSLine/Particles                                     |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiPi/decayVertices                                      |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiPiLine/Particle2VertexRelations                       |       13 |     4.3+-0.3    | 0.5     |    4 | 5      |
+ | *AllStreams/Phys/Lambdac2PHHLambdac2PPiPiLine/Particles                                      |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKK/decayVertices                               |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKKLine/Particle2VertexRelations                |       10 |     5.0+-0.7    | 1.0     |    4 | 6      |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKKLine/Particles                               |        3 |     1.5+-0.4    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKPi/decayVertices                              |      108 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKPiLine/Particle2VertexRelations               |      722 |     6.7+-0.3    | 3.1     |    4 | 20     |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PKPiLine/Particles                              |      108 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiKWS/decayVertices                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiKWSLine/Particle2VertexRelations             |       18 |       9         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiKWSLine/Particles                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiPi/decayVertices                             |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiPiLine/Particle2VertexRelations              |       13 |     4.3+-0.3    | 0.5     |    4 | 5      |
+ | *AllStreams/Phys/Lambdac2PHHPrescFullLambdac2PPiPiLine/Particles                             |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2LcPiWSLc2PKPiBeauty2CharmLine/Particle2VertexRelations                   |        6 |       6         |         |      |        |
+ | *AllStreams/Phys/Lb2LcPiWSLc2PKPiBeauty2CharmLine/Particles                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2LcPiWSLc2PKPiBeauty2CharmLine/decayVertices                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2V0hhDDLine/Particle2VertexRelations                                      |        7 |       7         |         |      |        |
+ | *AllStreams/Phys/Lb2V0hhDDLine/Particles                                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2V0hhDDLine/decayVertices                                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2XicPiWSXic2PKPiBeauty2CharmLine/Particle2VertexRelations                 |        6 |       6         |         |      |        |
+ | *AllStreams/Phys/Lb2XicPiWSXic2PKPiBeauty2CharmLine/Particles                                |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lb2XicPiWSXic2PKPiBeauty2CharmLine/decayVertices                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lc2PKPiBeauty2Charm/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Lc2PKPiBeauty2Charm/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiElectronBiasedIncDiElectronLine/Particle2VertexRelations          |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiElectronBiasedIncDiElectronLine/Particles                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiElectronBiasedIncDiElectronLine/decayVertices                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonIncLine/Particle2VertexRelations                        |        7 |     3.5+-0.4    | 0.5     |    3 | 4      |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonIncLine/Particles                                       |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonIncLine/decayVertices                                   |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonPrescaledLine/Particle2VertexRelations                  |       20 |     3.3+-0.3    | 0.7     |    3 | 5      |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonPrescaledLine/Particles                                 |        7 |     1.2+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonPrescaledLine/decayVertices                             |        7 |     1.2+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonSameSignLine/Particle2VertexRelations                   |        6 |       3         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonSameSignLine/Particles                                  |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/MicroDSTDiMuonDiMuonSameSignLine/decayVertices                              |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/MuIDCalib_FromLambdacDecay/Particle2VertexRelations                         |      105 |     6.6+-0.5    | 1.9     |    4 | 11     |
+ | *AllStreams/Phys/MuIDCalib_FromLambdacDecay/Particles                                        |       16 |       1         |         |      |        |
+ | *AllStreams/Phys/MuIDCalib_FromLambdacDecay/decayVertices                                    |       16 |       1         |         |      |        |
+ | *AllStreams/Phys/MuIDCalib_JpsiFromBNoPIDNoMip/Particle2VertexRelations                      |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/MuIDCalib_JpsiFromBNoPIDNoMip/Particles                                     |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MuIDCalib_JpsiFromBNoPIDNoMip/decayVertices                                 |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MuMuSSLine1/Particles                                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MuMuSSLine1/decayVertices                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Mu_forB2XuMuNu/Particles                                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/MuonsForCharmForVubPrescaled/Particles                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/NoPIDDstarWithD02RSKPiLine/Particle2VertexRelations                         |       10 |       5         |         |      |        |
+ | *AllStreams/Phys/NoPIDDstarWithD02RSKPiLine/Particles                                        |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/NoPIDDstarWithD02RSKPiLine/decayVertices                                    |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/PForDstarD2KShh/Particles                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PForDstarD2KShhCompleteEvent/Particles                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PInputsBeauty2CharmFilter/Particles                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Phi2KKForBetaSBs2PhiKst/Particles                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Phi2KKForBetaSBs2PhiKst/decayVertices                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Pi0ForBetaSBetaS/Particles                                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Pi0ForDstarD02Kpipi0/Particles                                              |       27 |     1.3+-0.1    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/PiForDstarD02KShh_ForTrackingEff/Particles                                  |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/PiInputsBeauty2CharmFilter/Particles                                        |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PiTopoInputsBeauty2CharmFilter/Particles                                    |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PionsAsMuonsForD2XMuMu/Particles                                            |      344 |     2.8+-0.1    | 0.9     |    2 | 7      |
+ | *AllStreams/Phys/PionsFor3bodyCSAndForD2XMuMu/Particles                                      |     1107 |     2.3+-0.0    | 0.9     |    1 | 7      |
+ | *AllStreams/Phys/PionsFor4bodyCSAndForD2XMuMu/Particles                                      |      130 |     3.2+-0.1    | 0.7     |    2 | 5      |
+ | *AllStreams/Phys/PionsForD2XMuMu/Particles                                                   |      220 |     1.8+-0.1    | 0.9     |    1 | 6      |
+ | *AllStreams/Phys/PreSelD02HHForPromptCharm/Particles                                         |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/PreSelD02HHForPromptCharm/decayVertices                                     |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KKTISLine/Particle2VertexRelations                        |       21 |       3         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KKTISLine/Particles                                       |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KKTISSel/decayVertices                                    |        7 |       1         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KPiTISLine/Particle2VertexRelations                       |        8 |       8         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KPiTISLine/Particles                                      |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PromptD2hhPromptD2KPiTISSel/decayVertices                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/PromptKaonsTopoInputsBeauty2CharmFilter/Particles                           |       33 |     3.0+-0.8    | 2.8     |    1 | 10     |
+ | *AllStreams/Phys/ProtonsFor3bodyCSAndForD2XMuMu/Particles                                    |      180 |     1.1+-0.0    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/SelBasicMesonsForPromptCharm/Particles                                      |      292 |     2.1+-0.0    | 0.3     |    2 | 4      |
+ | *AllStreams/Phys/SelD02KPiPi0ResolvedforCharmFromBSemi/Particles                             |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/SelD02KPiPi0ResolvedforCharmFromBSemi/decayVertices                         |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/SelD02RSKPiForNoPIDDstarWithD02RSKPi/Particles                              |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/SelD02RSKPiForNoPIDDstarWithD02RSKPi/decayVertices                          |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/SelDplus2KKpiForB0q2DplusMuXPresel/Particles                                |       13 |     1.6+-0.3    | 0.9     |    1 | 3      |
+ | *AllStreams/Phys/SelDplus2KKpiForB0q2DplusMuXPresel/decayVertices                            |       13 |     1.6+-0.3    | 0.9     |    1 | 3      |
+ | *AllStreams/Phys/SelDplusForB2XTauNu/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/SelDplusForB2XTauNu/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/SelKforCharmFromBSemi/Particles                                             |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/SelLambdaCForPromptCharm/Particles                                          |      111 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/SelLambdaCForPromptCharm/decayVertices                                      |      111 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/SelMuForB0q2DplusMuXPresel/Particles                                        |        8 |       1         |         |      |        |
+ | *AllStreams/Phys/SelMuforCharmFromBSemi/Particles                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/SelPi0ResolvedforCharmFromBSemi/Particles                                   |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/SelPiforCharmFromBSemi/Particles                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/SelProtonsForPromptCharm/Particles                                          |      129 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/Sel_B2XMuMu_DiMuon/Particles                                                |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Sel_B2XMuMu_DiMuon/decayVertices                                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/Selection_B2XMuMu_StdAllNoPIDsKaons/Particles                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Selection_B2XMuMu_daughters/Particles                                       |        9 |     4.5+-2.5    | 3.5     |    1 | 8      |
+ | *AllStreams/Phys/Selection_B2XMuMu_daughters/decayVertices                                   |        5 |     2.5+-1.1    | 1.5     |    1 | 4      |
+ | *AllStreams/Phys/Selection_B2XMuMu_pi0/Particles                                             |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/SigmaCForPromptCharm/Particle2VertexRelations                               |     2002 |    18.4+-0.7    | 7.8     |    9 | 49     |
+ | *AllStreams/Phys/SigmaCForPromptCharm/Particles                                              |      409 |     3.8+-0.3    | 3.0     |    1 | 16     |
+ | *AllStreams/Phys/SigmaCForPromptCharm/decayVertices                                          |      409 |     3.8+-0.3    | 3.0     |    1 | 16     |
+ | *AllStreams/Phys/SingleTrackTISLine/Particle2VertexRelations                                 |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/SingleTrackTISLine/Particles                                                |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/SingleTrackTISLowLine/Particle2VertexRelations                              |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/SingleTrackTISLowLine/Particles                                             |        5 |       1         |         |      |        |
+ | *AllStreams/Phys/SlowPionsForCharmForVubPrescaled/Particles                                  |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/StdAllLooseElectrons/Particles                                              |       25 |     2.1+-0.1    | 0.3     |    2 | 3      |
+ | *AllStreams/Phys/StdAllLooseKaons/Particles                                                  |     2245 |     1.8+-0.0    | 1.5     |    1 | 14     |
+ | *AllStreams/Phys/StdAllLooseMuons/Particles                                                  |       23 |     2.1+-0.1    | 0.3     |    2 | 3      |
+ | *AllStreams/Phys/StdAllLoosePions/Particles                                                  |     3043 |     2.4+-0.1    | 2.2     |    1 | 24     |
+ | *AllStreams/Phys/StdAllLooseProtons/Particles                                                |      490 |     1.0+-0.0    | 0.1     |    1 | 2      |
+ | *AllStreams/Phys/StdAllNoPIDsKaons/Particles                                                 |      218 |     1.3+-0.1    | 0.7     |    1 | 5      |
+ | *AllStreams/Phys/StdAllNoPIDsMuons/Particles                                                 |       31 |     2.1+-0.1    | 0.2     |    2 | 3      |
+ | *AllStreams/Phys/StdAllNoPIDsPions/Particles                                                 |     2890 |     2.9+-0.1    | 2.1     |    1 | 22     |
+ | *AllStreams/Phys/StdAllNoPIDsProtons/Particles                                               |      190 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/StdDiElectronFromTracks/Particles                                           |        4 |       2         |         |      |        |
+ | *AllStreams/Phys/StdLooseDetachedDipion/Particles                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/StdLooseDetachedDipion/decayVertices                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/StdLooseDetachedTau3pi/Particles                                            |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/StdLooseDetachedTau3pi/decayVertices                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/StdLooseEta2gg/Particles                                                    |       24 |       2         |         |      |        |
+ | *AllStreams/Phys/StdLooseLambdaDD/Particles                                                  |       21 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/StdLooseLambdaDD/decayVertices                                              |       21 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/StdLooseLambdaLL/Particles                                                  |        7 |     1.8+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/StdLooseLambdaLL/decayVertices                                              |        7 |     1.8+-0.2    | 0.4     |    1 | 2      |
+ | *AllStreams/Phys/StdLoosePi02gg/Particles                                                    |       92 |     2.8+-0.2    | 1.2     |    2 | 8      |
+ | *AllStreams/Phys/StdMassConstrainedJpsi2MuMu/Particles                                       |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/StdMassConstrainedJpsi2MuMu/decayVertices                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/StdNoPIDsDownPions/Particles                                                |     1435 |     2.1+-0.0    | 0.8     |    1 | 9      |
+ | *AllStreams/Phys/StdNoPIDsDownProtons/Particles                                              |      137 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/StdTightKaons/Particles                                                     |       10 |     1.1+-0.1    | 0.3     |    1 | 2      |
+ | *AllStreams/Phys/StdTightPions/Particles                                                     |        8 |       1         |         |      |        |
+ | *AllStreams/Phys/StdTightProtons/Particles                                                   |       12 |       2         |         |      |        |
+ | *AllStreams/Phys/Tau23MuDs23PiLine/Particle2VertexRelations                                  |      325 |     6.1+-0.4    | 3.0     |    4 | 19     |
+ | *AllStreams/Phys/Tau23MuDs23PiLine/Particles                                                 |       62 |     1.2+-0.1    | 0.5     |    1 | 4      |
+ | *AllStreams/Phys/Tau23MuDs23PiLine/decayVertices                                             |       62 |     1.2+-0.1    | 0.5     |    1 | 4      |
+ | *AllStreams/Phys/Tau_Z02TauTauProng_TauProng/Particles                                       |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/Tau_Z02TauTauProng_TauProng/decayVertices                                   |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/TrackEffDownMuonValidationLine/Particle2VertexRelations                     |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/TrackEffDownMuonValidationLine/Particles                                    |        6 |       1         |         |      |        |
+ | *AllStreams/Phys/TrackListBsPhiRho/Particles                                                 |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/WMuControl4800Line/Particle2VertexRelations                                 |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/WMuControl4800Line/Particles                                                |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/Xic2PKPiBeauty2Charm/Particles                                              |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/Xic2PKPiBeauty2Charm/decayVertices                                          |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccCombineXi/Particles                                                     |       31 |     1.3+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccCombineXi/decayVertices                                                 |       31 |     1.3+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccCombineXicc1/decayVertices                                              |       11 |     1.4+-0.2    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/XiccCombineXicc1DCS/decayVertices                                           |       32 |     2.1+-0.3    | 1.3     |    1 | 4      |
+ | *AllStreams/Phys/XiccCombineXicc1WC/decayVertices                                            |       22 |     1.4+-0.2    | 0.8     |    1 | 4      |
+ | *AllStreams/Phys/XiccCombineXicc2/decayVertices                                              |        4 |     2.0+-0.7    | 1.0     |    1 | 3      |
+ | *AllStreams/Phys/XiccCombineXicc2DCS/decayVertices                                           |       23 |     2.6+-0.4    | 1.2     |    1 | 4      |
+ | *AllStreams/Phys/XiccCombineXicc2WC/decayVertices                                            |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccCombineXicc7DCS/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccCombineXicc7WC/decayVertices                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccControlD0/Particle2VertexRelations                                      |     4578 |     6.7+-0.2    | 5.6     |    3 | 41     |
+ | *AllStreams/Phys/XiccControlD0/Particles                                                     |     1180 |     1.7+-0.1    | 1.4     |    1 | 13     |
+ | *AllStreams/Phys/XiccControlD0/decayVertices                                                 |     1180 |     1.7+-0.1    | 1.4     |    1 | 13     |
+ | *AllStreams/Phys/XiccControlDp/Particle2VertexRelations                                      |     3743 |     8.2+-0.3    | 6.0     |    4 | 51     |
+ | *AllStreams/Phys/XiccControlDp/Particles                                                     |      775 |     1.7+-0.1    | 1.5     |    1 | 15     |
+ | *AllStreams/Phys/XiccControlDp/decayVertices                                                 |      775 |     1.7+-0.1    | 1.5     |    1 | 15     |
+ | *AllStreams/Phys/XiccControlLc/Particle2VertexRelations                                      |     2691 |     5.8+-0.2    | 3.6     |    4 | 38     |
+ | *AllStreams/Phys/XiccControlLc/Particles                                                     |      499 |     1.1+-0.0    | 0.3     |    1 | 3      |
+ | *AllStreams/Phys/XiccControlLc/decayVertices                                                 |      499 |     1.1+-0.0    | 0.3     |    1 | 3      |
+ | *AllStreams/Phys/XiccControlXicPlus/Particle2VertexRelations                                 |       34 |    11.3+-2.7    | 4.7     |    8 | 18     |
+ | *AllStreams/Phys/XiccControlXicPlus/Particles                                                |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/XiccControlXicPlus/decayVertices                                            |        4 |     1.3+-0.3    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/XiccControlXicZero/Particle2VertexRelations                                 |      233 |    11.1+-0.7    | 3.1     |    7 | 18     |
+ | *AllStreams/Phys/XiccControlXicZero/Particles                                                |       31 |     1.5+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccControlXicZero/decayVertices                                            |       31 |     1.5+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccFilterLc/Particles                                                      |       30 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/XiccFilterLc/decayVertices                                                  |       30 |     1.0+-0.0    | 0.2     |    1 | 2      |
+ | *AllStreams/Phys/XiccFilteredD02KPi/Particles                                                |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccFilteredD02KPi/decayVertices                                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccFilteredKaons/Particles                                                 |       49 |     1.6+-0.2    | 0.8     |    1 | 4      |
+ | *AllStreams/Phys/XiccFilteredPions/Particles                                                 |      102 |     1.9+-0.2    | 1.3     |    1 | 5      |
+ | *AllStreams/Phys/XiccFilteredProtons/Particles                                               |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXi/Particles                                                  |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXi/decayVertices                                              |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicPlus/Particles                                             |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicPlus/decayVertices                                         |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicZero/Particles                                             |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicZero/decayVertices                                         |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicc1/decayVertices                                           |      267 |     4.3+-0.6    | 4.5     |    1 | 22     |
+ | *AllStreams/Phys/XiccTISCombineXicc1a/decayVertices                                          |       50 |     2.2+-0.4    | 2.1     |    1 | 9      |
+ | *AllStreams/Phys/XiccTISCombineXicc2/decayVertices                                           |      132 |     5.3+-1.7    | 8.3     |    1 | 41     |
+ | *AllStreams/Phys/XiccTISCombineXicc2a/decayVertices                                          |       55 |     4.6+-0.9    | 3.0     |    1 | 11     |
+ | *AllStreams/Phys/XiccTISCombineXicc3/decayVertices                                           |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicc5/decayVertices                                           |       14 |      14         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicc6/decayVertices                                           |        6 |       6         |         |      |        |
+ | *AllStreams/Phys/XiccTISCombineXicc7/decayVertices                                           |       30 |     3.3+-1.2    | 3.7     |    1 | 13     |
+ | *AllStreams/Phys/XiccTISFilterLc/Particles                                                   |       82 |     1.3+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccTISFilterLc/decayVertices                                               |       82 |     1.3+-0.1    | 0.6     |    1 | 3      |
+ | *AllStreams/Phys/XiccTISFilteredD02KPi/Particles                                             |        9 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccTISFilteredD02KPi/decayVertices                                         |        9 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccTISFilteredDplus2KPiPi/Particles                                        |       40 |     1.5+-0.2    | 1.1     |    1 | 5      |
+ | *AllStreams/Phys/XiccTISFilteredDplus2KPiPi/decayVertices                                    |       40 |     1.5+-0.2    | 1.1     |    1 | 5      |
+ | *AllStreams/Phys/XiccTISFilteredKaons/Particles                                              |      183 |     2.1+-0.2    | 1.6     |    1 | 9      |
+ | *AllStreams/Phys/XiccTISFilteredPions/Particles                                              |      207 |     2.7+-0.3    | 2.4     |    1 | 12     |
+ | *AllStreams/Phys/XiccTISFilteredProtons/Particles                                            |       51 |     1.5+-0.2    | 1.1     |    1 | 6      |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToDpPKPi/Particle2VertexRelations                        |      380 |    31.7+-4.7    | 16.2    |   13 | 73     |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToDpPKPi/Particles                                       |       55 |     4.6+-0.9    | 3.0     |    1 | 11     |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToLcKPiPi/Particle2VertexRelations                       |      569 |    22.8+-3.4    | 16.9    |    8 | 80     |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToLcKPiPi/Particles                                      |      132 |     5.3+-1.7    | 8.3     |    1 | 41     |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToXicPlusPi/Particle2VertexRelations                     |       32 |      32         |         |      |        |
+ | *AllStreams/Phys/XiccTISXiccPlusPlusToXicPlusPi/Particles                                    |        6 |       6         |         |      |        |
+ | *AllStreams/Phys/XiccTISXiccPlusToD0PKPi/Particle2VertexRelations                            |      181 |    20.1+-4.0    | 12.0    |   10 | 42     |
+ | *AllStreams/Phys/XiccTISXiccPlusToD0PKPi/Particles                                           |       30 |     3.3+-1.2    | 3.7     |    1 | 13     |
+ | *AllStreams/Phys/XiccTISXiccPlusToDpPK/Particle2VertexRelations                              |      483 |    21.0+-2.6    | 12.4    |    7 | 63     |
+ | *AllStreams/Phys/XiccTISXiccPlusToDpPK/Particles                                             |       50 |     2.2+-0.4    | 2.1     |    1 | 9      |
+ | *AllStreams/Phys/XiccTISXiccPlusToLcKPi/Particle2VertexRelations                             |     1169 |    18.9+-1.6    | 12.4    |    7 | 63     |
+ | *AllStreams/Phys/XiccTISXiccPlusToLcKPi/Particles                                            |      267 |     4.3+-0.6    | 4.5     |    1 | 22     |
+ | *AllStreams/Phys/XiccTISXiccPlusToXicPlusPiPi/Particle2VertexRelations                       |       40 |      40         |         |      |        |
+ | *AllStreams/Phys/XiccTISXiccPlusToXicPlusPiPi/Particles                                      |       14 |      14         |         |      |        |
+ | *AllStreams/Phys/XiccTISXiccPlusToXicZeroPi/Particle2VertexRelations                         |       28 |      28         |         |      |        |
+ | *AllStreams/Phys/XiccTISXiccPlusToXicZeroPi/Particles                                        |        3 |       3         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPi/Particle2VertexRelations                          |       33 |    16.5+-4.6    | 6.5     |   10 | 23     |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPi/Particles                                         |        4 |     2.0+-0.7    | 1.0     |    1 | 3      |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPiDCS/Particle2VertexRelations                       |      139 |    15.4+-1.8    | 5.3     |    8 | 27     |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPiDCS/Particles                                      |       23 |     2.6+-0.4    | 1.2     |    1 | 4      |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPiWC/Particle2VertexRelations                        |       47 |    15.7+-3.5    | 6.0     |   10 | 24     |
+ | *AllStreams/Phys/XiccXiccPlusPlusToLcKPiPiWC/Particles                                       |        3 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusToD0PKPiDCS/Particle2VertexRelations                            |       17 |      17         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusToD0PKPiDCS/Particles                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusToD0PKPiWC/Particle2VertexRelations                             |        7 |       7         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusToD0PKPiWC/Particles                                            |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPi/Particle2VertexRelations                                |      121 |    15.1+-2.1    | 5.9     |    7 | 24     |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPi/Particles                                               |       11 |     1.4+-0.2    | 0.5     |    1 | 2      |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPiDCS/Particle2VertexRelations                             |      199 |    13.3+-1.2    | 4.8     |    8 | 26     |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPiDCS/Particles                                            |       32 |     2.1+-0.3    | 1.3     |    1 | 4      |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPiWC/Particle2VertexRelations                              |      195 |    12.2+-1.2    | 4.7     |    7 | 25     |
+ | *AllStreams/Phys/XiccXiccPlusToLcKPiWC/Particles                                             |       22 |     1.4+-0.2    | 0.8     |    1 | 4      |
+ | *AllStreams/Phys/Z02TauTauProng_SameSign_Line/Particles                                      |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/b2D0MuXKPiPi0ResolvedCharmFromBSemiLine/Particle2VertexRelations            |       19 |      19         |         |      |        |
+ | *AllStreams/Phys/b2D0MuXKPiPi0ResolvedCharmFromBSemiLine/Particles                           |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/b2D0MuXKPiPi0ResolvedCharmFromBSemiLine/decayVertices                       |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/eeForBd2JpsieeKstar/Particles                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/eeForBd2JpsieeKstar/decayVertices                                           |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/eeForBd2eeKstar/Particles                                                   |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/eeForBd2eeKstar/decayVertices                                               |        1 |       1         |         |      |        |
+ | *AllStreams/Phys/eeForBd2eeKstarBDT/Particles                                                |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/eeForBd2eeKstarBDT/decayVertices                                            |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/filterEEForBd2eeKstarBDT/Particles                                          |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/filterEEForBd2eeKstarBDT/decayVertices                                      |        2 |       1         |         |      |        |
+ | *AllStreams/Phys/preD2XMuMu_PiCal/Particles                                                  |      440 |     3.6+-0.2    | 1.8     |    2 | 12     |
+ | *AllStreams/Phys/preD2XMuMu_PiCal/decayVertices                                              |      440 |     3.6+-0.2    | 1.8     |    2 | 12     |
+ | *AllStreams/Phys/selKS2LL_KSforD02KSKSLL/Particles                                           |        2 |       2         |         |      |        |
+ | *AllStreams/Phys/selKS2LL_KSforD02KSKSLL/decayVertices                                       |        2 |       2         |         |      |        |
+ | *AllStreams/Rec/Vertex/Primary                                                               |     6385 |     2.7+-0.0    | 1.2     |    1 | 8      |
+ | *MC/Particles                                                                                | 1.62604e+07 |  3252.1+-23.9   | 1688.6  |  148 | 11276  |
+ | *MC/Vertices                                                                                 | 1.78311e+07 |  3566.2+-26.5   | 1876.0  |  170 | 12389  |
+ | *Raw/Ecal/Digits                                                                             | 5.17443e+06 |  1034.9+-6.9    | 490.3   |   82 | 2837   |
+ | *Raw/Hcal/Digits                                                                             | 1.24957e+06 |   249.9+-1.4    | 95.8    |   29 | 582    |
+ | *Raw/Prs/Digits                                                                              | 1.90537e+06 |   381.1+-2.7    | 192.8   |   19 | 1193   |
+ | *Raw/Spd/Digits                                                                              | 1.18994e+06 |   238.0+-1.8    | 124.1   |   17 | 767    |
+ | *Rec/Calo/EcalClusters                                                                       |   482079 |    96.4+-0.6    | 45.7    |    7 | 266    |
+ | *Rec/Calo/EcalSplitClusters                                                                  |     9506 |     5.8+-0.1    | 3.9     |    2 | 28     |
+ | *Rec/Calo/Electrons                                                                          |   127243 |    25.6+-0.3    | 19.1    |    1 | 128    |
+ | *Rec/Calo/MergedPi0s                                                                         |     2432 |     1.5+-0.0    | 0.8     |    1 | 7      |
+ | *Rec/Calo/Photons                                                                            |   296972 |    59.4+-0.4    | 27.7    |    3 | 157    |
+ | *Rec/Calo/SplitPhotons                                                                       |     4864 |     3.0+-0.0    | 1.7     |    2 | 14     |
+ | *Rec/ProtoP/Charged                                                                          |   205926 |    86.7+-0.9    | 42.7    |    7 | 273    |
+ | *Rec/ProtoP/Neutrals                                                                         |     4162 |    92.5+-4.9    | 32.5    |   36 | 152    |
+ | *Rec/Track/Best                                                                              |   712932 |   142.6+-1.1    | 80.2    |   12 | 672    |
+ | *Rec/Track/Muon                                                                              |    18776 |     5.2+-0.1    | 5.9     |    1 | 73     |
+ +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   Analysed 4999 events
