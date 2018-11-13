@@ -15,52 +15,52 @@ under certain conditions; type license() for details.
  === Welcome to Ganga on CVMFS. In case of problems contact lhcb-distributed-analysis@cern.ch === 
 Querying for data /LHCb/Collision17/Beam6500GeV-VeloClosed-MagDown/Real Data/Reco17/Stripping29r2/90000000/CHARM.MDST
 [0;0mINFO     Constructing LHCbDataset[0;0m
-[0;0mINFO     submitting job 2[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     submitting job 4[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Preparing GaudiExec application.[0;0m
 [0;0mINFO     Make-ing target 'ganga-input-sandbox'     (This may take a few minutes depending on the size of your project)[0;0m
 [0;0mINFO     Built /project/bfys/jdevries/cmtuser/DaVinciDev_v44r5/build.x86_64-slc6-gcc62-opt/ganga/cmake-input-sandbox.tgz[0;0m
-[0;0mINFO     Created shared directory: conf-6c0686ce-57ce-4cf9-b8f4-bcb0b1a0f6da[0;0m
-[0;0mINFO     Splitting Job: 2[0;0m
+[0;0mINFO     Created shared directory: conf-032cb3d1-8502-4b77-9036-404f46b15366[0;0m
+[0;0mINFO     Splitting Job: 4[0;0m
 [0;0mINFO     Constructing subjobs[0;0m
 [0;0mINFO     Requesting LFN replica info[0;0m
+[0;0mINFO     Got Replica Info: [500:750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [1250:1500] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [0:250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [750:1000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [250:500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [1000:1250] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [1250:1500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [500:750] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [1750:2000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [1500:1750] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [2250:2500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [2500:2750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [1750:2000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [2000:2250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [2750:3000] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [2500:2750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [1000:1250] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [2250:2500] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [3000:3250] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [3500:3750] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [3750:4000] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [3500:3750] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [3250:3500] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [4000:4250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [4250:4500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [5500:5750] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [5250:5500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [4750:5000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [4500:4750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [4750:5000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [5000:5250] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [5250:5500] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [5500:5750] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [5750:6000] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [6500:6750] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [6750:7000] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [6000:6250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [6250:6500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [7750:8000] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [6500:6750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [6000:6250] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [6750:7000] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [7000:7250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [7250:7500] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [8000:8250] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [7500:7750] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [7000:7250] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [7750:8000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [9000:9031] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [8250:8500] of 9031[0;0m
-[0;0mINFO     Got Replica Info: [8750:9000] of 9031[0;0m
 [0;0mINFO     Got Replica Info: [8500:8750] of 9031[0;0m
+[0;0mINFO     Got Replica Info: [8750:9000] of 9031[0;0m
 [0;0mINFO     Got all good replicas[0;0m
 [0;0mINFO     found all replicas[0;0m
 [0;0mINFO     Calculating site<->SE Mapping[0;0m
@@ -70,85 +70,85 @@ Querying for data /LHCb/Collision17/Beam6500GeV-VeloClosed-MagDown/Real Data/Rec
 [0;0mINFO     Created 1844 subsets[0;0m
 [0;0mINFO     Finished Splitting[0;0m
 [0;0mINFO     submitting 1844 subjobs[0;0m
-[0;0mINFO     Uploading file '/tmp/diracInputFiles_d5b7ce39-f8aa-4047-b0ca-aed6352da8c1.tgz' to 'IN2P3-USER' as '/lhcb/user/j/jadevrie/GangaFiles_11.19_Thursday_18_October_2018/diracInputFiles_d5b7ce39-f8aa-4047-b0ca-aed6352da8c1.tgz'[0;0m
-[0;0mINFO     Uploading file '/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/2/input/jobScripts-2c4a4fc0-b29e-491b-9b20-164d7cf326f7.tar.gz' to 'CNAF-USER' as '/lhcb/user/j/jadevrie/GangaFiles_11.21_Thursday_18_October_2018/jobScripts-2c4a4fc0-b29e-491b-9b20-164d7cf326f7.tar.gz'[0;0m
-[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_11.21_Thursday_18_October_2018/jobScripts-2c4a4fc0-b29e-491b-9b20-164d7cf326f7.tar.gz to SARA-USER[0;0m
-[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_11.19_Thursday_18_October_2018/diracInputFiles_d5b7ce39-f8aa-4047-b0ca-aed6352da8c1.tgz to PIC-USER[0;0m
+[0;0mINFO     Uploading file '/tmp/diracInputFiles_b13d6fce-d1ad-46d7-92e8-189987a9b364.tgz' to 'PIC-USER' as '/lhcb/user/j/jadevrie/GangaFiles_14.10_Thursday_18_October_2018/diracInputFiles_b13d6fce-d1ad-46d7-92e8-189987a9b364.tgz'[0;0m
+[0;0mINFO     Uploading file '/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/4/input/jobScripts-36d1700e-9891-4688-8658-6936ac1d0df0.tar.gz' to 'RAL-USER' as '/lhcb/user/j/jadevrie/GangaFiles_14.13_Thursday_18_October_2018/jobScripts-36d1700e-9891-4688-8658-6936ac1d0df0.tar.gz'[0;0m
+[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_14.13_Thursday_18_October_2018/jobScripts-36d1700e-9891-4688-8658-6936ac1d0df0.tar.gz to PIC-USER[0;0m
+[0;0mINFO     Replicating file /lhcb/user/j/jadevrie/GangaFiles_14.10_Thursday_18_October_2018/diracInputFiles_b13d6fce-d1ad-46d7-92e8-189987a9b364.tgz to CERN-USER[0;0m
 [0;0mINFO     Preparing subjobs[0;0m
 [0;0mINFO     Submitting subjobs 0 to 99[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 0 to 99[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 100 to 199[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 100 to 199[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 200 to 299[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 200 to 299[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 300 to 399[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 300 to 399[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 400 to 499[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 400 to 499[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 500 to 599[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 500 to 599[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 600 to 699[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 600 to 699[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 700 to 799[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 700 to 799[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 800 to 899[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 800 to 899[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 900 to 999[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 900 to 999[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1000 to 1099[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1000 to 1099[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1100 to 1199[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1100 to 1199[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1200 to 1299[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1200 to 1299[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1300 to 1399[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1300 to 1399[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1400 to 1499[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1400 to 1499[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1500 to 1599[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1500 to 1599[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1600 to 1699[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1600 to 1699[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1700 to 1799[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1700 to 1799[0;0m
-[0;0mINFO     job 2 status changed to "submitting"[0;0m
+[0;0mINFO     job 4 status changed to "submitting"[0;0m
 [0;0mINFO     Submitting subjobs 1800 to 1843[0;0m
-[0;0mINFO     job 2 status changed to "submitted"[0;0m
+[0;0mINFO     job 4 status changed to "submitted"[0;0m
 [0;0mINFO     Submitted subjobs 1800 to 1843[0;0m
 [0;0mINFO     Stopping Job processing before shutting down Repositories[0;0m
 [0;0mINFO     Shutting Down Ganga Repositories[0;0m
