@@ -1,9 +1,29 @@
+#!/bin/bash
+
+# function to test if ganga and davinci are compatibally configured.
+function test_equal () {
+  davincitype=`grep "$1" options/davinci_options_MC.py`
+  gangatype=`grep "$1" options/ganga_options_MC.py`
+  if [ "$davincitype" == "$gangatype" ]; then 
+    return 1 
+  else 
+    echo "Error: mismatch between ganga and davinci MC options. Please check."
+    echo $davincitype
+    echo $gangatype
+    return 0 
+  fi
+}
+
+
+# Run simulation over grid. Please ensure the same eventType, magnet, year and pythia version!
+test_equal "^eventtype = [0-9]*" 
+if [[ $? -eq 1 ]] ; then 
+  ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
+fi
+
 
 # Run real data over grid. Please configure options first!
 #ganga ./options/ganga_options.py | tee logs/gangaRun.log 
-
-# Run simulation over grid. Please ensure the same eventType in options files first!
-ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log 
 
 
 # Download local dst from the grid for testing. Look up the LFN from the Dirac bookkeeping.

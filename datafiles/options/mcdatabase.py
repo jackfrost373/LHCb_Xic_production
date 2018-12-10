@@ -99,3 +99,22 @@ db[16264060] = [
 ('/MC/2016/Beam6500GeV-2016-MagDown-Nu1.6-25ns-GenXiccPythia8/Sim09c/Trig0x6138160F/Reco16/Turbo03/Stripping28r1NoPrescalingFlagged/16264060/ALLSTREAMS.DST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 816, 2003712, 73643),
 ('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-GenXiccPythia8/Sim09c/Trig0x6138160F/Reco16/Turbo03/Stripping28r1NoPrescalingFlagged/16264060/ALLSTREAMS.DST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 809, 2002246, 73645),
 ]
+
+db[25103046] = [
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia6/Sim08e/Digi13/Trig0x409f0045/Reco14a/Stripping20NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-md100', 56, 1017367, 34483),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia6/Sim08e/Digi13/Trig0x409f0045/Reco14a/Stripping20NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-mu100', 58, 1016532, 34489),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim08e/Digi13/Trig0x409f0045/Reco14a/Stripping20NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-md100', 62, 1003768, 34495),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim08e/Digi13/Trig0x409f0045/Reco14a/Stripping20NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-mu100', 65, 1028610, 34501),
+('/MC/2011/Beam3500GeV-2011-MagDown-Nu2-Pythia6/Sim08e/Digi13/Trig0x40760037/Reco14a/Stripping20r1NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929', 'sim-20130522-vc-md100', 28, 532184, 34514),
+('/MC/2011/Beam3500GeV-2011-MagUp-Nu2-Pythia6/Sim08e/Digi13/Trig0x40760037/Reco14a/Stripping20r1NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929', 'sim-20130522-vc-mu100', 28, 514504, 34518),
+('/MC/2011/Beam3500GeV-2011-MagDown-Nu2-Pythia8/Sim08e/Digi13/Trig0x40760037/Reco14a/Stripping20r1NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929', 'sim-20130522-vc-md100', 31, 521824, 34524),
+('/MC/2011/Beam3500GeV-2011-MagUp-Nu2-Pythia8/Sim08e/Digi13/Trig0x40760037/Reco14a/Stripping20r1NoPrescalingFlagged/25103046/ALLSTREAMS.DST', 'dddb-20130929', 'sim-20130522-vc-mu100', 30, 527725, 34530),
+]
+
+db[25103029] = [
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim08i/Digi13/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103029/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-mu100', 26, 532929, 51066),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim08i/Digi13/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103029/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-md100', 27, 551509, 51068),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia6/Sim08i/Digi13/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103029/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-mu100', 23, 529243, 51070),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia6/Sim08i/Digi13/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103029/ALLSTREAMS.DST', 'dddb-20130929-1', 'sim-20130522-1-vc-md100', 24, 553938, 51072),
+]
+

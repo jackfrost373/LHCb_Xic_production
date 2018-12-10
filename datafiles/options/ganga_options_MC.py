@@ -8,19 +8,24 @@ pythia = "Pythia8"
 year = "2012"
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
-#eventtype = 25103036 # Lc -> p K pi but with changed mass/momenta (from Xi_c decay).
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
 eventtype = 25103006 # Lc -> p K pi with TightCut
-#eventtype = 25103010 # Xic -> p K pi with TightCut
+
+#eventtype = 25103010 # Xic -> p K pi with TightCut, but Lc used, with corrected mass 2468.
+#eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036?
+#eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
+#eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
+
 #eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
-
+#eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
 
 ############################################################
  
 # Find the right data file options from the database
 execfile('./options/mcdatabase.py')
+print("Ganga   - using options for %s %s %s %s"%(eventtype,magnet,pythia,year))
 datafile = getFileFromDB(eventtype, [magnet,pythia,year])
 dataloc = datafile[0]
 
