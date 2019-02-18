@@ -18,8 +18,9 @@ function test_equal () {
 
 # Run simulation over grid. Please ensure the same eventType, magnet, year and pythia version!
 test_equal "^eventtype = [0-9]*" 
-if [[ $? -eq 0 ]] ; then exit ; fi
+if [[ $? -eq 0 ]] ; then return 0 ; fi
 ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
+
 
 
 # Run real data over grid. Please configure options first!
