@@ -68,7 +68,8 @@ for tup in tuples:
     # add custom variables with functors
     hybridtool = tup.addTupleTool('LoKi::Hybrid::TupleTool')
     hybridtool.Variables = {'ETA' : '0.5 * log( (P+PZ)/(P-PZ) )' ,
-                            'PHI' : 'atan2(PY,PX)' }
+                            'PHI' : 'atan2(PY,PX)',
+                            'RAPIDITY' : '0.5 * log( (sqrt(P^2+M^2)+PZ)/(sqrt(P^2+M^2)-PZ) )'}
 
     
     # refit PVs with exclusion of our tracks of interest
