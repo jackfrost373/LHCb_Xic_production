@@ -79,9 +79,9 @@ tupletools.append("TupleToolPrimaries")  # nPV, PV pos, PVnTracks
 tupletools.append("TupleToolMCTruth")    # MC Truth information
 tupletools.append("TupleToolMCBackgroundInfo") # BKGCAT information
 
-triggerlist = ["Hlt1TrackAllL0Decision","Hlt1GlobalDecision",
- "Hlt2CharmHadD2HHHDecision", "Hlt2GlobalDecision",
- "L0HadronDecision","L0MuonDecision","L0GlobalDecision"]
+triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
+ "Hlt2CharmHadD2HHHDecision",
+ "L0HadronDecision","L0MuonDecision"]
 
 for tup in tuples:
     # add tools
