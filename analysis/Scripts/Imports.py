@@ -51,7 +51,22 @@ def plot_comparison(varname, xmin, xmax, tree1, tree2, bins=100, cuts1 = "1==1",
     return
 
 subjobs = 101
-filedir = "/Users/simoncalo/LHCb_data/datafiles/first_batch/ganga/4_reduced"
+#File dir for data, uncomment the version for each person
+#Calo
+#pwd="/Users/simoncalo/LHCb_data/datafiles/first_batch/ganga/"
+#Pawley
+pwd="/home/chris/Documents/LHCB/Data/"
+
+#File dir for MC, uncomment the version(s) for each person
+#Calo
+#mcpwd="/Users/simoncalo/LHCb_data/datafiles/Lc_MC_datafiles_2/ganga/"
+#ximcpwd="/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_1/ganga/"
+#ximc2pwd="/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_2/ganga/"
+#mcbmcpwd="/Users/simoncalo/LHCb_data/datafiles/MC_B->Lc_datafiles/ganga/"
+#Pawley
+mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
+
+filedir = pwd+"4_reduced"
 filename = "charm_29r2_g.root"
 excludedjobs = []
 
@@ -64,7 +79,7 @@ def datatree():
         tree.Add(filedir + "/" + str(job) + "/output/" + filename)
     return tree
 
-Lc_MC_filedir = "/Users/simoncalo/LHCb_data/datafiles/Lc_MC_datafiles_2/ganga/15"
+Lc_MC_filedir = mcpwd+"15"
 Lc_MC_filename = "MC_Lc2pKpiTuple_25103006.root"
 
 Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
@@ -75,7 +90,7 @@ def Lc_MC_datatree():
             Lc_MC_tree.Add("{0}/{1}/output/{2}".format(Lc_MC_filedir,job,Lc_MC_filename))
     return Lc_MC_tree
 
-Xic_MC_filedir_1 = "/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_1/ganga/17"
+Xic_MC_filedir_1 = ximcpwd+"17"
 Xic_MC_filename_1 = "MC_Lc2pKpiTuple_25103029.root"
 
 Xic_MC_tree_1 = TChain("tuple_Lc2pKpi/DecayTree")
@@ -86,7 +101,7 @@ def Xic_MC_datatree_1 ():
             #print ("- Adding subjob {0}".format(job))
             Xic_MC_tree_1.Add("{0}/{1}/output/{2}".format(Xic_MC_filedir_1,job,Xic_MC_filename_1))
 
-Xic_MC_filedir_2 = "/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_2/ganga/18"
+Xic_MC_filedir_2 = ximc2pwd+"18"
 Xic_MC_filename_2 = "MC_Lc2pKpiTuple_25103036.root"
 
 Xic_MC_tree_2 = TChain("tuple_Lc2pKpi/DecayTree")
@@ -97,7 +112,7 @@ def Xic_MC_datatree_2():
             #print ("- Adding subjob {0}".format(job))
             Xic_MC_tree_2.Add("{0}/{1}/output/{2}".format(Xic_MC_filedir_2,job,Xic_MC_filename_2))
 
-Lb_MC_filedir = "/Users/simoncalo/LHCb_data/datafiles/MC_B->Lc_datafiles/ganga/14"
+Lb_MC_filedir =mcbmcpwd+ "14"
 Lb_MC_filename = "MC_Lc2pKpiTuple_15264011.root"
 
 Lb_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")

@@ -1,8 +1,9 @@
 import ROOT, os
 from ROOT import TChain, TCanvas, TH1
+from Imports import *
 
 subjobs = 101
-filedir = "datafiles/first_batch/ganga/4_reduced"
+filedir = pwd+"/4_reduced"
 filename = "charm_29r2_g.root"
 excludedjobs = []
 
@@ -109,7 +110,7 @@ leg.AddEntry( histogram1, "Signal Shape", "l")
 leg.AddEntry(histogram2, "Background", "l")
 leg.Draw("same")
 graph_name = ("Xic_Mass_Fit.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 c1.SaveAs(fullpath)
 
@@ -159,7 +160,7 @@ cpull.Draw()
 
 
 graph_name = ("Xic_Mass_Fit_pull.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 cpull.SaveAs(fullpath)
 
