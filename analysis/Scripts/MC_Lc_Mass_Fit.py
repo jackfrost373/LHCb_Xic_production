@@ -1,7 +1,8 @@
 import ROOT,os
 from ROOT import TChain, TCanvas, TH1
+from Imports import *
 
-Lc_MC_filedir = "datafiles/Lc_MC_datafiles_2/ganga/15"
+Lc_MC_filedir =mcpwd+"15"
 Lc_MC_filename = "MC_Lc2pKpiTuple_25103006.root"
 
 Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
@@ -93,7 +94,7 @@ leg.AddEntry( histogram1, "Gaussian", "l")
 leg.AddEntry(histogram2, "Crystal ball", "l")
 leg.Draw("same")
 graph_name = ("MC_Lc_Mass_Fit.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 c1.SaveAs(fullpath)
 
@@ -144,7 +145,7 @@ cpull.Draw()
 
 
 graph_name = ("MC_Lc_Mass_Fit_pull.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 cpull.SaveAs(fullpath)
 
