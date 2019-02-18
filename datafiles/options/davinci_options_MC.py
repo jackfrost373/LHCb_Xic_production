@@ -100,7 +100,9 @@ for tup in tuples:
     hybridtool = tup.addTupleTool('LoKi::Hybrid::TupleTool')
     hybridtool.Variables = {'ETA' : '0.5 * log( (P+PZ)/(P-PZ) )' ,
                             'PHI' : 'atan2(PY,PX)',
-                            'RAPIDITY' : '0.5 * log( (sqrt(P^2+M^2)+PZ)/(sqrt(P^2+M^2)-PZ) )'}
+                            'RAPIDITY' : '0.5 * log( (sqrt(P*P+M*M)+PZ)/(sqrt(P*P+M*M)-PZ) )',
+                            'TIP' : '1e3 * (PX * (VFASPF(VY)-BPV(VY)) - PY * (VFASPF(VX)-BPV(VX))) / sqrt(PX*PX + PY*PY)'
+                           }
 
     
     # refit PVs with exclusion of our tracks of interest
