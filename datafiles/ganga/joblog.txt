@@ -1,6 +1,5 @@
-
     fqid |    status |      name | subjobs |    application |        backend |                             backend.actualCE |                       comment |  subjob status 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        4 | completed |Lc2pKpi_20 |    1844 |      GaudiExec |          Dirac |                                         None |2017_MagDown_reco17_stripping2 |    1844 / 1844 
       14 | completed |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |       0/0/0/26 
       15 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63 
@@ -8,3 +7,6 @@
       17 | completed |MC_Lc2pKpi |      27 |      GaudiExec |          Dirac |                                         None | 25103029_MagDown_Pythia8_2012 |       0/0/0/27 
       18 | completed |MC_Lc2pKpi |      25 |      GaudiExec |          Dirac |                                         None | 25103036_MagDown_Pythia8_2012 |       0/0/0/25 
       19 | completed |MC_Lc2pKpi |      62 |      GaudiExec |          Dirac |                                         None | 25103046_MagDown_Pythia8_2012 |       0/0/0/62 
+      22 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63 
+      23 | completed |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |       0/0/0/26 
+
