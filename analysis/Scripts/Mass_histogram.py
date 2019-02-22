@@ -1,9 +1,9 @@
 import ROOT, os, Imports
 from ROOT import TChain, TCanvas, TH1
-
+from Imports import *
 
 subjobs = 101
-filedir = "/Users/simoncalo/LHCb_data/datafiles/first_batch/ganga/4_reduced"
+filedir = pwd+"4_reduced"
 filename = "charm_29r2_g.root"
 excludedjobs = []
 
@@ -41,7 +41,7 @@ if choice == "yes":
     c1.Update()
     c1.Draw()
     graph_name = ("mass_cut_test.pdf")
-    filepath = ("/Users/simoncalo/LHCb_data")
+    filepath = (pwd)
     fullpath = os.path.join(filepath, graph_name)
     c1.SaveAs(fullpath)
 else:
@@ -53,7 +53,7 @@ else:
     c1.Update()
     c1.Draw()
     graph_name = ("mass.pdf")
-    filepath = ("/Users/simoncalo/LHCb_data")
+    filepath = (pwd)
     fullpath = os.path.join(filepath, graph_name)
     c1.SaveAs(fullpath)
 

@@ -1,7 +1,8 @@
 import ROOT, os
 from ROOT import TChain, TCanvas, TH1
+from Imports import *
 
-Xic_MC_filedir = "/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_2/ganga/18"
+Xic_MC_filedir = ximc2pwd+"18"
 Xic_MC_filename = "MC_Lc2pKpiTuple_25103036.root"
 
 Xic_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
@@ -98,7 +99,7 @@ leg.AddEntry( histogram1, "Gaussian", "l")
 leg.AddEntry(histogram2, "Crystal ball", "l")
 leg.Draw("same")
 graph_name = ("Xic_MC_2_Mass_Fit.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 c1.SaveAs(fullpath)
 
@@ -148,7 +149,7 @@ cpull.Draw()
 
 
 graph_name = ("Xic_MC_2_Mass_Fit_pull.pdf")
-filepath = ("/Users/simoncalo/LHCb_data")
+filepath = pwd
 fullpath = os.path.join(filepath, graph_name)
 cpull.SaveAs(fullpath)
 
