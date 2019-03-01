@@ -9,11 +9,11 @@ year = "2012"
 #eventtype = 25103006 # Lc -> p K pi with TightCut
 
 #eventtype = 25103010 # Xic -> p K pi with TightCut, but Lc used, with corrected mass 2468.
-#eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036?
+eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036?
 #eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
 #eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
 
-eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
+#eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
@@ -88,9 +88,10 @@ for tup in tuples:
 
     # add trigger and stripping decision info
     tistostool = tup.addTupleTool("TupleToolTISTOS")
-    tistostool.FillL0 = True 
-    tistostool.FillHlt1 = True
-    tistostool.FillHlt2 = True
+    #tistostool = tup.addTupleTool("TupleToolTrigger")
+    tistostool.VerboseL0   = True
+    tistostool.VerboseHlt1 = True
+    tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
     striptool = tup.addTupleTool("TupleToolStripping")
     striptool.TriggerList = ["Stripping{0}Decision".format(line1)]

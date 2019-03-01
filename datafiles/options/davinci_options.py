@@ -58,9 +58,10 @@ for tup in tuples:
 
     # add trigger and stripping decision info
     tistostool = tup.addTupleTool("TupleToolTISTOS")
-    tistostool.FillL0 = True 
-    tistostool.FillHlt1 = True
-    tistostool.FillHlt2 = True
+    #tistostool = tup.addTupleTool("TupleToolTrigger")
+    tistostool.VerboseL0   = True
+    tistostool.VerboseHlt1 = True
+    tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
     striptool = tup.addTupleTool("TupleToolStripping")
     striptool.TriggerList = ["Stripping{0}Decision".format(line1)]
