@@ -20,7 +20,7 @@ line1 = "LambdaCForPromptCharm"
 tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
 tuple_Lc2pKpi.Inputs = ['Phys/{0}/Particles'.format(line1)]
 #tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
-tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${pplus}pi+]CC')
+tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC')
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
@@ -50,7 +50,7 @@ tupletools.append("TupleToolPrimaries")  # nPV, PV pos, PVnTracks
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
  "Hlt2CharmHadD2HHHDecision",
- "L0HadronDecision","L0MuonDecision"]
+ "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:
     # add tools
