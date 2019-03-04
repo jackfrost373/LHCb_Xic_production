@@ -6,10 +6,10 @@ year = "2012"
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
-eventtype = 25103006 # Lc -> p K pi with TightCut
+#eventtype = 25103006 # Lc -> p K pi with TightCut
 
 #eventtype = 25103010 # Xic -> p K pi with TightCut, but Lc used, with corrected mass 2468.
-#eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036?
+eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036?
 #eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
 #eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
 
@@ -49,8 +49,7 @@ line1 = "LambdaCForPromptCharm"
 tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
 tuple_Lc2pKpi.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,line1)]
 #tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
-tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${pplus}pi+]CC')  # keep 'wrong' naming for consistency
-#tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') # correct naming
+tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
@@ -81,7 +80,7 @@ tupletools.append("TupleToolMCBackgroundInfo") # BKGCAT information
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
  "Hlt2CharmHadD2HHHDecision",
- "L0HadronDecision","L0MuonDecision"]
+ "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:
     # add tools
@@ -89,9 +88,10 @@ for tup in tuples:
 
     # add trigger and stripping decision info
     tistostool = tup.addTupleTool("TupleToolTISTOS")
-    tistostool.FillL0 = True 
-    tistostool.FillHlt1 = True
-    tistostool.FillHlt2 = True
+    #tistostool = tup.addTupleTool("TupleToolTrigger")
+    tistostool.VerboseL0   = True
+    tistostool.VerboseHlt1 = True
+    tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
     striptool = tup.addTupleTool("TupleToolStripping")
     striptool.TriggerList = ["Stripping{0}Decision".format(line1)]
