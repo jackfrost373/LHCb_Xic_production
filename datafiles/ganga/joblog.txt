@@ -9,4 +9,8 @@
       19 | completed |MC_Lc2pKpi |      62 |      GaudiExec |          Dirac |                                         None | 25103046_MagDown_Pythia8_2012 |       0/0/0/62 
       22 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63 
       23 | completed |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |       0/0/0/26 
-
+    
+      # fixed proton/pion labels, added TIP, rapidity and trigger lines
+      29 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63  # Lc 
+      30 | completed |MC_Lc2pKpi |      27 |      GaudiExec |          Dirac |                                         None | 25103029_MagDown_Pythia8_2012 |       0/0/0/27  # Xic
+      31 | submitted |Lc2pKpi_20 |    1843 |      GaudiExec |          Dirac |                                         None |2017_MagDown_reco17_stripping2 |    0/29/0/1813  # Data
