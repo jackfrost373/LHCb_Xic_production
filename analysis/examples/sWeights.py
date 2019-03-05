@@ -8,9 +8,13 @@
 import ROOT
 
 
-getData      = True # Load data.
-makesWeights = True # Generate sWeights. Requires getData.
-plotVariable = True  # make an sPlot using sWeights
+getData        = True # Load data.
+makesWeights   = True # Generate sWeights, write to workspace. Requires getData.
+makeFriendTree = True # create friend tree for simple future sweight plotting. Requires makesWeights.
+plotVariable   = True # make an sPlot using sWeights in RooDataSet from workspace.
+testFriendTree = True # test sWeights from friend tree to do an sPlot.
+
+outputdir = "./output/"
 
 
 
@@ -23,19 +27,19 @@ if(getData) :
   f = ROOT.TFile.Open(fileloc, "READONLY")
   tree = f.Get("tuple_Lc2pKpi/DecayTree")
 
-  mass = ROOT.RooRealVar("lcplus_MM","mass",2240,2340,"MeV/c^{2}")
-  momentum = ROOT.RooRealVar("lcplus_P","P",5000,200000,"MeV/c")
-  lifetime = ROOT.RooRealVar("lcplus_TAU","tau",0,0.007,"ns")
+  mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
+  momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
+  lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
 
   # Get RooDataSet (unbinned) from TTree.
   # We add momentum/lifetime for easy plotting of their sWeighted versions later.
   data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum, lifetime), cuts)
 
-
   c = ROOT.TCanvas("c","c")
   frame = lifetime.frame()
   data.plotOn(frame)
   frame.Draw()
+
 
 
 if(makesWeights) :
@@ -73,12 +77,12 @@ if(makesWeights) :
   model.plotOn(frame)
   frame.Draw()
   c1.Update()
-  c1.SaveAs("sWeight_fit.pdf")
+  c1.SaveAs("{0}sWeight_fit.pdf".format(outputdir))
 
   print("Chi2/NDF: {0}".format(frame.chiSquare()))
 
 
-  # Constrain all parameters besides the signal yield
+  # Fix all parameters besides the signal yield
   for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, sigfrac, exponent] :
     var.setConstant()
 
@@ -99,8 +103,45 @@ if(makesWeights) :
   # Save dataset with weights to workspace file for later quick use
   ws = ROOT.RooWorkspace("ws","workspace")
   getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
-  ws.writeToFile("sWeight_ws.root")
+  ws.writeToFile("{0}sWeight_ws.root".format(outputdir))
 
+  #f.Close()  # keeps mass fit plot alive
+
+
+
+
+
+
+if(makeFriendTree) :
+  # Make a new TTree that contains the sWeights for every event.
+  # Makes use of the previously defined data and sData objects.
+
+  from array import array
+
+  wfile = ROOT.TFile.Open("{0}sWeight_swTree.root".format(outputdir),"RECREATE")
+  swtree = ROOT.TTree("swTree","swTree")
+
+  # TTrees directly access memory, so we define pointers.
+  sw_mass = array( 'f', [0] )
+  sw_sig  = array( 'f', [0] )
+  sw_bkg  = array( 'f', [0] )
+  swtree.Branch('sw_mass', sw_mass, 'sw_mass/F')
+  swtree.Branch('sw_sig',  sw_sig,  'sw_sig/F' )
+  swtree.Branch('sw_bkg',  sw_bkg,  'sw_bkg/F' )
+
+  nEntries = int(data.sumEntries())
+  print "Writing sWeights for {0} entries...".format(nEntries)
+  for i in range(nEntries) :
+    if(i%10000==0) : print("{0:.2f} %".format(float(i)/nEntries*100.))
+    sw_mass[0] = data.get(i).getRealValue("lcplus_MM") 
+    sw_sig[0]  = sData.GetSWeight(i, "sig_norm")
+    sw_bkg[0]  = sData.GetSWeight(i, "bkg_norm")
+    swtree.Fill()
+
+  print("...done")
+  swtree.Write()
+  wfile.Close()
+  
 
 
 
@@ -108,13 +149,13 @@ if(makesWeights) :
 
 if(plotVariable) :
 
-  # Plot sWeighted variable distribution from dataset (with sWeights)
+  # Plot sWeighted variable distribution from RooDataSet.
 
   #variable = "lcplus_P"
   variable = "lcplus_TAU"
 
-  # load sWeights from file
-  fws = ROOT.TFile.Open("sWeight_ws.root","READONLY")
+  # load sWeights from file (note: could have used 'data' as above, if we just made them)
+  fws = ROOT.TFile.Open("{0}sWeight_ws.root".format(outputdir),"READONLY")
   ws = fws.Get('ws')
   var = ws.var(variable)
   data = ws.data("swdata")
@@ -125,7 +166,7 @@ if(plotVariable) :
   c2 = ROOT.TCanvas("c2","c2")
 
   frame = var.frame()
-  frame.SetTitle("sWeight example")
+  frame.SetTitle("sPlot from RooDataSet")
   data.plotOn(frame)
   data_sig.plotOn(frame, ROOT.RooFit.DataError(ROOT.RooAbsData.SumW2), ROOT.RooFit.MarkerColor(8) , ROOT.RooFit.Name("data_sig") )
   data_bkg.plotOn(frame, ROOT.RooFit.DataError(ROOT.RooAbsData.SumW2), ROOT.RooFit.MarkerColor(46), ROOT.RooFit.Name("data_bkg") )
@@ -138,7 +179,7 @@ if(plotVariable) :
   leg.Draw("same")
 
   c2.Update()
-  c2.SaveAs("sWeight_{0}.pdf".format(var.getTitle()))
+  c2.SaveAs("{0}sPlot_{1}.pdf".format(outputdir,var.getTitle()))
 
 
 
@@ -146,4 +187,58 @@ if(plotVariable) :
 
 
 
-#  Note that the added column must have the same #entries! (i.e. come from the same tree with the same cuts applied!)
+
+if(testFriendTree) :
+
+  # Make an sPlot using the sWeights from the friendTree, without RooFit / RooStats functionality.
+  # Can be used to plot any variable in the original TTree.
+
+  #[var,nbins,xmin,xmax] = ["lcplus_P",100,5000,200000]
+  [var,nbins,xmin,xmax] = ["lcplus_TAU",100,0,0.007]
+
+  # Load original TTree
+  fileloc = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/31/1/output/Lc2pKpiTuple.root"
+  
+  # cuts should match those applied when creating the sWeight TTree --> should have same #entries!
+  #  Note: limited range of RooRealVars in RooDataSet (used to create sWeights) also cuts events.
+  cuts = "1==1"
+  cuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+
+  f2 = ROOT.TFile.Open(fileloc, "READONLY")
+  tree2 = f2.Get("tuple_Lc2pKpi/DecayTree")
+  cuttree = tree2.CopyTree(cuts)
+  print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
+
+  # add sWeight tree as friend. Should match #entries!
+  cuttree.AddFriend("swTree","{0}sWeight_swTree.root".format(outputdir))
+
+  # plot sWeighted distribution of a variable
+  ROOT.gStyle.SetOptStat(0)
+  c4 = ROOT.TCanvas('c4','c4')
+  cuttree.Draw("{0}>>histAll({1},{2},{3})".format(var,nbins,xmin,xmax))
+  cuttree.Draw("{0}>>histSig({1},{2},{3})".format(var,nbins,xmin,xmax), "swTree.sw_sig")
+  cuttree.Draw("{0}>>histBkg({1},{2},{3})".format(var,nbins,xmin,xmax), "swTree.sw_bkg")
+  histAll = ROOT.gDirectory.Get("histAll")
+  histSig = ROOT.gDirectory.Get("histSig")
+  histBkg = ROOT.gDirectory.Get("histBkg")
+  
+  histSig.SetLineColor(8)
+  histBkg.SetLineColor(46)
+  histAll.SetTitle('sPlot from swTree')
+  histAll.GetXaxis().SetTitle(var)
+  histAll.Draw()
+  histSig.Draw("same")
+  histBkg.Draw("same")
+  
+  leg = ROOT.TLegend(0.65,0.77,0.89,0.88)
+  leg.AddEntry(histSig, "Signal",     "lp")
+  leg.AddEntry(histBkg, "Background", "lp")
+  leg.SetBorderSize(0)
+  leg.Draw("same")
+
+  c4.Update()
+  c4.SaveAs("{0}sPlot_swTree_{1}.pdf".format(outputdir,var))
+
+
+
+

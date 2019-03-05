@@ -9,10 +9,25 @@ import ROOT
 # Get the data
 fileloc = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/31/1/output/Lc2pKpiTuple.root"
 cuts = "(1==1)"
-weightvar = "1"
 
 f = ROOT.TFile.Open(fileloc, "READONLY")
 tree = f.Get("tuple_Lc2pKpi/DecayTree")
+
+addsWeights = True
+
+###############################
+
+
+if(addsWeights) :
+  # If we made an sWeight friend tree: add it, and use sWeights. Make sure same cuts (--> #entries) as swTree!
+  swcuts = "lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+  cuttree = tree.CopyTree(swcuts)
+  print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
+  cuttree.AddFriend("swTree","output/sWeight_swTree.root")
+  weightvar = "swTree.sw_sig"
+else :
+  cuttree = tree
+  weightvar = "1"
 
 
 
@@ -34,11 +49,19 @@ m2_Kpi = invariantMass("kminus","piplus")
 c1 = ROOT.TCanvas("c1","c1")
 ROOT.gStyle.SetOptStat(0)
 
-tree.Draw("{0}:{1}>>dalitzHist(100,300e3,2500e3,100,1800e3,5800e3)".format(m2_pK,m2_Kpi), "{0}*{1}".format(cuts,weightvar))
+cuttree.Draw("{0}:{1}>>dalitzHist(100,300e3,2500e3,100,1800e3,5800e3)".format(m2_pK,m2_Kpi), "{0}*{1}".format(cuts,weightvar))
 dalitzHist = ROOT.gDirectory.Get("dalitzHist")
 dalitzHist.SetTitle("Dalitz plot of pK#pi")
 dalitzHist.GetYaxis().SetTitle("m^{2}_{pK} [MeV^{2}/c^{4}]")
 dalitzHist.GetXaxis().SetTitle("m^{2}_{K#pi} [MeV^{2}/c^{4}]")
+
+if(addsWeights) :
+  # set negative sWeight bin contents to zero for color visibility
+  dalitzHist.SetMinimum(0)
+  dalitzHist.SetTitle("sWeighed Dalitz plot of pK#pi")
+
 dalitzHist.Draw("colz")
+c1.Update()
+c1.SaveAs("output/Dalitz.pdf")
 
 
