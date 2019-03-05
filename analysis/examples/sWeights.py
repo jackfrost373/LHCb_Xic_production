@@ -25,12 +25,17 @@ if(getData) :
 
   mass = ROOT.RooRealVar("lcplus_MM","mass",2240,2340,"MeV/c^{2}")
   momentum = ROOT.RooRealVar("lcplus_P","P",5000,200000,"MeV/c")
-  lifetime = ROOT.RooRealVar("lcplus_PVConstrainedDTF_ctau[0]","ctau",0,3,"mm")
+  lifetime = ROOT.RooRealVar("lcplus_TAU","tau",0,0.007,"ns")
 
   # Get RooDataSet (unbinned) from TTree.
-  # We add momentum/lifetime for easy plotting of sWeighted momentum later, but we will also build a friendTree.
+  # We add momentum/lifetime for easy plotting of their sWeighted versions later.
   data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum, lifetime), cuts)
 
+
+  c = ROOT.TCanvas("c","c")
+  frame = lifetime.frame()
+  data.plotOn(frame)
+  frame.Draw()
 
 
 if(makesWeights) :
@@ -105,8 +110,8 @@ if(plotVariable) :
 
   # Plot sWeighted variable distribution from dataset (with sWeights)
 
-  variable = "lcplus_P"
-  #variable = "lcplus_PVConstrainedDTF_ctau[0]"
+  #variable = "lcplus_P"
+  variable = "lcplus_TAU"
 
   # load sWeights from file
   fws = ROOT.TFile.Open("sWeight_ws.root","READONLY")
