@@ -63,8 +63,10 @@ pwd="/home/chris/Documents/LHCB/Data/"
 #ximcpwd="/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_1/ganga/"
 #ximc2pwd="/Users/simoncalo/LHCb_data/datafiles/XIc_MC_datafiles_2/ganga/"
 #mcbmcpwd="/Users/simoncalo/LHCb_data/datafiles/MC_B->Lc_datafiles/ganga/"
+#mctippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
+#mcbtippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
 #Pawley
-mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
+mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
 
 filedir = pwd+"4_reduced"
 filename = "charm_29r2_g.root"
@@ -121,3 +123,26 @@ def Lb_MC_datatree():
     for job in range(26) :
         if not job in excludedjobs :
             Lb_MC_tree.Add("{0}/{1}/output/{2}".format(Lb_MC_filedir,job,Lb_MC_filename))
+
+
+            
+Lb_TIP_MC_filedir =mcbtippwd+ "23"
+Lb_TIP_MC_filename = "MC_Lc2pKpiTuple_15264011.root"
+
+Lb_TIP_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
+
+def Lb_TIP_MC_datatree():
+    for job in range(26) :
+        if not job in excludedjobs :
+            Lb_TIP_MC_tree.Add("{0}/{1}/output/{2}".format(Lb_TIP_MC_filedir,job,Lb_TIP_MC_filename))
+
+Lc_TIP_MC_filedir = mctippwd+"22"
+Lc_TIP_MC_filename = "MC_Lc2pKpiTuple_25103006.root"
+
+Lc_TIP_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
+
+def Lc_TIP_MC_datatree():
+    for job in range(63) :
+        if not job in excludedjobs :
+            Lc_TIP_MC_tree.Add("{0}/{1}/output/{2}".format(Lc_TIP_MC_filedir,job,Lc_TIP_MC_filename))
+    return Lc_TIP_MC_tree
