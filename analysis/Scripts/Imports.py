@@ -3,6 +3,19 @@ from ROOT import TChain, TCanvas, TH1
 
 ROOT.gStyle.SetOptStat(0)
 
+def getMCCuts (particle):
+    IDcuts = "abs(pplus1_ID)==211 && abs(kminus_ID)==321 && abs(pplus0_ID)==2212 && abs(lcplus_ID)==4122"
+    if particle == "Lc":
+        BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 50)"
+        return IDcuts + "&&" + BKGCAT
+    elif particle == "Xic":
+        BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 10 || lcplus_BKGCAT == 50)"
+        return IDcuts + "&&" + BKGCAT
+
+def getDataCuts ():
+    cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus0_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && pplus1_ProbNNpi > 0.5 && pplus0_P < 120000 && kminus_P < 115000 && pplus1_P < 80000 && pplus0_PIDp > 0 && kminus_PIDK > 0"
+    return cuts
+
 def plot_comparison(varname, xmin, xmax, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1==1", extralabel1="", extralabel2="", normalized=True, legendLocation="Right", Yaxis_range_1=0, Yaxis_range_2=1000) :
     
     print("Plotting comparison of {0} between trees {1} and {2}".format(varname, tree1.GetName(), tree2.GetName()))
