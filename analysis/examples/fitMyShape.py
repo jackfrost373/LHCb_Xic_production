@@ -63,16 +63,28 @@ elif( fit == "apolonios" ) :
   beta   = ROOT.RooRealVar("beta","beta",1,0,10) 
   signalpdf = Ostap.Models.Apolonios2("signalpdf","apolonios2",x,mu,sigma1,sigma2,beta)
 
+
+
+####################
+# Bukin shape from either Ostap or RooFit
+####################
+
 elif(fit=="bukin"):
 
-  import ROOT.Ostap as Ostap
-  Bukin_Xp = ROOT.RooRealVar("Bukin_Xp", "Peak position",10,0,200 )
+  Bukin_Xp   = ROOT.RooRealVar("Bukin_Xp", "Peak position",100,0,200 )
   Bukin_Sigp = ROOT.RooRealVar("Bukin_Sigp", "Peak width", 10,0,20)
-  Bukin_xi = ROOT.RooRealVar("Bukin_xi", "Peak asymmetry parameter", 0, -1, 1)
+  Bukin_xi   = ROOT.RooRealVar("Bukin_xi", "Peak asymmetry parameter", 0, -1, 1)
   Bukin_rho1 = ROOT.RooRealVar("Bukin_rho1", "Parameter of the left tail", 0, -1, 1)
   Bukin_rho2 = ROOT.RooRealVar("Bukin_rho2", "Parameter of the right tail", 0, -1, 1)
 
-  signalpdf = Ostap.Models.Bukin("signalpdf", "Bukin shape", x, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
+  # Use Bukin shape from Ostap
+  #import ROOT.Ostap as Ostap
+  #signalpdf = Ostap.Models.Bukin("signalpdf", "Bukin shape", x, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
+
+  # Use Bukin shape from RooFit
+  signalpdf = ROOT.RooBukinPdf("signalpdf","Bukin shape", x, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
+
+
 
 else :
 
