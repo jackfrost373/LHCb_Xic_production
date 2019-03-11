@@ -64,11 +64,20 @@ def plot_comparison(varname, xmin, xmax, tree1, tree2, bins=100, cuts1 = "1==1",
     return
 
 subjobs = 101
+
 #File dir for data, uncomment the version for each person
 #Calo
 #pwd="/Users/simoncalo/LHCb_data/datafiles/first_batch/ganga/"
 #Pawley
 pwd="/home/chris/Documents/LHCB/Data/"
+
+def getDirectory(user):
+    if user == "Simon":
+        directory = "/Users/simoncalo/LHCb_data/datafiles/"
+    elif user == "Chris":
+        directory = "/home/chris/Documents/LHCB/Data/"
+    elif user == "Jacco":
+        directory = ""
 
 #File dir for MC, uncomment the version(s) for each person
 #Calo
