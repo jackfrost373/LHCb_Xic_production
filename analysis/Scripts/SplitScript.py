@@ -35,7 +35,7 @@ for particle in particles:
         for ptbin in ptbins:
             yptcut = "lcplus_PT >= {0} && lcplus_PT < {1} && lcplus_RAPIDITY >= {2} && lcplus_RAPIDITY < {3}".format(ptbin[0], ptbin[1], ybin[0], ybin[1])
             allcuts = "{0} && {1} && {2}".format(globalCuts, yptcut, mass_cuts)
-            wfile = TFile.Open(directory + particle + "_splitfile_y{0}-{1}_pt{2}-{3}.root".format(ptbin[0],ptbin[1],ybin[0],ybin[1]), "RECREATE")
+            wfile = TFile.Open(directory + particle + "_splitfile_y{0}-{1}_pt{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), "RECREATE")
             subtree = alldata.CopyTree( allcuts )
             subtree.Write()
             wfile.Close()
