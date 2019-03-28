@@ -1,4 +1,4 @@
-import ROOT, os
+import ROOT, os, Imports
 from ROOT import TChain, TFile
 
 subjobs = 201
@@ -25,7 +25,7 @@ for job in range(1, subjobs) :
 
 #globalCuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus0_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && pplus1_ProbNNpi > 0.5 && pplus0_P < 120000 && kminus_P < 115000 && pplus1_P < 80000 && pplus0_PIDp > 0 && kminus_PIDK > 0"
 
-globalCuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
+globalCuts = Imports.getDataCuts()
 
 ybins = [ [2.0,2.5],[2.5,3.0], [3.0,3.5], [3.5,4.0]]
 
@@ -42,8 +42,9 @@ for particle in particles:
         for pbin in pbins:
             yptcut = "lcplus_PT >= {0} && lcplus_PT < {1} && lcplus_RAPIDITY >= {2} && lcplus_RAPIDITY < {3}".format(pbin[0], pbin[1], ybin[0], ybin[1])
             allcuts = "{0} && {1} && {2}".format(globalCuts, yptcut, mass_cuts)
+            subtree = alldata.CopyTree(allcuts)
             wfile = TFile.Open(directory + particle + "_splitfile_y{0}-{1}_p{2}-{3}.root".format(ybin[0],ybin[1],pbin[0],pbin[1]), "RECREATE")
-            subtree = alldata.CopyTree( allcuts )
+            wfile.cd()
             subtree.Write()
             wfile.Close()
 
