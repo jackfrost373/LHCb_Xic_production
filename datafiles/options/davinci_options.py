@@ -4,36 +4,53 @@ from Configurables import DaVinci, LHCbApp
 from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
+
 year = "2017"
+
+#decay = "Lc2pKpi"
+decay = "Lb2LcMuX"
+
+#events = -1   # for all. Default for ganga!
+events = -1
+
+
+####################
+# Define settings according to decay
+
+if (decay == "Lc2pKpi") :
+  # (prompt) Lc -> p K pi 
+  striplines  = ["LambdaCForPromptCharm"]
+  stream      = "Charm"
+  decaystring = '${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC'
+  inputtype   = "MDST"
+
+if (decay == "Lb2LcMuX") :
+  striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
+  stream      = "Semileptonic"
+  decaystring = '${lambdab0}[Lambda_b0 -> ${lambdacplus}( Lambda_c+ -> ${kminus}K- ${pplus}p+ ${piplus}pi+ ) ${muplus}[mu+]cc ]CC'
+  inputtype   = "DST"
+
 
 ####################
 ## Define ntuples
 
-# pions (test)
-#tuple_pions = DecayTreeTuple( 'pions' )
-#tuple_pions.Decay = '[pi+]CC'
-#tuple_pions.Inputs = ["Phys/StdAllLoosePions/Particles"]
-#tuple_pions.addTool(TupleToolDecay, name="Pi")
- 
-# (prompt) Lc -> p K pi 
-line1 = "LambdaCForPromptCharm"
-tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
-tuple_Lc2pKpi.Inputs = ['Phys/{0}/Particles'.format(line1)]
-#tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
-tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC')
+mytuple = DecayTreeTuple( 'tuple_{0}'.format(decay) )
+if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
+if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
+mytuple.setDescriptorTemplate( decaystring )
+
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
-dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
-dtftool.constrainToOriginVertex = True
+if( decay == "Lc2pKpi" ) :
+  dtftool = mytuple.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
+  dtftool.constrainToOriginVertex = True
+if( decay == "Lb2LcMuX" ) :
+  dtftool = mytuple.lambdab0.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF_Lb')
+  dtftool.constrainToOriginVertex = True
+  dtftool2 = mytuple.lambdacplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF_Lc')
+  dtftool2.constrainToOriginVertex = True
 
 
-# (detached) B -> (Lc -> p K pi) mu nu
-#line = "SelLc2PKPiforCharmFromBSemi"
-#tuple_b2Lc2pKpi = DecayTreeTuple( 'tuple_b2Lc2pKpi' )
-#tuple_b2Lc2pKpi.Inputs = ['Phys/{0}/Particles'.format(line)]
-#tuple_b2Lc2pKpi.Decay = '[ Beauty -> ^( Lambda_c+ -> ^p ^K- ^pi+ ) ^mu- ]CC'
-
-
-tuples = [tuple_Lc2pKpi]
+tuples = [mytuple]
 
 # Define common tuple tools
 tupletools = []
@@ -63,8 +80,8 @@ for tup in tuples:
     tistostool.VerboseHlt1 = True
     tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
-    striptool = tup.addTupleTool("TupleToolStripping")
-    striptool.TriggerList = ["Stripping{0}Decision".format(line1)]
+    #striptool = tup.addTupleTool("TupleToolStripping")
+    #striptool.TriggerList = ["Stripping{0}Decision".format(stripline) for stripline in striplines]
 
     # add custom variables with functors
     hybridtool = tup.addTupleTool('LoKi::Hybrid::TupleTool')
@@ -83,28 +100,27 @@ for tup in tuples:
 
               
 
-# Filter events for faster processing
+# Filter events for faster processing. (Note the case for multiple lines)
 from PhysConf.Filters import LoKi_Filters
 fltrs = LoKi_Filters (
-        STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(line1)
+        STRIP_Code = "HLT_PASS_RE('Stripping{0}.*Decision')".format(striplines[0])
         )
 DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
-stream = "Charm"
-DaVinci().RootInTES = "/Event/{0}".format(stream)
-DaVinci().InputType="MDST"
+if(inputtype=="MDST") : DaVinci().RootInTES = "/Event/{0}".format(stream)
+DaVinci().InputType = inputtype
 DaVinci().DataType = year
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
-DaVinci().EvtMax = -1
+DaVinci().EvtMax = events
 #DaVinci().DDDBtag   = "dddb-20170721-3"         # Gauss-2016 (sim09b)
 #DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
 #DaVinci().appendToMainSequence(tuples)
 
 # output
-fName = "Lc2pKpiTuple" 
+fName = "{0}Tuple".format(decay) 
 #DaVinci().TupleFile = "output/{0}.root".format(fName)
 #DaVinci().HistogramFile = 'output/{0}-histos.root'.format(fName)
 DaVinci().TupleFile = "{0}.root".format(fName)

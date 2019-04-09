@@ -17,15 +17,14 @@ function test_equal () {
 
 
 # Run simulation over grid. Please ensure the same eventType, magnet, year and pythia version!
-test_equal "^eventtype = [0-9]*" 
-if [[ $? -eq 0 ]] ; then return 0 ; fi
-ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
+#test_equal "^eventtype = [0-9]*" 
+#if [[ $? -eq 0 ]] ; then return 0 ; fi
+#ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
 
 
 
 # Run real data over grid. Please configure options first!
-#ganga ./options/ganga_options.py | tee logs/gangaRun.log 
-
+ganga ./options/ganga_options.py | tee logs/gangaRun.log 
 
 
 # Download local dst from the grid for testing. Look up the LFN from the Dirac bookkeeping.
@@ -37,7 +36,9 @@ ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
 
 
 # Run over local dst to test ntuple production [data]
-#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py ./data/Collision17_MagDown_Reco17_Stripping29r2_CHARM/includeLocal.py | tee logs/davinciRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision17_MagDown_Reco17_Stripping29r2_CHARM/includeLocal.py | tee logs/davinciRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision16_MagDown_Reco16_Stripping28r1_SEMILEPTONIC/includeLocal.py
+
 
 # Run over local dst to test ntuple production [MC]
 ## for local MC: be sure to set eventtype to 25103006 and change dir of mcdatabase 

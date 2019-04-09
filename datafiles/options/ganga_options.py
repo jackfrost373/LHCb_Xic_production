@@ -1,18 +1,28 @@
 
-# Before running on the grid, please ensure that:
-# - davinci options file has no input file specified
-# - options file has no subfolder in output files specified
+# Before running on the grid, please ensure in the davinci options that:
+# - it has no input file specified
+# - it has no subfolder in output files specified
+# - #events in options file is set to -1
+# - the decay considered matches the input files ganga will look for
 
 
-name = "Lc2pKpi"
+#name = "Lc2pKpi"
+#streamsuffix = "CHARM.MDST"
+name = "Lb2LcMuX"
+streamsuffix = "SEMILEPTONIC.DST"
+
 year = "17"
 magnet = "MagDown"
-reco = "17"
-stripping = "29r2"
+
+
+if (year == "17") :
+  reco = "17"
+  stripping = "29r2"
+if (year == "16") :
+  reco = "16"
+  stripping = "28r1"
 
 eventtype = "90000000" # real data
-streamsuffix = "CHARM.MDST"
-
 
 j = Job(name="{0}_20{1}_{2}_reco{3}_stripping{4}".format(name,year,magnet,reco,stripping))
 j.comment = "20{0}_{1}_reco{2}_stripping{3}".format(year,magnet,reco,stripping)
