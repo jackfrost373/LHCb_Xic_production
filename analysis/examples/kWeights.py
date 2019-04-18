@@ -229,20 +229,23 @@ if(showplots) :
 # Make kinematic weights and draw resulting weighed distributions
 ##############################
 
-kwfile = outputdir + "kWeight_kwTree.root"
+kwfilename = outputdir + "kWeight_kwTree.root"
 
 # Make kWeight table
-c_2D_kWeights = ROOT.TCanvas("c_2D_kWeights")
+c1.cd()
 kweightTable = makeKweightsTable() 
-kweightTable.Draw("colz")
-c_2D_kWeights.SaveAs(outputdir+"kWeights.pdf")
+
+if(showplots) :
+  c_2D_kWeights = ROOT.TCanvas("c_2D_kWeights")
+  kweightTable.Draw("colz")
+  c_2D_kWeights.SaveAs(outputdir+"kWeights.pdf")
 
 
 # Make kWeights friend tree for simtree
 makeKweightsFriendTree(kweightTable)
 
 # Add friendtree
-simtree.AddFriend("kwTree",kwfile)
+simtree.AddFriend("kwTree",kwfilename)
 
 
 # Draw new kinematic-weighed distributions
