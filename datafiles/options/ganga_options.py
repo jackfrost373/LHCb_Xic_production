@@ -42,8 +42,8 @@ j.application.options = ['./options/davinci_options.py']
 #j.backend = Local()
 j.backend = Dirac()
 
-j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
-#j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
+#j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
+j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
 
 j.splitter = SplitByFiles(filesPerJob=5)
 #j.do_auto_resubmit = True
