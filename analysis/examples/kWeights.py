@@ -1,7 +1,8 @@
 
-#################
-# Example of (kinematic) reweighing 
-#################
+########################
+# Example of (kinematic) event reweighing, 
+#  to match simulation to data distributions
+########################
 
 import ROOT
 from array import array
