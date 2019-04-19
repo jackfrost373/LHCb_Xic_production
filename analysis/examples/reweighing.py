@@ -149,7 +149,8 @@ def makeKweightsFriendTree(kweightsTable, simtree=simtree, variables=variables,
 
     # Find the bin content in the kWeighsTable, corresponding to the right var1, var2 bin
     kw = kweightsTable.GetBinContent( kweightsTable.FindBin( var1[0] , var2[0] ) )
-    if( kw > cutoff ) : kw = cutoff
+    if( kw > cutoff ) : kw = cutoff  # remove outliers
+    if( kw < 0.     ) : kw = 0.      # remove negative (s)Weight issues
     kwlist += [kw]
 
   # calculate normalisation
