@@ -63,7 +63,7 @@ def plot_comparison(varname, xmin, xmax, tree1, tree2, bins=100, cuts1 = "1==1",
                                             
     return
 
-subjobs = 101
+subjobs = 1843
 
 #File dir for data, uncomment the version for each person
 #Calo
@@ -78,6 +78,9 @@ def getDirectory(user):
         directory = "/home/chris/Documents/LHCB/Data/"
     elif user == "Jacco":
         directory = ""
+    elif user == "Nikhef":
+        directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
+    return directory
 
 #File dir for MC, uncomment the version(s) for each person
 #Calo
@@ -90,15 +93,22 @@ def getDirectory(user):
 #Pawley
 mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
 
-filedir = pwd+"4_reduced"
-filename = "charm_29r2_g.root"
+#user = "Nikhef"
+#if user = "Nikhef":
+#    pwd = getDirectory(user)
+#    subjobs= 1843
+
+#filedir = pwd+"4_reduced"
+filedire = pwd+"31"
+#filename = "charm_29r2_g.root"
+filename = "Lc2pKpiTuple.root"
 excludedjobs = []
 
 
 tree = TChain("tuple_Lc2pKpi/DecayTree")
 
 def datatree():
-    for job in range(1, subjobs) :
+    for job in range(subjobs) :
         #tree.Add("{0}/{1}/output/{2}".format(filedir,job,filename))
         tree.Add(filedir + "/" + str(job) + "/output/" + filename)
     return tree

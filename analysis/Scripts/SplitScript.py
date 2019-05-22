@@ -3,10 +3,11 @@ from ROOT import TChain
 
 subjobs = 101
 filedir = ""
-filename = "charm_29r2_g.root"
+#filename = "charm_29r2_g.root"
+filename = "Lc2pKpiTuple.root"
 excludedjobs = []
 
-user = "Simon"
+user = "Nikhef"
 
 
 directory = Imports.getUser(user)
@@ -22,7 +23,7 @@ globalCuts = Imports.getDataCuts()
 
 ybins = [ [2.0,2.5],[2.5,3.0], [3.0,3.5], [3.5,4.0]]
 
-ptbins = [ [3000,4000],[4000,5000], [5000,6000], [6000,7000], [7000,8000], [8000,9000], [9000,10000], [10000,12000],[12000,15000],[15000,20000]]
+ptbins = [ [3000,4000],[4000,5000], [5000,6000], [6000,7000], [7000,8000], [8000,10000], , [10000,15000], [15000,20000]]
 
 particles = ["Lc", "Xic"]
 
