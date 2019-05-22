@@ -6,7 +6,8 @@ filedir = "/Users/simoncalo/LHCb_data/datafiles/31_reduced"
 filename = "Lc2pKpiTuple.root"
 excludedjobs = []
 
-user = "Simon"
+
+user = "Nikhef"
 
 
 if user == "Simon":
@@ -15,11 +16,15 @@ elif user == "Chris":
     directory = ""
 elif user == "Jacco":
     directory = ""
+elif user == "Nikhef":
+    directory = "/user/scalo"
+    subjobs = 1843 
+    filedir = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/31"
 
 
 alldata = TChain("tuple_Lc2pKpi/DecayTree")
 
-for job in range(1, subjobs) :
+for job in range(subjobs) :
     if not job in excludedjobs :
         alldata.Add("{0}/{1}/output/{2}".format(filedir,job,filename))
 
@@ -47,8 +52,6 @@ for particle in particles:
             wfile.cd()
             subtree.Write()
             wfile.Close()
-
-
 
 
 
