@@ -105,7 +105,7 @@ def getDirectory(user):
 #mctippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
 #mcbtippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
 #Pawley
-mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
+mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd=directory
 
 #user = "Nikhef"
 #if user = "Nikhef":
