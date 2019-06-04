@@ -3,6 +3,8 @@ from ROOT import TChain, TCanvas, TH1
 
 ROOT.gStyle.SetOptStat(0)
 
+user = "Nikhef"
+
 def getMCCuts (particle):
     IDcuts = "abs(pplus1_ID)==211 && abs(kminus_ID)==321 && abs(pplus0_ID)==2212 && abs(lcplus_ID)==4122"
     if particle == "Lc":
@@ -105,7 +107,9 @@ def getDirectory(user):
 #mctippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
 #mcbtippwd="/Users/simoncalo/LHCb_data/datafiles/where/simon/puts/it/"
 #Pawley
-mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd
+directory = getDirectory(user)
+
+mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd=directory
 
 #user = "Nikhef"
 #if user = "Nikhef":
