@@ -5,10 +5,10 @@ from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
 
-year = "2017"
+year = "2018"  # when running ganga, make sure year matches the dst year
 
-#decay = "Lc2pKpi"
-decay = "Lb2LcMuX"
+decay = "Lc2pKpi"
+#decay = "Lb2LcMuX"
 
 #events = -1   # for all. Default for ganga!
 events = -1
