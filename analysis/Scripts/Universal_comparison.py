@@ -4,13 +4,17 @@ import ROOT, os, Imports
 from ROOT import TChain, TCanvas, TH1
 
 #select the user in order to have the right directory for saving the plots
-user = "Simon"
+#user = "Simon"
+user = input("please indicate the user (Simon, Chris or Nikhef): ")
 
 #change the following string variable to select which particle you want to study
 
-particle = "Xic"
+#particle = "Xic"
+particle  = input("please indicate the particle (Lc or Xic): ")
 
-name = "Xic_vs_MC" #This string is a general name used for the canvas name
+#This string is a general name used for the canvas name
+#name = "Xic_vs_MC"
+name = input("please indicate the name that you would like your graphs to be saved with: ")
 
 #Here is a list of all the variables whose distribution needs to be compared
 variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_ProbNNk", "piplus_ProbNNpi", "pplus_P", "kminus_P", "piplus_P", "kminus_PIDK", "pplus_PIDp", "lcplus_IPCHI2_OWNPV", "lcplus_ETA", "lcplus_PT", "lcplus_TAU", "lcplus_PVConstrainedDTF_chi2"]
