@@ -4,36 +4,34 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
     fqid |    status |         name | subjobs |    application |   backend | backend.actualCE |                            comment |  subjob status 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
       12 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |        63 / 63 
-      13 | completed |MC_Lc2pKpi_25 |      36 |      GaudiExec |     Dirac |             None |      25103010_MagDown_Pythia8_2012 |       0/0/0/36 
+      13 | completed |MC_Lc2pKpi_25 |      36 |      GaudiExec |     Dirac |             None |      25103010_MagDown_Pythia8_2012 |       0/0/0/36  
       14 | completed |MC_Lc2pKpi_15 |      26 |      GaudiExec |     Dirac |             None |      15264011_MagDown_Pythia8_2012 |       0/0/0/26 
       15 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 
       16 | completed |MC_Lc2pKpi_25 |      36 |      GaudiExec |     Dirac |             None |      25103010_MagDown_Pythia8_2012 |       0/0/0/36 
       17 | completed |MC_Lc2pKpi_25 |      27 |      GaudiExec |     Dirac |             None |      25103029_MagDown_Pythia8_2012 |       0/0/0/27 
       18 | completed |MC_Lc2pKpi_25 |      25 |      GaudiExec |     Dirac |             None |      25103036_MagDown_Pythia8_2012 |       0/0/0/25 
       19 | completed |MC_Lc2pKpi_25 |      62 |      GaudiExec |     Dirac |             None |      25103046_MagDown_Pythia8_2012 |       0/0/0/62 
-      20 | completed |PID_MC_MagDow |     100 |      GaudiExec |     Dirac |             None |               MagDown_Pythia8_2017 |      0/0/0/100 
-      21 | completed |PID_TURCAL_Ma |     127 |      GaudiExec |     Dirac |             None |        MagDown_Reco17_Turbo04_2017 |      0/0/0/127 
       22 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 
       23 | completed |MC_Lc2pKpi_15 |      26 |      GaudiExec |     Dirac |             None |      15264011_MagDown_Pythia8_2012 |       0/0/0/26
 
       # fixed proton/pion labels, added TIP, rapidity and trigger lines
-      29 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 
-      30 | completed |MC_Lc2pKpi_25 |      27 |      GaudiExec |     Dirac |             None |      25103029_MagDown_Pythia8_2012 |       0/0/0/27 
-      31 | completed |Lc2pKpi_2017_ |    1843 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |     0/0/0/1843 
+      29 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 # Lc
+      30 | completed |MC_Lc2pKpi_25 |      27 |      GaudiExec |     Dirac |             None |      25103029_MagDown_Pythia8_2012 |       0/0/0/27 # Xic
+      31 | completed |Lc2pKpi_2017_ |    1843 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |     0/0/0/1843 # Data
 
       # semileptonic Lb -> Lc data (not MC) for Aleksei secondary studies
       35 | submitted |Lb2LcMuX_2017 |    2806 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |   10/37/0/2151 
 
       # submission of data for remaining years and magnet polarities
-      39 | submitted |Lc2pKpi_2018_ |    2155 |      GaudiExec |     Dirac |             None |    2018_MagDown_reco18_stripping34 |     0/2/0/2149 
-      40 | submitted |Lc2pKpi_2016_ |    1859 |      GaudiExec |     Dirac |             None |  2016_MagDown_reco16_stripping28r1 |     2/1/0/1851 
-      41 |    failed |Lc2pKpi_2015_ |     579 |      GaudiExec |     Dirac |             None | 2015_MagDown_reco15a_stripping24r1 |      0/1/0/578 
-      42 |    failed |Lc2pKpi_2012_ |    1155 |      GaudiExec |     Dirac |             None |    2012_MagDown_reco14_stripping21 |     0/1/0/1154 
-      43 | submitted |Lc2pKpi_2011_ |     907 |      GaudiExec |     Dirac |             None |  2011_MagDown_reco14_stripping21r1 |      0/0/0/906 
-      45 | submitted |Lc2pKpi_2011_ |     817 |      GaudiExec |     Dirac |             None |    2011_MagUp_reco14_stripping21r1 |        0/0/0/0 
-      46 | submitted |Lc2pKpi_2012_ |    1342 |      GaudiExec |     Dirac |             None |      2012_MagUp_reco14_stripping21 |        0/0/0/0 
-      47 | submitted |Lc2pKpi_2015_ |     370 |      GaudiExec |     Dirac |             None |   2015_MagUp_reco15a_stripping24r1 |        0/0/0/0 
-      48 | submitted |Lc2pKpi_2016_ |    1771 |      GaudiExec |     Dirac |             None |    2016_MagUp_reco16_stripping28r1 |        0/0/0/0 
-      49 | submitted |Lc2pKpi_2017_ |    1839 |      GaudiExec |     Dirac |             None |    2017_MagUp_reco17_stripping29r2 |        0/0/0/0 
-      50 | submitted |Lc2pKpi_2018_ |    2298 |      GaudiExec |     Dirac |             None |      2018_MagUp_reco18_stripping34 |        0/0/0/0 
+      39 |   running |Lc2pKpi_2018_ |    2155 |      GaudiExec |     Dirac |             None |    2018_MagDown_reco18_stripping34 |     1/0/0/2154 
+      40 | completed |Lc2pKpi_2016_ |    1859 |      GaudiExec |     Dirac |             None |  2016_MagDown_reco16_stripping28r1 |     0/0/0/1859 
+      41 |   running |Lc2pKpi_2015_ |     579 |      GaudiExec |     Dirac |             None | 2015_MagDown_reco15a_stripping24r1 |      1/0/0/578 
+      42 | completed |Lc2pKpi_2012_ |    1155 |      GaudiExec |     Dirac |             None |    2012_MagDown_reco14_stripping21 |     0/0/0/1155 
+      43 | completed |Lc2pKpi_2011_ |     907 |      GaudiExec |     Dirac |             None |  2011_MagDown_reco14_stripping21r1 |      0/0/0/907 
+      45 | submitted |Lc2pKpi_2011_ |     817 |      GaudiExec |     Dirac |             None |    2011_MagUp_reco14_stripping21r1 |      0/9/0/770 
+      46 | submitted |Lc2pKpi_2012_ |    1342 |      GaudiExec |     Dirac |             None |      2012_MagUp_reco14_stripping21 |    6/37/0/1202 
+      47 | submitted |Lc2pKpi_2015_ |     370 |      GaudiExec |     Dirac |             None |   2015_MagUp_reco15a_stripping24r1 |     5/13/0/337 
+      48 | submitted |Lc2pKpi_2016_ |    1771 |      GaudiExec |     Dirac |             None |    2016_MagUp_reco16_stripping28r1 |    4/46/0/1700 
+      49 | submitted |Lc2pKpi_2017_ |    1839 |      GaudiExec |     Dirac |             None |    2017_MagUp_reco17_stripping29r2 |    9/27/1/1722 
+      50 | submitted |Lc2pKpi_2018_ |    2298 |      GaudiExec |     Dirac |             None |      2018_MagUp_reco18_stripping34 |   45/15/0/2211 
 
