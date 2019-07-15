@@ -4,8 +4,8 @@ import ROOT, os, Imports
 from ROOT import TChain, TCanvas, TH1
 
 #select the user in order to have the right directory for saving the plots
-#user = "Simon"
-user = input("please indicate the user (Simon, Chris or Nikhef): ")
+user = "Nikhef"
+
 
 #change the following string variable to select which particle you want to study
 

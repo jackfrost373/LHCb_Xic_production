@@ -222,6 +222,23 @@ if(testFriendTree) :
   # add sWeight tree as friend. Should match #entries!
   cuttree.AddFriend("swTree","{0}sWeight_swTree.root".format(outputdir))
 
+  ###### Block of code that needs to be inserted in order to make the scripts work ######
+  
+  #f2 = ROOT.TFile.Open(fileloc, "READONLY")
+  #tree2 = f2.Get("tuple_Lc2pKpi/DecayTree")
+  #ffile = ROOT.TFile.Open(outputdir + "cuttree.root", "RECREATE")
+  #cuttree = tree2.CopyTree(cuts)
+  #print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
+  #ffile.cd()
+  #cuttree.Write()
+  #ffile.Close()
+  
+  #location = ROOT.TFile.Open("./sWeights/cuttree.root", "READONLY")
+  #cuttree = location.Get("DecayTree")
+  #cuttree.AddFriend("swTree","{0}sWeight_swTree.root".format(outputdir))
+  
+  ######## End of the block ########
+  
   # plot sWeighted distribution of a variable
   ROOT.gStyle.SetOptStat(0)
   c4 = ROOT.TCanvas('c4','c4')

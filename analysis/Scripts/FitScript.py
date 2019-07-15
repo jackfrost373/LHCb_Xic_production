@@ -4,10 +4,9 @@ import ROOT, os, Universal_Mass_Fit_function
 from ROOT import TChain, TFile
 from Universal_Mass_Fit_function import Shape_fit
 
-#user = "Simon"
-user = input("please indicate the user (Simon, Chris or Nikhef): ")
+user = "Nikhef"
 #shape = "Bukin" # select the shape that you want to fit your data with
-shape = input("please indicate the PDF (GaussCB or Bukin): ")
+shape = input("please indicate the PDF (GaussCB, Bukin, Ipatia or Apolonios): ")
 particles = ["Lc", "Xic"]
 
 directory = Imports.getDirectory(user)
@@ -27,6 +26,6 @@ for particle in particles:
             file = ROOT.TFile(location, "READONLY")
             tree = file.Get("DecayTree")
             text.write(Shape_fit(shape, tree, particle, ybin, ptbin, Data = True, Pull = False, user = user))
-                    
+            file.Close()
                     
 text.close()
