@@ -8,10 +8,10 @@ from ROOT import TCanvas, TH1
 #ybin and ptbin are simply a list of 2 elements used to name the output files
 #Data is a boolean variable which is used to determine whether the data contained in the file is actual data or if it is Monte Carlo. If it is actual data (i.e. if Data == True), then an exponential shape is added to module the background
 #Pull is a boolean variable. If Pull == True, an additional pull plot is added in the figure plotted. Otherwise, no pull plot is added
-def Shape_fit(shape, file, particle, ybin, ptbin, Data=True, Pull=False, user):
+def Shape_fit(shape, file, particle, ybin, ptbin, job, Data=True, Pull=False):
 
     #here is a list of the parameters used to define the shapes. A difference is made between Lc and Xic. This difference was found necessary while carrying out tests. All the parameters starting with "Bukin" are used for the Bukin shape. The ones starting with "cb" are used for the crystal ball, the ones starting with "gauss" for the gaussian, the ones starting with "exponential" are used for the exponential background shape and the rest are other general parameters
-    directory = Imports.getDirectory(user)
+    directory = "/dcache/bfys/scalo/" + job + "/graphs/"
     
     Bukin_xi_range =[0, -1, 1]
     Bukin_rho1_range = [0, -1, 1]

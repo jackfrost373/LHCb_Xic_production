@@ -50,6 +50,7 @@ for element in folders_dict:
     tree_file.Close()
     print("created full TChain stripped with global cuts and pruned tree of " + name)
 
+    os.mkdir(dir + name)
     os.mkdir(dir + name + "/bins")
     saving_dir = dir + name + "/bins/"
     root_file = dir + "pruned_trees/" + name + "_stripped&pruned.root"

@@ -29,7 +29,8 @@ Imports.Xic_MC_datatree_1()
 tree1 = Imports.tree # tree that will be plotted in red
 tree2 = Imports.Xic_MC_tree_1 # tree that will be plotted in blue
 
-directory = Imports.getDirectory(user)
+#directory = Imports.getDirectory(user)
+directory = "/dcache/bfys/scalo"
 
 c1 = ROOT.TCanvas("c1")
 
