@@ -119,7 +119,7 @@ Xic_MC_filename_1 = "MC_Lc2pKpiTuple_25103029.root"
 
 Xic_MC_tree_1 = TChain("tuple_Lc2pKpi/DecayTree")
 
-def Xic_MC_datatree_1 ():
+def Xic_MC_datatree_1():
     for job in range(27) :
         if not job in excludedjobs :
             #print ("- Adding subjob {0}".format(job))
