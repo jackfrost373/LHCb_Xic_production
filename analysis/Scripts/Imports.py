@@ -6,7 +6,7 @@ ROOT.gStyle.SetOptStat(0)
 user = "Nikhef"
 
 def getMCCuts (particle):
-    IDcuts = "abs(pplus1_ID)==211 && abs(kminus_ID)==321 && abs(pplus0_ID)==2212 && abs(lcplus_ID)==4122"
+    IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
     if particle == "Lc":
         BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 50)"
         return IDcuts + "&&" + BKGCAT
@@ -117,7 +117,7 @@ mcbtippwd=mctippwd=mcpwd=ximcpwd=ximc2pwd=mcbmcpwd=pwd=directory
 #    subjobs= 1843
 
 #filedir = pwd+"4_reduced"
-filedire = pwd+"31"
+filedir = pwd+"31"
 #filename = "charm_29r2_g.root"
 filename = "Lc2pKpiTuple.root"
 excludedjobs = []
