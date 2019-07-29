@@ -54,6 +54,6 @@ for element in folders_dict:
     os.mkdir(dir + name + "/bins")
     saving_dir = dir + name + "/bins/"
     root_file = dir + "pruned_trees/" + name + "_stripped&pruned.root"
-    SplitScript.split_in_bins&save(root_file, saving_dir) # split the datafile into mass-y-pt bins
+    SplitScript.split_in_bins_n_save(root_file, saving_dir) # split the datafile into mass-y-pt bins
 
     print ("process completed for " + name)
