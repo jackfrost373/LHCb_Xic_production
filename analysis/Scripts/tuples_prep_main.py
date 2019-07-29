@@ -10,8 +10,8 @@ dir = "/dcache/bfys/scalo/"
 os.mkdir(dir + "pruned_trees")
 
 for element in folders_dict:
-    name = folders_list[element][0]
-    subjobs = folders_list[element][1]
+    name = folders_dict[element][0]
+    subjobs = folders_dict[element][1]
     saving_directory = dir + name + "_clusters/"
     os.mkdir(saving_directory)
     file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
