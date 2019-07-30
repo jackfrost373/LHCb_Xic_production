@@ -36,7 +36,7 @@ for element in folders_dict:
     clusters = os.listdir(saving_directory)
 
     tree_file = TFile.Open(dir + "pruned_trees/" + name + "_stripped&pruned.root", "RECREATE")
-    tree = TChain("tuple_Lc2pKpi/DecayTree")
+    tree = TChain("DecayTree")
 
 # Loop used to set branches on the trees. To modify the branches see SetBranch script
 
