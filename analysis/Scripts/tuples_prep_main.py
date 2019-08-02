@@ -12,10 +12,10 @@ os.mkdir(dir + "pruned_trees")
 extra_variable = ""
 
 for element in folders_dict:
-    if int(element) > 41 && int(element) < 47:
-        extra_variable = "nTracks"
-    else:
-        extra_variable = "Brunel_nTracks"
+    #if int(element) > 41 && int(element) < 47:
+    #   extra_variable = "nTracks"
+    #else:
+    #   extra_variable = "Brunel_nTracks"
     name = folders_dict[element][0]
     subjobs = folders_dict[element][1]
     saving_directory = dir + name + "_clusters/"
