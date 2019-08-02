@@ -39,7 +39,7 @@ def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1=
     if Override == False:
         xmin = tree1.GetMinimum(varname)
         xmax = tree1.GetMaximum(varname)
-        if tree2.GetMinimum(varname) < xmim:
+        if tree2.GetMinimum(varname) < xmin:
             xmin = tree2.GetMinimum(varname)
         if tree2.GetMaximum(varname) > xmax:
             xmax = tree2.GetMaximum(varname)

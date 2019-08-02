@@ -9,7 +9,13 @@ cuts = Imports.getDataCuts()
 dir = "/dcache/bfys/scalo/"
 os.mkdir(dir + "pruned_trees")
 
+extra_variable = ""
+
 for element in folders_dict:
+    if int(element) > 41 && int(element) < 47:
+        extra_variable = "nTracks"
+    else:
+        extra_variable = "Brunel_nTracks"
     name = folders_dict[element][0]
     subjobs = folders_dict[element][1]
     saving_directory = dir + name + "_clusters/"
@@ -41,7 +47,7 @@ for element in folders_dict:
 # Loop used to set branches on the trees. To modify the branches see SetBranch script
 
     for element in clusters:
-        element = SetBranch.setBranch_funct(saving_directory + element) #see comment below
+        element = SetBranch.setBranch_funct(saving_directory + element, extra_variable) #see comment below
         tree.Add(str(element))
 
 #tree = SetBranch.setBranch_funct(tree) #perhaps move this step within the for loop above to speed up the process or will this make it slower since it is repeated many times? If this line is kept, the object fed into setBranch becomes a TTree and not a .root file
