@@ -1,5 +1,6 @@
 ####
 #Quick and Dirty Script to Make a new nTuple which has my cuts
+#I should use RDataFrame because it is faster, when I figure out how...
 ####
 
 import ROOT
