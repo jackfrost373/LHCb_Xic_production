@@ -1,6 +1,8 @@
 import ROOT, os
 
+#DIRECTORY CONTAINING THE "YEAR_MagPolarity" FOLDERS
 directory = "binned_files/"
+
 years = [2011,2012,2015,2016,2017,2018]
 magPol = ["MagUp", "MagDown"]
 mainDict = {}
@@ -256,7 +258,7 @@ def Shape_fit(shape, MClocation, filename, mainDict, i, j, particle, Data=True, 
 	strName = "./PDF_output/"+ str(i) + "_" + j + "_" + filename + ".pdf"
 	c1.SaveAs(strName)
   
-######### JUST AS ARCHIVE OF THE ORIGINAL LOOKING PROGRAM - TO BE DELETED AFTER DEVELOPMENT #############
+######### JUST AS ARCHIVE OF THE PREVIOUS VERSION - TO BE DELETED AFTER DEVELOPMENT #############
 
 # def graphing(MClocation, filename, mainDict, i, j):
 	# c1 = ROOT.TCanvas("c1", filename,800,500)
