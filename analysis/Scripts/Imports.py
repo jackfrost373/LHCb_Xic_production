@@ -25,6 +25,10 @@ def getBackgroundCuts(particle):
         cuts = "lcplus_MM > 2400 && lcplus_MM < 2450 || lcplus_MM > 2490"
     return cuts
 
+def getFoldersDict():
+    folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] }  #a dictionary containing the details of the all the years' data according to joblog.txt
+    return folders_dict
+
 def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1==1", extralabel1="", extralabel2="", normalized=True, legendLocation="Right", Yaxis_range_1=0, Yaxis_range_2=1000, Override = False, xmin=0, xmax=0) :
     
     print("Plotting comparison of {0} between trees {1} and {2}".format(varname, tree1.GetName(), tree2.GetName()))
