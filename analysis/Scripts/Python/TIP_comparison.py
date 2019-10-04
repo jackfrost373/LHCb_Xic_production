@@ -38,7 +38,7 @@ plot_comparison("lcplus_TIP", -100, 120,
 
 
 leg.Draw("same")
-c1.SetLogx()
+c1.SetLogy()
 c1.Update()
 c1.Draw()
 graph_name = (name + "lcplus_TIP.pdf")

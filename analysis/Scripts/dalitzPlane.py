@@ -11,17 +11,18 @@ from Imports import *
 
 
 # Define what type of plot you want
-dataType = "data" #dataType = MC (monte carlo), or = data
+dataType = "MC" #dataType = MC (monte carlo), or = data
 particle = "Lc" # valid types :- Xic or Lc (For MC studies)
 # Define if you want to add sWeights
 addsWeights = True
-
+inputdir = pwd + "4_reduced/"
+outputdir = pwd + "output/"
 
 # Get the data
 if dataType == "data":
-  datatree()
-  cuts = getDataCuts ()
-
+  f = ROOT.TFile.Open(inputdir+"4_Lc_cut_reduced.root", "READONLY")
+  tree = f.Get("DecayTree;48")
+  cuts = "(1==1)"
 elif dataType == "MC": #Todo: check both trees for updates from ganga?
   cuts = getMCCuts(particle)
   addsWeights = False  #double check to ensure sWeights never used for MC files
@@ -34,7 +35,9 @@ elif dataType == "MC": #Todo: check both trees for updates from ganga?
 
 if(addsWeights) :
   # If we made an sWeight friend tree: add it, and use sWeights. Make sure same cuts (--> #entries) as swTree!
+  wfile = ROOT.TFile.Open("{0}dalitz_temp.root".format(outputdir),"RECREATE")
   swcuts = "lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+  tree.Print()
   cuttree = tree.CopyTree(swcuts)
   print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
   cuttree.AddFriend("swTree",pwd+"/output/sWeight_swTree.root")

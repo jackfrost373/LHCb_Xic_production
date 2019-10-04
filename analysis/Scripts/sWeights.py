@@ -15,24 +15,21 @@ plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspa
 testFriendTree = True  # test sWeights from friend tree to do an sPlot.
 
 outputdir = pwd+"output/"
-
+inputdir = pwd + "4_reduced/"
 
 if(getData) :
   
   # Get the data
-  tree = tree #defined in Imports
-  datatree()
-  datacuts = getDataCuts ()
 
+  f = ROOT.TFile.Open(inputdir+"4_Lc_cut_reduced.root", "READONLY")
+  tree = f.Get("DecayTree;48")
+  #tree.Print()
   cuts = "1==1"
-  #cuts += " && "+ datacuts
-
-  
+      
   mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
   momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
   lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
-  print ("I am adding data to a tree") #Just to keep us informed
-
+  print ("I am adding data to a tree") #Just to keep us informed 
   # Get RooDataSet (unbinned) from TTree.
   # We add momentum/lifetime for easy plotting of their sWeighted versions later
 
@@ -203,19 +200,17 @@ if(testFriendTree) :
   [var,nbins,xmin,xmax] = ["lcplus_TAU",100,0,0.007]
 
   # Load original TTree
-  from Imports import *
-  datatree()
-  getDataCuts()
-
+  f = ROOT.TFile.Open(inputdir+"4_Lc_cut_reduced.root", "READONLY")
+  tree = f.Get("DecayTree;48")
+    
   # cuts should match those applied when creating the sWeight TTree --> should have same #entries!
   #  Note: limited range of RooRealVars in RooDataSet (used to create sWeights) also cuts events.
-  cuts = "1==1"
-  cuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
-  #Should I add datacuts here?
-  
+  datacuts = "1==1"
+  datacuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+     
   print("beginning CopyTree")
   wfile = ROOT.TFile.Open(outputdir+"cuttree.root","RECREATE")
-  cuttree = tree.CopyTree(cuts)
+  cuttree = tree.CopyTree(datacuts)
   
   print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
 

@@ -5,13 +5,13 @@ from Imports import *
 Lc_MC_filedir =mcpwd+"15"
 Lc_MC_filename = "MC_Lc2pKpiTuple_25103006.root"
 
-Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
-excludedjobs = []
+#Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
+#excludedjobs = []
 
-for job in range(63) :
-    if not job in excludedjobs :
-        Lc_MC_tree.Add("{0}/{1}/output/{2}".format(Lc_MC_filedir,job,Lc_MC_filename))
-
+#for job in range(63) :
+#    if not job in excludedjobs :
+#        Lc_MC_tree.Add("{0}/{1}/output/{2}".format(Lc_MC_filedir,job,Lc_MC_filename))
+Lc_MC_datatree()
 c1 = ROOT.TCanvas("c1")
 
 histogram1 = ROOT.TH1F("histogram1", "hist 1", 300, 2240, 2340)
