@@ -9,13 +9,14 @@ import ROOT, Imports
 from Imports import *
 
 getData        = True  # Load data.
-makesWeights   = False  # Generate sWeights, write to workspace. Requires getData.
-makeFriendTree = False  # create friend tree for simple future sweight plotting. Requires makesWeights.
+makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
+makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
 plotVariable   = False  # make an sPlot using sWeights in RooDataSet from workspace.
-testFriendTree = False  # test sWeights from friend tree to do an sPlot.
+testFriendTree = True  # test sWeights from friend tree to do an sPlot.
 
-outputdir = pwd+ "output/"
+
 inputdir = "/dcache/bfys/scalo/binned_files/"
+outputdir = "/dcache/bfys/cpawley/sWeights/"
 cuts=Imports.getDataCuts()
 
 folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] } #a dictionary containing the details of the all the years' data according to joblog.txt
@@ -32,7 +33,9 @@ ROOT.gROOT.SetBatch(True)
 for element in folders_dict :
 
   name=folders_dict[element][0]
-  
+  if not os.path.exists(outputdir+name):
+    os.mkdir(outputdir + name)
+
 
   #We loop over our binning by Pt, y, Particle type:
 
@@ -53,23 +56,28 @@ for element in folders_dict :
 
           #Add a check for which type of particle, thus what these values should be?
 
-          mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2220,2350,"MeV/c^{2}")
-          #check number of entries, inclusive or exclusive???
+          if particle_type == "Lc":
+          
+              mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2220,2350,"MeV/c^{2}")
+              #check number of entries, inclusive or exclusive???
+              momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
+              lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+              
+          elif particle_type == "Xic":
+                       
+              mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2400,2490,"MeC/c^{2}")
+              momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
+              lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
+                       
+          else: print ("I did not find the right particle, this is a problem")
 
-          momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
-          lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
           print ("I am adding data to a tree") #Just to keep us informed 
           # Get RooDataSet (unbinned) from TTree.
           # We add momentum/lifetime for easy plotting of their sWeighted versions later
 
 
           data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
-          print ("built the data set, plotting...") # Just to keep us informed
-          c = ROOT.TCanvas("c","c")
-          frame = lifetime.frame()
-          data.plotOn(frame)
-          frame.Draw()
-
+ 
         if(makesWeights) :
 
          # build the fit model
@@ -82,7 +90,11 @@ for element in folders_dict :
          #######
 
          print ("Building the fit model...")
-         gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",2288,2280,2290)
+         
+         if particle_type == "Lc":
+           gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",2288,2280,2290)
+         elif particle_type == "Xic":
+           gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",2440,2400,2490)
          gauss_width = ROOT.RooRealVar("gauss_width","Width",2,0,10)
          Gauss       = ROOT.RooGaussian("Gauss","Gaussian signal part", mass, gauss_mean, gauss_width)
 
@@ -115,7 +127,7 @@ for element in folders_dict :
          model.plotOn(frame)
          frame.Draw()
          c1.Update()
-         c1.SaveAs("{0}sWeight_fit.pdf".format(outputdir))
+         c1.SaveAs("{0}/{1}_sWeight_fit.pdf".format(outputdir+name, particle_type+y_bin+pt_bin))
 
          print("Chi2/NDF: {0}".format(frame.chiSquare()))
 
@@ -138,12 +150,12 @@ for element in folders_dict :
              print(" {0}: sigWeight = {1}, bkgWeight = {2}, totWeight = {3}".format(
                i, sData.GetSWeight(i,"sig_norm"), sData.GetSWeight(i,"bkg_norm"), sData.GetSumOfEventSWeight(i)))
 
-           # Save dataset with weights to workspace file for later quick use
-           ws = ROOT.RooWorkspace("ws","workspace")
-           getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
-           ws.writeToFile("{0}sWeight_ws.root".format(outputdir))
+         # This command saves the  dataset with weights to workspace file for later quick use - since we will use it directly it is commented now
+         ws = ROOT.RooWorkspace("ws","workspace")
+         getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
+         ws.writeToFile("{0}/sWeight_ws.root".format(outputdir+name))
 
-           #f.Close()  # keeps mass fit plot alive
+         #f.Close()  # keeps mass fit plot alive
 
         if(makeFriendTree) :
           # Make a new TTree that contains the sWeights for every event.
@@ -151,7 +163,7 @@ for element in folders_dict :
 
           from array import array
 
-          wfile = ROOT.TFile.Open("{0}sWeight_swTree.root".format(outputdir),"RECREATE")
+          wfile = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir+name,particle_type+y_bin+pt_bin),"RECREATE")
           swtree = ROOT.TTree("swTree","swTree")
 
           # TTrees directly access memory, so we define pointers.
@@ -182,8 +194,10 @@ for element in folders_dict :
           #variable = "lcplus_P"
           variable = "lcplus_TAU"
 
-          # load sWeights from file (note: could have used 'data' as above, if we just made them)
-          fws = ROOT.TFile.Open("{0}sWeight_ws.root".format(outputdir),"READONLY")
+          # load sWeights from file (note: we will use 'data' as above, since we have just made it 
+          # (i.e. we never expect to run plot without first getData) - thus it is commended out.
+
+          fws = ROOT.TFile.Open("{0}/sWeight_ws.root".format(outputdir+name),"READONLY")
           ws = fws.Get('ws')
           var = ws.var(variable)
           data = ws.data("swdata")
@@ -207,8 +221,8 @@ for element in folders_dict :
           leg.Draw("same")
 
           c2.Update()
-          c2.SaveAs("{0}sPlot_{1}.pdf".format(outputdir,var.getTitle()))
-
+          c2.SaveAs("{0}/{1}_sPlot_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,variable))
+        
         if(testFriendTree) :
 
           # Make an sPlot using the sWeights from the friendTree, without RooFit / RooStats functionality.
@@ -218,22 +232,23 @@ for element in folders_dict :
           [var,nbins,xmin,xmax] = ["lcplus_TAU",100,0,0.007]
 
           # Load original TTree
-          f = ROOT.TFile.Open(inputdir+"4_Lc_cut_reduced.root", "READONLY")
-          tree = f.Get("DecayTree;48")
-    
+          
+          f = ROOT.TFile.Open(inputdir+name+"/bins/"+particle_type+"_bin"+y_bin+pt_bin+".root", "READONLY")
+          tree = f.Get("DecayTree")
+             
           # cuts should match those applied when creating the sWeight TTree --> should have same #entries!
           #  Note: limited range of RooRealVars in RooDataSet (used to create sWeights) also cuts events.
           datacuts = "1==1"
           datacuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
      
           print("beginning CopyTree")
-          wfile = ROOT.TFile.Open(outputdir+"cuttree.root","RECREATE")
+          wfile = ROOT.TFile.Open(outputdir+name+"/cuttree.root","RECREATE")
           cuttree = tree.CopyTree(datacuts)
   
           print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
 
           # add sWeight tree as friend. Should match #entries!
-          cuttree.AddFriend("swTree","{0}sWeight_swTree.root".format(outputdir))
+          cuttree.AddFriend("swTree","{0}/{1}_sWeight_swTree.root".format(outputdir+name,particle_type+y_bin+pt_bin))
 
           # plot sWeighted distribution of a variable
           ROOT.gStyle.SetOptStat(0)
@@ -260,4 +275,4 @@ for element in folders_dict :
           leg.Draw("same")
           
           c4.Update()
-          c4.SaveAs("{0}sPlot_swTree_{1}.pdf".format(outputdir,var))
+          c4.SaveAs("{0}/{1}_sPlot_swTree_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,var))
