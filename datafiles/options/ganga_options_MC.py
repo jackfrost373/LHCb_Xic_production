@@ -5,16 +5,18 @@
 
 magnet = "MagDown"
 pythia = "Pythia8"
-year = "2012"
+year = "2018"
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
 #eventtype = 25103006 # Lc -> p K pi with TightCut
 
 #eventtype = 25103010 # Xic -> p K pi with TightCut, but Lc used, with corrected mass 2468.
-eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036? [DEFAULT XIC]
+#eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt cuts. Lc will be used. Is v2 of 25103036? [DEFAULT XIC]
 #eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
 #eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
+#eventtype = 25203000 # NEW Lc -> pKpi with Dalitz
+eventtype = 26103090 # NEW Xic -> pKpi without using Lc as proxy
 
 #eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
@@ -24,7 +26,8 @@ eventtype = 25103029 # Xic -> p K pi with TightCut, uses more loose tau and pt c
 ############################################################
  
 # Find the right data file options from the database
-execfile('./options/mcdatabase.py')
+#execfile('./options/mcdatabase.py')  # python2
+exec(open("./options/mcdatabase.py").read()) #python3, ganga v8.0.0
 print("Ganga   - using options for %s %s %s %s"%(eventtype,magnet,pythia,year))
 datafile = getFileFromDB(eventtype, [magnet,pythia,year])
 dataloc = datafile[0]
@@ -52,16 +55,16 @@ j.backend = Dirac()
 j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
 #j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
 
-j.splitter = SplitByFiles(filesPerJob=1)
+j.splitter = SplitByFiles(filesPerJob=3)
 #j.do_auto_resubmit = True
 
 
 # Get data to run over
-print "Querying for data {0}".format(dataloc)
+print("Querying for data {0}".format(dataloc))
 query = BKQuery(dataloc)
 
 if not query: 
-  print "Query resulted in nonetype, please check if location is correct."
+  print("Query resulted in nonetype, please check if location is correct.")
   #j.remove()
 else :
   j.inputdata = query.getDataset()

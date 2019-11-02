@@ -20,18 +20,27 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
       31 | completed |Lc2pKpi_2017_ |    1843 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |     0/0/0/1843 # Data
 
       # semileptonic Lb -> Lc data (not MC) for Aleksei secondary studies
-      35 | submitted |Lb2LcMuX_2017 |    2806 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |   10/37/0/2151 
+      35 |    failed |Lb2LcMuX_2017 |    2806 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |    0/62/0/2744 
+
 
       # submission of data for remaining years and magnet polarities
-      39 |   running |Lc2pKpi_2018_ |    2155 |      GaudiExec |     Dirac |             None |    2018_MagDown_reco18_stripping34 |     1/0/0/2154 
+      39 |    failed |Lc2pKpi_2018_ |    2155 |      GaudiExec |     Dirac |             None |    2018_MagDown_reco18_stripping34 |     0/1/0/2154 
       40 | completed |Lc2pKpi_2016_ |    1859 |      GaudiExec |     Dirac |             None |  2016_MagDown_reco16_stripping28r1 |     0/0/0/1859 
-      41 |   running |Lc2pKpi_2015_ |     579 |      GaudiExec |     Dirac |             None | 2015_MagDown_reco15a_stripping24r1 |      1/0/0/578 
+      41 |    failed |Lc2pKpi_2015_ |     579 |      GaudiExec |     Dirac |             None | 2015_MagDown_reco15a_stripping24r1 |      0/1/0/578 
       42 | completed |Lc2pKpi_2012_ |    1155 |      GaudiExec |     Dirac |             None |    2012_MagDown_reco14_stripping21 |     0/0/0/1155 
       43 | completed |Lc2pKpi_2011_ |     907 |      GaudiExec |     Dirac |             None |  2011_MagDown_reco14_stripping21r1 |      0/0/0/907 
-      45 | submitted |Lc2pKpi_2011_ |     817 |      GaudiExec |     Dirac |             None |    2011_MagUp_reco14_stripping21r1 |      0/9/0/770 
-      46 | submitted |Lc2pKpi_2012_ |    1342 |      GaudiExec |     Dirac |             None |      2012_MagUp_reco14_stripping21 |    6/37/0/1202 
-      47 | submitted |Lc2pKpi_2015_ |     370 |      GaudiExec |     Dirac |             None |   2015_MagUp_reco15a_stripping24r1 |     5/13/0/337 
-      48 | submitted |Lc2pKpi_2016_ |    1771 |      GaudiExec |     Dirac |             None |    2016_MagUp_reco16_stripping28r1 |    4/46/0/1700 
-      49 | submitted |Lc2pKpi_2017_ |    1839 |      GaudiExec |     Dirac |             None |    2017_MagUp_reco17_stripping29r2 |    9/27/1/1722 
-      50 | submitted |Lc2pKpi_2018_ |    2298 |      GaudiExec |     Dirac |             None |      2018_MagUp_reco18_stripping34 |   45/15/0/2211 
+      45 |    failed |Lc2pKpi_2011_ |     817 |      GaudiExec |     Dirac |             None |    2011_MagUp_reco14_stripping21r1 |     0/12/0/805 
+      46 |    failed |Lc2pKpi_2012_ |    1342 |      GaudiExec |     Dirac |             None |      2012_MagUp_reco14_stripping21 |    0/45/0/1297 
+      47 |    failed |Lc2pKpi_2015_ |     370 |      GaudiExec |     Dirac |             None |   2015_MagUp_reco15a_stripping24r1 |     0/30/0/340 
+      48 |    failed |Lc2pKpi_2016_ |    1771 |      GaudiExec |     Dirac |             None |    2016_MagUp_reco16_stripping28r1 |    0/71/0/1700 
+      49 |completing |Lc2pKpi_2017_ |    1839 |      GaudiExec |     Dirac |             None |    2017_MagUp_reco17_stripping29r2 |   0/115/1/1723 
+      50 |    failed |Lc2pKpi_2018_ |    2298 |      GaudiExec |     Dirac |             None |      2018_MagUp_reco18_stripping34 |    0/87/0/2211 
+
+      # ran data adding a line with no IP cut for secondary studies
+      53 |completing |Lc2pKpi_noipc |    1841 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |    0/17/1/1823 
+
+      # Resubmission of MC on 2 Nov 2019
+      56 | submitted |MC_Lc2pKpi_25 |      62 |      GaudiExec |     Dirac |             None |      25103046_MagDown_Pythia8_2012 |       5/0/0/31 # old Xic MC Strip20
+      57 | submitted |MC_Lc2pKpi_25 |     780 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2018 |       2/0/0/15 # NEW Lc 
+      58 | submitted |MC_Lc2pKpi_26 |     277 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2018 |       2/0/0/11 # NEW Xic
 

@@ -6,13 +6,14 @@
 # - the decay considered matches the input files ganga will look for
 
 
-name = "Lc2pKpi"
+#name = "Lc2pKpi"
+name = "Lc2pKpi_noipchi2"
 streamsuffix = "CHARM.MDST"
 #name = "Lb2LcMuX"
 #streamsuffix = "SEMILEPTONIC.DST"
 
-year = "18"  # Make sure the year matches the DaVinci options!
-magnet = "MagUp"
+year = "17"  # Make sure the year matches the DaVinci options!
+magnet = "MagDown"
 
 
 #################################

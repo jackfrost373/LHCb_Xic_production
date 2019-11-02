@@ -5,10 +5,11 @@ from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
 
-year = "2018"  # when running ganga, make sure year matches the dst year
+year = "2017"  # when running ganga, make sure year matches the dst year
 
-decay = "Lc2pKpi"
+#decay = "Lc2pKpi"
 #decay = "Lb2LcMuX"
+decay = "Lc2pKpi_noipchi2"
 
 #events = -1   # for all. Default for ganga!
 events = -1
@@ -30,6 +31,13 @@ if (decay == "Lb2LcMuX") :
   decaystring = '${lambdab0}[Lambda_b0 -> ${lambdacplus}( Lambda_c+ -> ${kminus}K- ${pplus}p+ ${piplus}pi+ ) ${muplus}[mu+]cc ]CC'
   inputtype   = "DST"
 
+if (decay == "Lc2pKpi_noipchi2") :
+  # (prompt) Lc -> p K pi 
+  striplines  = ["LambdaCLooseChi2IPForPromptCharm"]
+  stream      = "Charm"
+  decaystring = '${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC'
+  inputtype   = "MDST"
+
 
 ####################
 ## Define ntuples
@@ -40,7 +48,7 @@ if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format
 mytuple.setDescriptorTemplate( decaystring )
 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
-if( decay == "Lc2pKpi" ) :
+if( "Lc2pKpi" in decay ) :
   dtftool = mytuple.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
   dtftool.constrainToOriginVertex = True
 if( decay == "Lb2LcMuX" ) :
@@ -63,10 +71,10 @@ tupletools.append("TupleToolEventInfo")  # Runnr, eventnr, gpstime, magpol, BX
 tupletools.append("TupleToolPropertime") # Proper lifetime TAU in ns 
 tupletools.append("TupleToolTrackInfo")  # TRACK info
 tupletools.append("TupleToolPrimaries")  # nPV, PV pos, PVnTracks
-#tupletools.append("TupleToolMCTruth")    # MC Truth information
+tupletools.append("TupleToolRecoStats")  # nPVs, nTracks, etc.
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
- "Hlt2CharmHadD2HHHDecision",
+ "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
  "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:

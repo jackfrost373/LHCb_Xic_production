@@ -17,14 +17,15 @@ function test_equal () {
 
 
 # Run simulation over grid. Please ensure the same eventType, magnet, year and pythia version!
-#test_equal "^eventtype = [0-9]*" 
-#if [[ $? -eq 0 ]] ; then return 0 ; fi
-#ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
+test_equal "^eventtype = [0-9]*" 
+if [[ $? -eq 0 ]] ; then return 0 ; fi
+ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
+#/cvmfs/ganga.cern.ch/Ganga/install/7.1.15/bin/ganga ./options/ganga_options_MC.py | tee logs/gangaRun_MC.log
 
 
 
 # Run real data over grid. Please configure options first!
-ganga ./options/ganga_options.py | tee logs/gangaRun.log 
+#ganga ./options/ganga_options.py | tee logs/gangaRun.log 
 
 
 # Download local dst from the grid for testing. Look up the LFN from the Dirac bookkeeping.
