@@ -10,7 +10,7 @@ mainDict[YEAR]["MagPol"]["Event"]["Parameters"]
 ```
 with the parameter keys being 
 
-"yield_val", "yield_err", "chi2ndf", "gauss_mean_val", "gauss_mean_err", "gauss_width_val", "gauss_width_err", "CB_width_val", "CB_width_err", "CB_alpha_val", "CB_alpha_err", "CB_n_val", "CB_n_err"
+*"yield_val", "yield_err", "chi2ndf", "gauss_mean_val", "gauss_mean_err", "gauss_width_val", "gauss_width_err", "CB_width_val", "CB_width_err", "CB_alpha_val", "CB_alpha_err", "CB_n_val", "CB_n_err"*
 
 The .py file also has a inbuilt function called dictSearch(year, magPol, filename), which returns an array containing all the parameters in the same order as above (can be easily modified to return an array with tuples containing the name of param and value).
 
