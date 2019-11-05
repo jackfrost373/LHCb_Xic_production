@@ -1,3 +1,12 @@
+#This function needs a foder called PDF_output in the area where the function runs, otherwise the PDF file will not be able to
+#be created. It also requires the import of the fitting dictionary. Here is an example of use inside a Python shell:
+
+#>>> from MassfitLib import Shape_fit
+#>>> from fittingDict import fittingDict
+#>>> dic = Shape_fit("GaussCB","/home/user/Code/HonoursProgramme/MassFitScript/testDirectories/2011_MagDown/bins",2011,"MagDown","Lc_splitfile_y2.5-3.0_pt3000-4000.root", "Lc",fittingDict)
+
+#The function returns a dictionnary containing the important information from the fitting process
+
 import ROOT, os
 
 #The year and the magPol are just there to make the pdf files name clearer and avoid duplicate names
