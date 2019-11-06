@@ -29,15 +29,15 @@ The main function of the program is based on Simons Shape_fit() script with some
 ## MassfitLib.py
 This library contains a function that will do a GaussCB fitting to a specified dataset found in a root file. It works almost similarly to the fitting part of the above program, and as such it requires an import of the dictionnary found in the fittingDict.py file and a foder called PDF_output in the area where the function runs, otherwise the PDF file will not be able to
 be created. Here is an example of use inside a Python shell:
-**For the Shape_fit function(shape, fileLocation, year, magPol, filename, particle, fittingDict)**
+**For the Shape_fit(shape, fileLocation, year, magPol, filename, particle, fittingDict) function**
 ```bash
 >>> from MassfitLib import Shape_fit
 >>> from fittingDict import fittingDict
 >>> dic = Shape_fit("GaussCB","/home/user/Code/HonoursProgramme/MassFitScript/testDirectories/2011_MagDown/bins",2011,"MagDown","Lc_splitfile_y2.5-3.0_pt3000-4000.root", "Lc",fittingDict)
 ```
-**For the Shape_fit_fullPath function(shape,fittingDict,fullPath)**
+**For the Shape_fit_fullPath(shape,fittingDict,fullPath) function**
 ```bash
->>> from MassfitLib import Shape_fit
+>>> from MassfitLib import Shape_fit_fullPath
 >>> from fittingDict import fittingDict
 >>> dic = Shape_fit("GaussCB",fittingDict,"/home/user/Code/HonoursProgramme/MassFitScript/testDirectories/2011_MagDown/bins/Lc_splitfile_y2.5-3.0_pt3000-4000.root")
 ```
