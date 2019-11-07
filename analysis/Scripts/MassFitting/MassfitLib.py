@@ -122,8 +122,8 @@ def shapeFit(shape,fittingDict,fullPath):
 	fullshape.plotOn(frame)
 	
 	#Get the parameters resulting from the fit
-	signal_yield = Actual_signalshape_Norm.GetValV()
-	signal_error = Actual_signalshape_Norm.GetError()
+	signal_yield = Actual_signalshape_Norm.getValV()
+	signal_error = Actual_signalshape_Norm.getError()
 	chi2ndf = frame.chiSquare()
 	
 	#fullshape.paramOn(frame, ROOT.RooFit.Layout(0.56,0.9,0.9))
