@@ -5,8 +5,11 @@ import ROOT, os
 #For the other variables, it is just easy to make arrays containing the years an magPols
 #of interest and loop over them (see MainProgram.py for an example)
 def pathFinder(basePath, year, magPol, filename):
-	
-	fullPath = basePath + str(year) + "_" + magPol + "/bins/" + filename
+	if basePath[-1] != '/':
+		fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/" + filename
+	else :
+		fullPath = basePath + str(year) + "_" + magPol + "/bins/" + filename
+		
 	return fullPath
 
 #You just need to give the full path of the data file, the function will parse the important 

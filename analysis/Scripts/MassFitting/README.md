@@ -1,8 +1,31 @@
 # Mass fitting
-## MainProgram.py
+## MassfitLib.py
 **Requires the fittingDict.py file in the same directory to function correctly**
+**shapefit(shape,fittingDict,fullPath) function**
 
-For the moment it is only possible to do a GaussCB fit on the data. The script runs automatically through all the repositories with the structure YEAR_MagPolarity/bins/event.root and outputs a the .pdf file of the drawn fit and a .py file containing a dictionnary with all the parameters for the fitted PDFs (it is also possible to output a .root file containing all of the raw data).
+This function takes as parameters the shape (for the moment only "GaussCB" is available), the fitting dictionary that is found in the fittingDict.py file and the full path for the root file that contains the data to fit. It requires a foder called PDF_output in the area where the function is used as a .pdf file of the drawn fit will be created into a folder called like this. 
+
+The functions also return a dictionnary containing the important information from the fitting process. The keys are: 
+
+*"yield_val", "yield_err", "chi2ndf", "gauss_mean_val", "gauss_mean_err", "gauss_width_val", "gauss_width_err", "CB_width_val", "CB_width_err", "CB_alpha_val", "CB_alpha_err", "CB_n_val", "CB_n_err"*
+
+Here is an example of use inside a Python shell:
+
+```bash
+>>> from MassfitLib import shapefit
+>>> from fittingDict import fittingDict
+>>> dic = shapefit("GaussCB",fittingDict,"/home/user/Code/HonoursProgramme/MassFitScript/dataDirectories/2011_MagDown/bins/Lc_splitfile_y2.5-3.0_pt3000-4000.root")
+>>> print(dic)
+```
+
+**pathFinder(basePath, year, magPol, filename)**
+
+The basePath parameter is a path string that points to the folder containing the data directories (from the above example, that would be /home/user/Code/HonoursProgramme/MassFitScript/dataDirectories/). The other parameters are just to find the right file.
+
+This function then returns the full path of the file. Is made to be used in the shapefit function as the fullpath variable.
+
+## MainProgram.py
+This script gives a good example of how to use the above functions, as it runs automatically through all the repositories with the structure YEAR_MagPolarity/bins/event.root. It outputs .pdf files of the drawn fits and a python file containing a dictionnary with all the parameters for the fitted PDFs.
 
 The structure of the dictionnary is as follows
 ```
@@ -20,30 +43,7 @@ When using the dictionary and function just import both into your script with
 It is important to have the following folders in the **same** directory as the main script:
 
 * Dict_output 
-* PDF_output 
-* ROOT_output (optional, only if the .root output has been uncommented)
-
-The main function of the program is based on Simons Shape_fit() script with some modifications. The Bukin fit doesn't work yet, and the pull histogram is not available yet. The GaussCB fit is not optimized for Xic mass fitting neither (see the output PDFs)
-
-
-## MassfitLib.py
-This library contains a function that will do a GaussCB fitting to a specified dataset found in a root file. It works almost similarly to the fitting part of the above program, and as such it requires an import of the dictionnary found in the fittingDict.py file and a foder called PDF_output in the area where the function runs, otherwise the PDF file will not be able to
-be created. Here is an example of use inside a Python shell:
-**For the Shape_fit(shape, fileLocation, year, magPol, filename, particle, fittingDict) function**
-```bash
->>> from MassfitLib import Shape_fit
->>> from fittingDict import fittingDict
->>> dic = Shape_fit("GaussCB","/home/user/Code/HonoursProgramme/MassFitScript/testDirectories/2011_MagDown/bins",2011,"MagDown","Lc_splitfile_y2.5-3.0_pt3000-4000.root", "Lc",fittingDict)
-```
-**For the Shape_fit_fullPath(shape,fittingDict,fullPath) function**
-```bash
->>> from MassfitLib import Shape_fit_fullPath
->>> from fittingDict import fittingDict
->>> dic = Shape_fit("GaussCB",fittingDict,"/home/user/Code/HonoursProgramme/MassFitScript/testDirectories/2011_MagDown/bins/Lc_splitfile_y2.5-3.0_pt3000-4000.root")
-```
-The functions return a dictionnary containing the important information from the fitting process. The keys are the same as above: 
-
-*"yield_val", "yield_err", "chi2ndf", "gauss_mean_val", "gauss_mean_err", "gauss_width_val", "gauss_width_err", "CB_width_val", "CB_width_err", "CB_alpha_val", "CB_alpha_err", "CB_n_val", "CB_n_err"*
+* PDF_output
 
 ## fittingDict.py
 This is a file containing a library necessary to make the fits of all above functions. It contains the default values for fitting the Gauss, Crystal Ball and Exponential curves to real data, as well as values that have been found for specific data sets that didn't get fitted correctly with the defauld values
