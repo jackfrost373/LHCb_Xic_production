@@ -11,8 +11,7 @@ def split_in_bins_n_save (root_file, saving_dir):
     
     particles = ["Lc", "Xic"]
     
-    tree = root_file.Get("DecayTree")
-    
+    tree = root_file
     for particle in particles:
         if particle == "Lc":
             mass_cuts = "lcplus_MM < 2375"

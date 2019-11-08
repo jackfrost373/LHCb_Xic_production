@@ -3,15 +3,16 @@ from ROOT import TChain, TFile
 sys.path.append('./tuples_prep_scripts/') #step necessary to import the scripts placed in the subdirectory of the current directory
 import Strip, SetBranch, SplitScript
 
-folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] } #a dictionary containing the details of the all the years' data according to joblog.txt
+folders_dict = Imports.getFoldersDict()  #a dictionary containing the details of the all the years' data according to joblog.txt
 
 cuts = Imports.getDataCuts()
 dir = "/dcache/bfys/scalo/"
-os.mkdir(dir + "pruned_trees")
+
 
 extra_variable = ""
 
 for element in folders_dict:
+    #These commented lines should be uncommented in case nTracks is a variable needed for the PID efficiency calculation
     #if int(element) > 41 && int(element) < 47:
     #   extra_variable = "nTracks"
     #else:
@@ -21,6 +22,9 @@ for element in folders_dict:
     saving_directory = dir + name + "_clusters/"
     os.mkdir(saving_directory)
     file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
+    y_2017 = False
+    if element == "31":
+        y_2017 = True
         
     step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
     max = step
@@ -31,7 +35,7 @@ for element in folders_dict:
     while (max <= subjobs):
         if max == min:
             break
-        Strip.strip_n_save(min, max, cuts, file_directory, saving_directory)
+        Strip.strip_n_save(min, max, cuts, file_directory, saving_directory, y_2017)
         temp = max
         if (max+step > subjobs):
             max = subjobs
@@ -41,25 +45,13 @@ for element in folders_dict:
 
     clusters = os.listdir(saving_directory)
 
-    tree_file = TFile.Open(dir + "pruned_trees/" + name + "_stripped&pruned.root", "RECREATE")
-    tree = TChain("DecayTree")
-
-# Loop used to set branches on the trees. To modify the branches see SetBranch script
-
+    final_chain = TChain("DecayTree")
     for element in clusters:
-        element = SetBranch.setBranch_funct(saving_directory + element, extra_variable) #see comment below
-        tree.Add(str(element))
-
-#tree = SetBranch.setBranch_funct(tree) #perhaps move this step within the for loop above to speed up the process or will this make it slower since it is repeated many times? If this line is kept, the object fed into setBranch becomes a TTree and not a .root file
-    tree_file.cd()
-    tree.Write()
-    tree_file.Close()
-    print("created full TChain stripped with global cuts and pruned tree of " + name)
+        final_chain.Add(saving_directory + element)
 
     os.mkdir(dir + name)
     os.mkdir(dir + name + "/bins")
     saving_dir = dir + name + "/bins/"
-    root_file = dir + "pruned_trees/" + name + "_stripped&pruned.root"
-    SplitScript.split_in_bins_n_save(root_file, saving_dir) # split the datafile into mass-y-pt bins
+    SplitScript.split_in_bins_n_save(final_chain, saving_dir) # split the datafile into mass-y-pt bins
 
     print ("process completed for " + name)
