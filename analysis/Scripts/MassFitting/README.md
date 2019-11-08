@@ -24,7 +24,7 @@ The basePath parameter is a path string that points to the folder containing the
 
 This function then returns the full path of the file. Is made to be used in the shapefit function as the fullpath variable.
 
-## MainProgram.py
+## autoFitScript.py
 This script gives a good example of how to use the above functions, as it runs automatically through all the repositories with the structure YEAR_MagPolarity/bins/event.root. It outputs .pdf files of the drawn fits and a python file containing a dictionnary with all the parameters for the fitted PDFs.
 
 The structure of the dictionnary is as follows
