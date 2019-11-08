@@ -104,10 +104,9 @@ def shapeFit(shape,fittingDict,fullPath):
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
 		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", mctree.GetEntries()/nbins * 3/exponential_normalisation_factor, 0, mctree.GetEntries() * 2)
 
-		gauss_Norm  = ROOT.RooRealVar("gauss_Norm","Gauss Yield", mctree.GetEntries()/nbins * 3, 0, mctree.GetEntries() * 2)
-		cb_Norm     = ROOT.RooRealVar("cb_Norm","CB Yield", mctree.GetEntries()/nbins * 3/cb_normalisation_factor, 0, mctree.GetEntries() * 2)
+		combined_Norm = ROOT.RooRealVar("combined_Norm","Normalization for gaussCB", 0.5,0,1)
 		
-		Actual_signalshape = ROOT.RooAddPdf ("Actual_signalshape", "Shape of the interesting events", ROOT.RooArgList(myGauss, myCB), ROOT.RooArgList(gauss_Norm,cb_Norm))
+		Actual_signalshape = ROOT.RooAddPdf ("Actual_signalshape", "Shape of the interesting events", myGauss, myCB, combined_Norm)
 		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, 0, mctree.GetEntries() * 3)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
