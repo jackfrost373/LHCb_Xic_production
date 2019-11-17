@@ -1,8 +1,8 @@
 
-# define data type
-magnet = "MagDown"
+magnet = 'MagDown'
 pythia = "Pythia8"
-year = "2018"
+year = '2016'
+eventtype = 25203000
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -13,7 +13,7 @@ year = "2018"
 #eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
 #eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
 #eventtype = 25203000 # NEW Lc -> pKpi with Dalitz
-eventtype = 26103090 # NEW Xic -> pKpi without using Lc as proxy
+#eventtype = 26103090 # NEW Xic -> pKpi without using Lc as proxy
 
 #eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut

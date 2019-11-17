@@ -1,19 +1,20 @@
 
+year = "17"  
+magnet = "MagDown"
+
 # Before running on the grid, please ensure in the davinci options that:
 # - it has no input file specified
 # - it has no subfolder in output files specified
 # - #events in options file is set to -1
 # - the decay considered matches the input files ganga will look for
 
-
-#name = "Lc2pKpi"
-name = "Lc2pKpi_noipchi2"
+name = "Lc2pKpi"
+#name = "Lc2pKpi_noipchi2"
 streamsuffix = "CHARM.MDST"
+
 #name = "Lb2LcMuX"
 #streamsuffix = "SEMILEPTONIC.DST"
 
-year = "17"  # Make sure the year matches the DaVinci options!
-magnet = "MagDown"
 
 
 #################################

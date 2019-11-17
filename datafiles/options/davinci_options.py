@@ -1,18 +1,17 @@
 
+year = "2017"  
+# when running ganga, make sure year matches the dst year
 
 from Configurables import DaVinci, LHCbApp
 from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
 
-year = "2017"  # when running ganga, make sure year matches the dst year
-
-#decay = "Lc2pKpi"
-#decay = "Lb2LcMuX"
+decay = "Lc2pKpi"
 decay = "Lc2pKpi_noipchi2"
+#decay = "Lb2LcMuX"
 
-#events = -1   # for all. Default for ganga!
-events = -1
+events = -1   # for all. Default for ganga!
 
 
 ####################
