@@ -244,7 +244,7 @@ for element in folders_dict :
           print("beginning CopyTree")
           wfile = ROOT.TFile.Open(outputdir+name+"/cuttree.root","RECREATE")
           cuttree = tree.CopyTree(datacuts)
-  
+
           print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
 
           # add sWeight tree as friend. Should match #entries!
@@ -259,7 +259,7 @@ for element in folders_dict :
           histAll = ROOT.gDirectory.Get("histAll")
           histSig = ROOT.gDirectory.Get("histSig")
           histBkg = ROOT.gDirectory.Get("histBkg")
-  
+ 
           histSig.SetLineColor(8)
           histBkg.SetLineColor(46)
           histAll.SetTitle('sPlot from swTree')

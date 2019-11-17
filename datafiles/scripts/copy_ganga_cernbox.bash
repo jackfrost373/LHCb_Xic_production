@@ -1,6 +1,6 @@
 #!/bin/bash
 
-jobID=4
+jobID=31
 
 gangadir=/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/${jobID}
 cernboxdir=/eos/user/j/jadevrie/LcAnalysis_Simon/datafiles/ganga/

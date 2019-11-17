@@ -1,16 +1,46 @@
-    fqid |    status |      name | subjobs |    application |        backend |                             backend.actualCE |                       comment |  subjob status 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-       4 | completed |Lc2pKpi_20 |    1844 |      GaudiExec |          Dirac |                                         None |2017_MagDown_reco17_stripping2 |    1844 / 1844 
-      14 | completed |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |       0/0/0/26 
-      15 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63 
-      16 | completed |MC_Lc2pKpi |      36 |      GaudiExec |          Dirac |                                         None | 25103010_MagDown_Pythia8_2012 |       0/0/0/36 
-      17 | completed |MC_Lc2pKpi |      27 |      GaudiExec |          Dirac |                                         None | 25103029_MagDown_Pythia8_2012 |       0/0/0/27 
-      18 | completed |MC_Lc2pKpi |      25 |      GaudiExec |          Dirac |                                         None | 25103036_MagDown_Pythia8_2012 |       0/0/0/25 
-      19 | completed |MC_Lc2pKpi |      62 |      GaudiExec |          Dirac |                                         None | 25103046_MagDown_Pythia8_2012 |       0/0/0/62 
-      22 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63 
-      23 | completed |MC_Lc2pKpi |      26 |      GaudiExec |          Dirac |                                         None | 15264011_MagDown_Pythia8_2012 |       0/0/0/26 
-    
+
+Registry Slice: jobs (27 objects) - 4 Jun 2019
+--------------
+    fqid |    status |         name | subjobs |    application |   backend | backend.actualCE |                            comment |  subjob status 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+      12 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |        63 / 63 
+      13 | completed |MC_Lc2pKpi_25 |      36 |      GaudiExec |     Dirac |             None |      25103010_MagDown_Pythia8_2012 |       0/0/0/36  
+      14 | completed |MC_Lc2pKpi_15 |      26 |      GaudiExec |     Dirac |             None |      15264011_MagDown_Pythia8_2012 |       0/0/0/26 
+      15 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 
+      16 | completed |MC_Lc2pKpi_25 |      36 |      GaudiExec |     Dirac |             None |      25103010_MagDown_Pythia8_2012 |       0/0/0/36 
+      17 | completed |MC_Lc2pKpi_25 |      27 |      GaudiExec |     Dirac |             None |      25103029_MagDown_Pythia8_2012 |       0/0/0/27 
+      18 | completed |MC_Lc2pKpi_25 |      25 |      GaudiExec |     Dirac |             None |      25103036_MagDown_Pythia8_2012 |       0/0/0/25 
+      19 | completed |MC_Lc2pKpi_25 |      62 |      GaudiExec |     Dirac |             None |      25103046_MagDown_Pythia8_2012 |       0/0/0/62 
+      22 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 
+      23 | completed |MC_Lc2pKpi_15 |      26 |      GaudiExec |     Dirac |             None |      15264011_MagDown_Pythia8_2012 |       0/0/0/26
+
       # fixed proton/pion labels, added TIP, rapidity and trigger lines
-      29 | completed |MC_Lc2pKpi |      63 |      GaudiExec |          Dirac |                                         None | 25103006_MagDown_Pythia8_2012 |       0/0/0/63  # Lc 
-      30 | completed |MC_Lc2pKpi |      27 |      GaudiExec |          Dirac |                                         None | 25103029_MagDown_Pythia8_2012 |       0/0/0/27  # Xic
-      31 | submitted |Lc2pKpi_20 |    1843 |      GaudiExec |          Dirac |                                         None |2017_MagDown_reco17_stripping2 |    0/29/0/1813  # Data
+      29 | completed |MC_Lc2pKpi_25 |      63 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/63 # Lc
+      30 | completed |MC_Lc2pKpi_25 |      27 |      GaudiExec |     Dirac |             None |      25103029_MagDown_Pythia8_2012 |       0/0/0/27 # Xic
+      31 | completed |Lc2pKpi_2017_ |    1843 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |     0/0/0/1843 # Data
+
+      # semileptonic Lb -> Lc data (not MC) for Aleksei secondary studies
+      35 |    failed |Lb2LcMuX_2017 |    2806 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |    0/62/0/2744 
+
+
+      # submission of data for remaining years and magnet polarities
+      39 |    failed |Lc2pKpi_2018_ |    2155 |      GaudiExec |     Dirac |             None |    2018_MagDown_reco18_stripping34 |     0/1/0/2154 
+      40 | completed |Lc2pKpi_2016_ |    1859 |      GaudiExec |     Dirac |             None |  2016_MagDown_reco16_stripping28r1 |     0/0/0/1859 
+      41 |    failed |Lc2pKpi_2015_ |     579 |      GaudiExec |     Dirac |             None | 2015_MagDown_reco15a_stripping24r1 |      0/1/0/578 
+      42 | completed |Lc2pKpi_2012_ |    1155 |      GaudiExec |     Dirac |             None |    2012_MagDown_reco14_stripping21 |     0/0/0/1155 
+      43 | completed |Lc2pKpi_2011_ |     907 |      GaudiExec |     Dirac |             None |  2011_MagDown_reco14_stripping21r1 |      0/0/0/907 
+      45 |    failed |Lc2pKpi_2011_ |     817 |      GaudiExec |     Dirac |             None |    2011_MagUp_reco14_stripping21r1 |     0/12/0/805 
+      46 |    failed |Lc2pKpi_2012_ |    1342 |      GaudiExec |     Dirac |             None |      2012_MagUp_reco14_stripping21 |    0/45/0/1297 
+      47 |    failed |Lc2pKpi_2015_ |     370 |      GaudiExec |     Dirac |             None |   2015_MagUp_reco15a_stripping24r1 |     0/30/0/340 
+      48 |    failed |Lc2pKpi_2016_ |    1771 |      GaudiExec |     Dirac |             None |    2016_MagUp_reco16_stripping28r1 |    0/71/0/1700 
+      49 |completing |Lc2pKpi_2017_ |    1839 |      GaudiExec |     Dirac |             None |    2017_MagUp_reco17_stripping29r2 |   0/115/1/1723 
+      50 |    failed |Lc2pKpi_2018_ |    2298 |      GaudiExec |     Dirac |             None |      2018_MagUp_reco18_stripping34 |    0/87/0/2211 
+
+      # ran data adding a line with no IP cut for secondary studies
+      53 |completing |Lc2pKpi_noipc |    1841 |      GaudiExec |     Dirac |             None |  2017_MagDown_reco17_stripping29r2 |    0/17/1/1823 
+
+      # Resubmission of MC on 2 Nov 2019
+      56 | submitted |MC_Lc2pKpi_25 |      62 |      GaudiExec |     Dirac |             None |      25103046_MagDown_Pythia8_2012 |       5/0/0/31 # old Xic MC Strip20
+      57 | submitted |MC_Lc2pKpi_25 |     780 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2018 |       2/0/0/15 # NEW Lc 
+      58 | submitted |MC_Lc2pKpi_26 |     277 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2018 |       2/0/0/11 # NEW Xic
+
