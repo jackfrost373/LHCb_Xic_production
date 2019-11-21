@@ -44,3 +44,16 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
       57 | submitted |MC_Lc2pKpi_25 |     780 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2018 |       2/0/0/15 # NEW Lc 
       58 | submitted |MC_Lc2pKpi_26 |     277 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2018 |       2/0/0/11 # NEW Xic
 
+      # Resubmission of the new 2016/2017/2018 MC for Lc and Xic, now with #tracks, and used more filesperjob (so less subjobs)
+      64 |   running |MC_Lc2pKpi_25 |      91 |      GaudiExec |     Dirac |             None |        25203000_MagUp_Pythia8_2016 |       1/0/0/90
+      65 | submitted |MC_Lc2pKpi_26 |      87 |      GaudiExec |     Dirac |             None |        26103090_MagUp_Pythia8_2016 |       0/0/0/86
+      66 | submitted |MC_Lc2pKpi_25 |      84 |      GaudiExec |     Dirac |             None |        25203000_MagUp_Pythia8_2017 |       1/0/0/82
+      67 | submitted |MC_Lc2pKpi_26 |      89 |      GaudiExec |     Dirac |             None |        26103090_MagUp_Pythia8_2017 |       0/0/0/88
+      68 | submitted |MC_Lc2pKpi_25 |      88 |      GaudiExec |     Dirac |             None |        25203000_MagUp_Pythia8_2018 |       0/0/0/84
+      69 | submitted |MC_Lc2pKpi_26 |      87 |      GaudiExec |     Dirac |             None |        26103090_MagUp_Pythia8_2018 |       1/0/0/84
+      70 | submitted |MC_Lc2pKpi_25 |      93 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2016 |       1/0/0/88
+      71 | submitted |MC_Lc2pKpi_26 |      88 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2016 |       0/0/0/84
+      72 | submitted |MC_Lc2pKpi_25 |      88 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2017 |       0/0/0/84
+      73 | submitted |MC_Lc2pKpi_26 |      83 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2017 |       0/0/0/81
+      74 | submitted |MC_Lc2pKpi_25 |      86 |      GaudiExec |     Dirac |             None |      25203000_MagDown_Pythia8_2018 |       0/0/0/79
+      75 | submitted |MC_Lc2pKpi_26 |      87 |      GaudiExec |     Dirac |             None |      26103090_MagDown_Pythia8_2018 |       0/0/0/81

@@ -41,10 +41,10 @@
 
 
 # Mass submit simulation over grid
-#magnets=( "MagUp" "MagDown" )
-magnets=( "MagDown" )
-#years=( "2016" "2017" "2018" )
-years=( "2016" "2017" )
+magnets=( "MagUp" "MagDown" )
+#magnets=( "MagDown" )
+years=( "2016" "2017" "2018" )
+#years=( "2016" "2017" )
 eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
 for magnet in "${magnets[@]}"; do
   for year in "${years[@]}"; do
@@ -69,6 +69,7 @@ done
 
 # Inspect TES locations inside dst
 #lb-run Bender/latest dst-dump -f -n 5000 ./data/Collision17_MagDown_Reco17_Stripping29r2_CHARM/00071700_00000137_1.charm.mdst
+#lb-run Bender/latest dst-dump -f -n 100 -d 2016 LFN:/lhcb/MC/2016/ALLSTREAMS.DST/00091515/0000/00091515_00000038_7.AllStreams.dst
 
 
 # Run over local dst to test ntuple production [data]
