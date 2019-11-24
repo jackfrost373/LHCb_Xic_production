@@ -24,6 +24,9 @@ eventtype = 25103006
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
+restripversion = "" # empty = no restripping
+if(eventtype == 25103006 and year == '2012') :
+  restripversion = 'stripping21'
 
 ############################################################
  
@@ -41,12 +44,18 @@ j.inputfiles = [ LocalFile('./options/mcdatabase.py') ] # for DaVinci db tags
 
 # Set up the required application to run
 app = "DaVinci"
-version = "v44r5"
+version  = "v44r5"
+platform = "x86_64-slc6-gcc62-opt" # default grid
 projectpath = "/project/bfys/jdevries/cmtuser"
+if(restripversion == "stripping21") : 
+  version  = "v36r1p5"
+  platform = "x86_64-slc6-gcc48-opt"
+
 from os import path
 if not path.isdir("{0}/{1}Dev_{2}".format(projectpath,app,version)) :
-  prepareGaudiExec('DaVinci','v44r5', myPath=projectpath)
+  prepareGaudiExec(app, version, myPath=projectpath)
 myApp = GaudiExec()
+myApp.platform = platform
 j.application = GaudiExec()
 j.application.directory = "{0}/{1}Dev_{2}".format(projectpath,app,version) 
 j.application.options = ['./options/davinci_options_MC.py']

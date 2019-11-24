@@ -20,8 +20,8 @@ eventtype = 25103006
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
 restripversion = "" # empty = no restripping
-if(eventtype == '25103006' and year == '2012') :
-  restripversion = "stripping21"
+if(eventtype == 25103006 and year == '2012') :
+  restripversion = 'stripping21'
 
 ############################################################
 
@@ -54,8 +54,12 @@ stream = "AllStreams"
 line1 = "LambdaCForPromptCharm"
 tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
 tuple_Lc2pKpi.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,line1)]
-#tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
-tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') 
+tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
+tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
+                            'pplus'  : '[Lambda_c+ -> ^p+ K- pi+]CC',
+                            'kminus' : '[Lambda_c+ -> p+ ^K- pi+]CC',
+                            'piplus' : '[Lambda_c+ -> p+ K- ^pi+]CC' })
+#tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') # new quicker setup 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
@@ -121,10 +125,12 @@ for tup in tuples:
 
 # Filter events for faster processing
 from PhysConf.Filters import LoKi_Filters
-fltrs = LoKi_Filters (
-        STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(line1)
-        )
-DaVinci().EventPreFilters = fltrs.filters('Filters')
+if (restripversion == "") :
+  fltrs = LoKi_Filters (
+          STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(line1)
+          )
+  DaVinci().EventPreFilters = fltrs.filters('Filters')
+
 
 
 #DaVinci().RootInTES = "/Event/{0}".format(stream)
@@ -146,8 +152,6 @@ DaVinci().HistogramFile = '{0}-histos.root'.format(fName)
 
 
 
-
-
 # restrip 
 if not (restripversion == "") :
 
@@ -155,13 +159,13 @@ if not (restripversion == "") :
   from Configurables import EventNodeKiller
   eventNodeKiller = EventNodeKiller('Stripkiller')
   eventNodeKiller.Nodes = [ '/Event/AllStreams', '/Event/Strip' ]
-  DaVinci().appendToMainSequence( [ eventNodeKiller ] ) 
 
   from StrippingConf.Configuration import StrippingConf, StrippingStream
-  from StrippingSettings.Utils import strippingConfiguration
-  from StrippingArchive.Utils import buildStreams
   from StrippingArchive import strippingArchive
+  from StrippingArchive.Utils import buildStreams
+  from StrippingSettings.Utils import strippingConfiguration
 
+  # Note: can only  get stripping versions with certain DaVinci versions
   config  = strippingConfiguration(restripversion)
   archive = strippingArchive(restripversion)
   streams = buildStreams(stripping=config, archive=archive) 
@@ -181,6 +185,8 @@ if not (restripversion == "") :
                       AcceptBadEvents = False,
                       BadEventSelection = filterBadEvents )
 
-  DaVinci().appendToMainSequence( [ sc.sequence() ] )
+  DaVinci().appendToMainSequence( [ eventNodeKiller, sc.sequence() ] )
+
+
 
 

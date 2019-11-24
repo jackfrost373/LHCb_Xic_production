@@ -43,9 +43,11 @@
 # Mass submit simulation over grid
 magnets=( "MagUp" "MagDown" )
 #magnets=( "MagDown" )
-years=( "2016" "2017" "2018" )
+#years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
+years=( "2012" )
+#eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
+eventtypes=( 25103006 )
 for magnet in "${magnets[@]}"; do
   for year in "${years[@]}"; do
     for eventtype in "${eventtypes[@]}"; do
@@ -78,8 +80,12 @@ done
 
 
 # Run over local dst to test ntuple production [MC]
-## for local MC: be sure to set eventtype to 25103006 and change dir of mcdatabase 
+## for local MC: be sure to set eventtype to 25103006 and copy mcdatabase to current folder 
+#LbLogin -c x86_64-centos7-gcc62-opt
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2012_MagDown_Pythia8_Sim08a_Reco14_25103006_ALLSTREAMS/includeLocal.py | tee logs/davinciMCRun.log
+# if restripping: run with correct DaVinci version (see http://lhcbdoc.web.cern.ch/lhcbdoc/davinci/releases/ , https://twiki.cern.ch/twiki/bin/view/Main/ProcessingPasses )
+#LbLogin -c x86_64-slc6-gcc48-opt
+#lb-run DaVinci/v36r1p5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2012_MagDown_Pythia8_Sim08a_Reco14_25103006_ALLSTREAMS/includeLocal.py | tee logs/davinciMCRun.log
 
 #mv *.root output/
 
