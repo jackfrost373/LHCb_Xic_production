@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2016'
-eventtype = 25203000
+year = '2012'
+eventtype = 25103006
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -19,6 +19,9 @@ eventtype = 25203000
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
+restripversion = "" # empty = no restripping
+if(eventtype == '25103006' and year == '2012') :
+  restripversion = "stripping21"
 
 ############################################################
 
@@ -108,7 +111,6 @@ for tup in tuples:
                             'TIP' : '1e3 * (PX * (VFASPF(VY)-BPV(VY)) - PY * (VFASPF(VX)-BPV(VX))) / sqrt(PX*PX + PY*PY)'
                            }
 
-    
     # refit PVs with exclusion of our tracks of interest
     tup.ReFitPVs = True
 
@@ -125,7 +127,6 @@ fltrs = LoKi_Filters (
 DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
-#stream = "AllStreams"
 #DaVinci().RootInTES = "/Event/{0}".format(stream)
 DaVinci().InputType="DST"
 DaVinci().DataType = year
@@ -142,4 +143,44 @@ fName = "MC_Lc2pKpiTuple_{0}".format(eventtype)
 #DaVinci().HistogramFile = 'output/{0}-histos.root'.format(fName)
 DaVinci().TupleFile = "{0}.root".format(fName)
 DaVinci().HistogramFile = '{0}-histos.root'.format(fName)
+
+
+
+
+
+# restrip 
+if not (restripversion == "") :
+
+  # kill old stripping banks
+  from Configurables import EventNodeKiller
+  eventNodeKiller = EventNodeKiller('Stripkiller')
+  eventNodeKiller.Nodes = [ '/Event/AllStreams', '/Event/Strip' ]
+  DaVinci().appendToMainSequence( [ eventNodeKiller ] ) 
+
+  from StrippingConf.Configuration import StrippingConf, StrippingStream
+  from StrippingSettings.Utils import strippingConfiguration
+  from StrippingArchive.Utils import buildStreams
+  from StrippingArchive import strippingArchive
+
+  config  = strippingConfiguration(restripversion)
+  archive = strippingArchive(restripversion)
+  streams = buildStreams(stripping=config, archive=archive) 
+
+  # get our stripping line from archive
+  MyStream = StrippingStream("MyStream")
+  MyLines = [ 'Stripping' + line1 ]
+  for stream in streams: 
+    for line in stream.lines:
+      if line.name() in MyLines:
+        MyStream.appendLines( [ line ] )  
+
+  from Configurables import ProcStatusCheck
+  filterBadEvents = ProcStatusCheck()
+  sc = StrippingConf( Streams = [ MyStream ],
+                      MaxCandidates = 2000,
+                      AcceptBadEvents = False,
+                      BadEventSelection = filterBadEvents )
+
+  DaVinci().appendToMainSequence( [ sc.sequence() ] )
+
 
