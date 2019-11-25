@@ -53,22 +53,22 @@ if(restripversion == "stripping21") :
 
 from os import path
 if not path.isdir("{0}/{1}Dev_{2}".format(projectpath,app,version)) :
+  # warning: below does not compile non-default versions of platform. Manually do LbLogin and make.
   prepareGaudiExec(app, version, myPath=projectpath)
-myApp = GaudiExec()
-myApp.platform = platform
 j.application = GaudiExec()
+j.application.platform = platform
 j.application.directory = "{0}/{1}Dev_{2}".format(projectpath,app,version) 
 j.application.options = ['./options/davinci_options_MC.py']
   
-#j.backend = Local()
-j.backend = Dirac()
+#j.backend = Local() # for local testing
+j.backend = Dirac() # run on grid
 
-j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
-#j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
+#j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
+j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
 
-j.splitter = SplitByFiles(filesPerJob=3) # for old MC: only O(50) files
+j.splitter = SplitByFiles(filesPerJob=3) # for old MC: only O(70) files
 #j.splitter = SplitByFiles(filesPerJob=10) # for run2 MC: O(700) files but only decprodcut
-#j.do_auto_resubmit = True
+#j.do_auto_resubmit = True  # resubmit failed subjobs. Only turn on if you're very sure.
 
 
 # Get data to run over
@@ -80,6 +80,7 @@ if not query:
   #j.remove()
 else :
   j.inputdata = query.getDataset()
+  #j.inputdata = query.getDataset()[:3] # for local testing
 
   j.submit()
   #queues.add(j.submit)

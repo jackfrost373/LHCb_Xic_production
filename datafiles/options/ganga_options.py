@@ -44,7 +44,6 @@ projectpath = "/project/bfys/jdevries/cmtuser"
 from os import path
 if not path.isdir("{0}/{1}Dev_{2}".format(projectpath,app,version)) :
   prepareGaudiExec('DaVinci','v44r5', myPath=projectpath)
-myApp = GaudiExec()
 j.application = GaudiExec()
 j.application.directory = "{0}/{1}Dev_{2}".format(projectpath,app,version) 
 j.application.options = ['./options/davinci_options.py']

@@ -187,6 +187,7 @@ if not (restripversion == "") :
 
   DaVinci().appendToMainSequence( [ eventNodeKiller, sc.sequence() ] )
 
+  tuple_Lc2pKpi.Inputs = MyStream.outputLocations()
 
 
 
