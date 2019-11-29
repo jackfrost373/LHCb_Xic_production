@@ -5,8 +5,10 @@
 #################
 
 
-import ROOT, Imports
+import ROOT, Imports, sys
 from Imports import *
+sys.path.append('./MassFitting/')
+from fittingDict import fittingDict
 
 getData        = True  # Load data.
 makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
@@ -46,26 +48,24 @@ for element in folders_dict :
       for particle_type in particle_types :
 
         if(getData) :
-  
+          
           # Get the data
-          print ("I am working on"+particle_type+y_bin+pt_bin)
+          print ("I am working on "+name+"_"+particle_type+y_bin+pt_bin)
           f = ROOT.TFile.Open(inputdir+name+"/bins/"+particle_type+"_bin"+y_bin+pt_bin+".root", "READONLY")
           tree = f.Get("DecayTree")
           cuts = "1==1"
           
 
-          #Add a check for which type of particle, thus what these values should be?
-
           if particle_type == "Lc":
           
-              mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2220,2350,"MeV/c^{2}")
-              #check number of entries, inclusive or exclusive???
+              mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
+              #todo: check number of entries, inclusive or exclusive???
               momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
               lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
               
           elif particle_type == "Xic":
                        
-              mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2400,2490,"MeC/c^{2}")
+              mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
               momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
               lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
                        
@@ -90,23 +90,63 @@ for element in folders_dict :
          #######
 
          print ("Building the fit model...")
+
+         shape="GaussCB" #See above, default (for now)
+         particle=particle_type
+
+         fullname = name+"_"+particle_type+"_bin"+y_bin+pt_bin+".root"
+
+         if shape == "GaussCB":
+            if fullname in fittingDict["GaussCB"][particle]:
+              print ("I found special values in the dictionary...using them")
+              mass_range = fittingDict["GaussCB"][particle][fullname]["mass_range"]
+              peak_range = fittingDict["GaussCB"][particle][fullname]["peak_range"]
+			
+              normalisation_factor = fittingDict["GaussCB"][particle][fullname]["normalisation_factor"]
+              #gauss_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["gauss_normalisation_factor"]
+              exponential_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["exponential_normalisation_factor"]
+			
+              exponential_range = fittingDict["GaussCB"][particle][fullname]["exponential_range"]
+			
+              width_range = fittingDict["GaussCB"][particle][fullname]["width_range"]
+			
+              cb_width_range = fittingDict["GaussCB"][particle][fullname]["cb_width_range"]
+              cb_alpha_range = fittingDict["GaussCB"][particle][fullname]["cb_alpha_range"]
+              cb_n_range = fittingDict["GaussCB"][particle][fullname]["cb_n_range"]
+              #cb_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["cb_normalisation_factor"]
+            else:
+              print ("I am using general values from the dictionary")
+              mass_range = fittingDict["GaussCB"][particle]["general"]["mass_range"]
+              peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
+			
+              normalisation_factor = fittingDict["GaussCB"][particle]["general"]["normalisation_factor"]
+              #gauss_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["gauss_normalisation_factor"]
+              exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
+			
+              exponential_range = fittingDict["GaussCB"][particle]["general"]["exponential_range"]
+			
+              width_range = fittingDict["GaussCB"][particle]["general"]["width_range"]
+			
+              cb_width_range = fittingDict["GaussCB"][particle]["general"]["cb_width_range"]
+              cb_alpha_range = fittingDict["GaussCB"][particle]["general"]["cb_alpha_range"]
+              cb_n_range = fittingDict["GaussCB"][particle]["general"]["cb_n_range"]
+              #cb_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["cb_normalisation_factor"]
+        
+         mass = ROOT.RooRealVar("lcplus_MM","Mass", mass_range[0],mass_range[1], "MeV/c^{2}")
          
-         if particle_type == "Lc":
-           gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",2288,2280,2290)
-         elif particle_type == "Xic":
-           gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",2440,2400,2490)
-         gauss_width = ROOT.RooRealVar("gauss_width","Width",2,0,10)
+         gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0],peak_range[1],peak_range[2])
+         gauss_width = ROOT.RooRealVar("gauss_width","Width",width_range[0],width_range[1],width_range[2])
          Gauss       = ROOT.RooGaussian("Gauss","Gaussian signal part", mass, gauss_mean, gauss_width)
 
-         cb_width    = ROOT.RooRealVar("cb_width","CB Width",2,0,15)
-         cb_alpha    = ROOT.RooRealVar("cb_alpha","CB Exp.const",1.0,0.0,5.0)
-         cb_n        = ROOT.RooRealVar("cb_n","CB Exp.crossover",1.0,0.0,15.0)
+         cb_width    = ROOT.RooRealVar("cb_width","CB Width",cb_width_range[0],cb_width_range[1],cb_width_range[2])
+         cb_alpha    = ROOT.RooRealVar("cb_alpha","CB Exp.const",cb_alpha_range[0],cb_alpha_range[1],cb_alpha_range[2])
+         cb_n        = ROOT.RooRealVar("cb_n","CB Exp.crossover",cb_n_range[0],cb_n_range[1],cb_n_range[2])
          CB          = ROOT.RooCBShape("myCB","Crystal Ball signal part", mass, gauss_mean, cb_width, cb_alpha, cb_n)
 
          sigfrac     = ROOT.RooRealVar("sigfrac","Gauss / CB fraction", 0.5, 0, 1)
          sigshape    = ROOT.RooAddPdf ("sigshape", "Shape of the Signal", ROOT.RooArgList(Gauss, CB), ROOT.RooArgList(sigfrac))
 
-         exponent    = ROOT.RooRealVar("exponent","C", 0.001, -0.2, 0.2)
+         exponent    = ROOT.RooRealVar("exponent","C", exponential_range[0],exponential_range[1],exponential_range[2])
          bkgshape    = ROOT.RooExponential("bkgshape","Exponential Bkg shape", mass, exponent)
 
          sig_norm = ROOT.RooRealVar("sig_norm","Signal Yield", tree.GetEntries()/200 * 3/10, 0, tree.GetEntries()*2)
