@@ -15,7 +15,7 @@ def pathFinder(basePath, year, magPol, filename):
 #You just need to give the full path of the data file, the function will parse the important 
 #information from it it is important that the data file is arranged in a structure like this:
 #   .../year_MagPol/bins/file.root
-def shapeFit(shape,fittingDict,fullPath):
+def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	
 	#ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
@@ -35,7 +35,6 @@ def shapeFit(shape,fittingDict,fullPath):
 			peak_range = fittingDict["GaussCB"][particle][fullname]["peak_range"]
 			
 			normalisation_factor = fittingDict["GaussCB"][particle][fullname]["normalisation_factor"]
-			gauss_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["gauss_normalisation_factor"]
 			exponential_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["exponential_normalisation_factor"]
 			
 			exponential_range = fittingDict["GaussCB"][particle][fullname]["exponential_range"]
@@ -45,13 +44,11 @@ def shapeFit(shape,fittingDict,fullPath):
 			cb_width_range = fittingDict["GaussCB"][particle][fullname]["cb_width_range"]
 			cb_alpha_range = fittingDict["GaussCB"][particle][fullname]["cb_alpha_range"]
 			cb_n_range = fittingDict["GaussCB"][particle][fullname]["cb_n_range"]
-			cb_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["cb_normalisation_factor"]
 		else:
 			mass_range = fittingDict["GaussCB"][particle]["general"]["mass_range"]
 			peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
 			
 			normalisation_factor = fittingDict["GaussCB"][particle]["general"]["normalisation_factor"]
-			gauss_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["gauss_normalisation_factor"]
 			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
 			
 			exponential_range = fittingDict["GaussCB"][particle]["general"]["exponential_range"]
@@ -61,7 +58,6 @@ def shapeFit(shape,fittingDict,fullPath):
 			cb_width_range = fittingDict["GaussCB"][particle]["general"]["cb_width_range"]
 			cb_alpha_range = fittingDict["GaussCB"][particle]["general"]["cb_alpha_range"]
 			cb_n_range = fittingDict["GaussCB"][particle]["general"]["cb_n_range"]
-			cb_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["cb_normalisation_factor"]
 
 	c1 = ROOT.TCanvas("c1","c1",1200,700)
 	pullpad1 = ROOT.TPad("pullpad1", "",0.0,0.25,1.0,1.0)
@@ -190,7 +186,8 @@ def shapeFit(shape,fittingDict,fullPath):
 	c1.Draw()
 
 	#PDF CREATION#
-	strName = "./PDF_output/"+ fullname + ".pdf"
-	c1.SaveAs(strName)
+	if PDF == True:
+		strName = "./PDF_output/"+ fullname + ".pdf"
+		c1.SaveAs(strName)
 	
 	return mainDict
