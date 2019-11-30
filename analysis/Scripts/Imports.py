@@ -15,7 +15,7 @@ def getMCCuts (particle):
         return IDcuts + "&&" + BKGCAT
 
 def getDataCuts ():
-    cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
+    cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0 && lcplus_L0HadronDecision_TOS == 1"
     return cuts
 
 def getBackgroundCuts(particle):
@@ -135,7 +135,7 @@ def datatree():
         tree.Add(filedir + "/" + str(job) + "/output/" + filename)
     return tree
 
-Lc_MC_filedir = mcpwd+"15"
+Lc_MC_filedir = mcpwd+"29"
 Lc_MC_filename = "MC_Lc2pKpiTuple_25103006.root"
 
 Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
@@ -146,7 +146,7 @@ def Lc_MC_datatree():
             Lc_MC_tree.Add("{0}/{1}/output/{2}".format(Lc_MC_filedir,job,Lc_MC_filename))
     return Lc_MC_tree
 
-Xic_MC_filedir_1 = ximcpwd+"17"
+Xic_MC_filedir_1 = ximcpwd+"30"
 Xic_MC_filename_1 = "MC_Lc2pKpiTuple_25103029.root"
 
 Xic_MC_tree_1 = TChain("tuple_Lc2pKpi/DecayTree")
