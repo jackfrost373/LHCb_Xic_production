@@ -1,5 +1,5 @@
 
-year = "2017"  
+year = '2017'
 # when running ganga, make sure year matches the dst year
 
 from Configurables import DaVinci, LHCbApp
@@ -8,14 +8,17 @@ from DecayTreeTuple.Configuration import *
 
 
 decay = "Lc2pKpi"
-decay = "Lc2pKpi_noipchi2"
+#decay = "Lc2pKpi_noipchi2"
 #decay = "Lb2LcMuX"
 
 events = -1   # for all. Default for ganga!
+#events = 10000
 
 
 ####################
 # Define settings according to decay
+
+Turbo = False
 
 if (decay == "Lc2pKpi") :
   # (prompt) Lc -> p K pi 
@@ -23,6 +26,11 @@ if (decay == "Lc2pKpi") :
   stream      = "Charm"
   decaystring = '${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC'
   inputtype   = "MDST"
+
+  if year in ["2016","2017","2018"] :
+    Turbo = True
+    stream = "Charmspec"
+    striplines = ["Hlt2CharmHadLcpToPpKmPipTurbo", "Hlt2CharmHadXicpToPpKmPipTurbo"]
 
 if (decay == "Lb2LcMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
@@ -43,6 +51,7 @@ if (decay == "Lc2pKpi_noipchi2") :
 
 mytuple = DecayTreeTuple( 'tuple_{0}'.format(decay) )
 if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
+if(Turbo)             : mytuple.Inputs = ['{0}/Particles'.format(stripline) for stripline in striplines ]
 if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
 mytuple.setDescriptorTemplate( decaystring )
 
@@ -74,6 +83,7 @@ tupletools.append("TupleToolRecoStats")  # nPVs, nTracks, etc.
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
  "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
+ "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision",
  "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:
@@ -108,20 +118,23 @@ for tup in tuples:
               
 
 # Filter events for faster processing. (Note the case for multiple lines)
-from PhysConf.Filters import LoKi_Filters
-fltrs = LoKi_Filters (
-        STRIP_Code = "HLT_PASS_RE('Stripping{0}.*Decision')".format(striplines[0])
-        )
-DaVinci().EventPreFilters = fltrs.filters('Filters')
+if not Turbo : 
+  from PhysConf.Filters import LoKi_Filters
+  fltrs = LoKi_Filters (
+          STRIP_Code = "HLT_PASS_RE('Stripping{0}.*Decision')".format(striplines[0])
+          )
+  DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
 if(inputtype=="MDST") : DaVinci().RootInTES = "/Event/{0}".format(stream)
+if(Turbo)             : DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
 DaVinci().InputType = inputtype
 DaVinci().DataType = year
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
 DaVinci().EvtMax = events
+DaVinci().Turbo = Turbo
 #DaVinci().DDDBtag   = "dddb-20170721-3"         # Gauss-2016 (sim09b)
 #DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
 #DaVinci().appendToMainSequence(tuples)

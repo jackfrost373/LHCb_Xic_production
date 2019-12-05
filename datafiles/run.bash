@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set env for local running
+#LbLogin -c x86_64-slc6-gcc62-opt
+
 # function to test if ganga and davinci are compatibally configured.
 #function test_equal () {
 #  davincitype=`grep "$1" options/davinci_options_MC.py`
@@ -22,15 +25,17 @@
 
 # Mass submit real data over grid
 #magnets=( "MagUp" "MagDown" )
+magnets=( "MagDown" )
 #years=( "2011" "2012" "2015" "2016" "2017" "2018" )
-#for magnet in "${magnets[@]}"; do
-#  for year in "${years[@]}"; do
-#    sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
-#    sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
-#    sed -i "3s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
-#  done
-#  ganga ./options/ganga_options.py
-#done
+years=( "2017" )
+for magnet in "${magnets[@]}"; do
+  for year in "${years[@]}"; do
+    sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
+    sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
+    sed -i "3s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
+  done
+  ganga ./options/ganga_options.py
+done
 
 
 
@@ -41,25 +46,25 @@
 
 
 # Mass submit simulation over grid
-magnets=( "MagUp" "MagDown" )
+#magnets=( "MagUp" "MagDown" )
 #magnets=( "MagDown" )
 #years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-years=( "2012" )
+#years=( "2012" )
 #eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
-eventtypes=( 25103006 )
-for magnet in "${magnets[@]}"; do
-  for year in "${years[@]}"; do
-    for eventtype in "${eventtypes[@]}"; do
-      for file in ./options/davinci_options_MC.py ./options/ganga_options_MC.py ; do
-        sed -i "2s/.*/magnet = '${magnet}'/" $file
-        sed -i "4s/.*/year = '${year}'/" $file
-        sed -i "5s/.*/eventtype = $eventtype/" $file
-      done
-      ganga ./options/ganga_options_MC.py
-    done
-  done
-done
+#eventtypes=( 25103006 )
+#for magnet in "${magnets[@]}"; do
+#  for year in "${years[@]}"; do
+#    for eventtype in "${eventtypes[@]}"; do
+#      for file in ./options/davinci_options_MC.py ./options/ganga_options_MC.py ; do
+#        sed -i "2s/.*/magnet = '${magnet}'/" $file
+#        sed -i "4s/.*/year = '${year}'/" $file
+#        sed -i "5s/.*/eventtype = $eventtype/" $file
+#      done
+#      ganga ./options/ganga_options_MC.py
+#    done
+#  done
+#done
 
 
 
@@ -68,6 +73,7 @@ done
 # Download local dst from the grid for testing. Look up the LFN from the Dirac bookkeeping.
 #lhcb-proxy-init
 #lb-run LHCbDirac dirac-dms-get-file /lhcb/LHCb/Collision17/CHARM.MDST/00071700/0000/00071700_00000137_1.charm.mdst
+#lb-run LHCbDirac dirac-dms-get-file /lhcb/LHCb/Collision17/CHARMSPEC.MDST/00066595/0000/00066595_00000413_1.charmspec.mdst
 
 # Inspect TES locations inside dst
 #lb-run Bender/latest dst-dump -f -n 5000 ./data/Collision17_MagDown_Reco17_Stripping29r2_CHARM/00071700_00000137_1.charm.mdst
@@ -76,6 +82,7 @@ done
 
 # Run over local dst to test ntuple production [data]
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision17_MagDown_Reco17_Stripping29r2_CHARM/includeLocal.py | tee logs/davinciRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py ./data/Collision17_MagDown_Turbo04_CHARMSPEC/includeLocal.py | tee logs/davinciRun.log
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision16_MagDown_Reco16_Stripping28r1_SEMILEPTONIC/includeLocal.py
 
 
