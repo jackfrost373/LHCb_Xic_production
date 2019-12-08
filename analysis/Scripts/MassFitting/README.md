@@ -24,7 +24,7 @@ The basePath parameter is a path string that points to the folder containing the
 
 This function then returns the full path of the file. Is made to be used in the shapefit function as the fullpath variable.
 
-**combinedShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True) **
+**combinedShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True)**
 
 This function loops through each year and depending on the value of the wantedBin parameter ("y", "pt" or "both"), it will make fits for the combined bins and output a PDF.
 
