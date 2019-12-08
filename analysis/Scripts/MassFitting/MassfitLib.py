@@ -17,7 +17,7 @@ def pathFinder(basePath, year, magPol, filename):
 #   .../year_MagPol/bins/file.root
 def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	
-	#ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
+	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
 	parsePath = fullPath.split('/')
 	filename = parsePath[-1]
@@ -28,8 +28,85 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	particle = parseFName[0]
 
 	fullname = year + "_" + magPol + "_" + filename
+
+	mcfile = ROOT.TFile(fullPath, "READONLY")
+	mctree = mcfile.Get("DecayTree")
+	mctree.SetName("MCtree")
 	
-	if shape == "GaussCB":
+	return fit(mctree, shape, fittingDict, fullname, particle, PDF)
+	
+#wantedBin represents the type to combine ("both", "y" or "pt")
+#This script passes through all the folders and depending on the chosen wantedBin param
+#will combine the the bins in each year separately (MagUp and MagDown are donetogether)
+def combinedShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True):
+	years = [2011,2012,2015,2016,2017,2018]
+	magPol = ["MagUp", "MagDown"]
+	
+	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
+	
+	for year in years:
+		y = []
+		pt = []
+		for pol in magPol:
+			for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+				parseName = filename.split('_')
+				if parseName[2] not in y:
+					y.append(parseName[2])
+				if parseName[3] not in pt:
+					pt.append(parseName[3])
+
+		if(wantedBin == "both" or wantedBin == "y"):	
+			for binY in y:		
+				treeYlc = ROOT.TChain("DecayTree")
+				treeYxic = ROOT.TChain("DecayTree")
+				added = 0
+				for pol in magPol:
+					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+						parseName = filename.split('_')
+						if (parseName[0] == "Lc" and parseName[2] == binY):
+							treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+							added += 1
+				if added > 0:
+					fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
+				
+				added = 0
+				for pol in magPol:
+					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+						parseName = filename.split('_')
+						if (parseName[0] == "Xic" and parseName[2] == binY):
+							treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+							added += 1
+				if added > 0:
+					fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
+					
+		if(wantedBin == "both" or wantedBin == "pt"):
+			for binPT in pt:
+				treePTlc = ROOT.TChain("DecayTree")
+				treePTxic = ROOT.TChain("DecayTree")
+				added = 0
+				for pol in magPol:
+					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+						parseName = filename.split('_')
+						if (parseName[0] == "Lc" and parseName[3] == binPT):
+							treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+							added += 1
+				if added > 0:
+					fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
+				
+				added = 0
+				for pol in magPol:
+					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+						parseName = filename.split('_')
+						if (parseName[0] == "Xic" and parseName[3] == binPT):
+							treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+							added += 1
+				if added > 0:
+					fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
+		
+	
+def fit(mctree, shape, fittingDict, fullname, particle, PDF=True):
+	
+	if shape == "GaussCB":		
 		if fullname in fittingDict["GaussCB"][particle]:
 			mass_range = fittingDict["GaussCB"][particle][fullname]["mass_range"]
 			peak_range = fittingDict["GaussCB"][particle][fullname]["peak_range"]
@@ -44,6 +121,21 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 			cb_width_range = fittingDict["GaussCB"][particle][fullname]["cb_width_range"]
 			cb_alpha_range = fittingDict["GaussCB"][particle][fullname]["cb_alpha_range"]
 			cb_n_range = fittingDict["GaussCB"][particle][fullname]["cb_n_range"]
+			
+		elif(fullname.startswith("Combined")):
+			mass_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["mass_range"]
+			peak_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["peak_range"]
+			
+			normalisation_factor = fittingDict["GaussCB"][particle]["CombinedGeneral"]["normalisation_factor"]
+			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["CombinedGeneral"]["exponential_normalisation_factor"]
+			
+			exponential_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["exponential_range"]
+			
+			width_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["width_range"]
+			
+			cb_width_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_width_range"]
+			cb_alpha_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_alpha_range"]
+			cb_n_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_n_range"]
 		else:
 			mass_range = fittingDict["GaussCB"][particle]["general"]["mass_range"]
 			peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
@@ -71,10 +163,6 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	pullpad2.SetLeftMargin(0.12)
 	pullpad2.SetRightMargin(0.05)
 	pullpad1.cd()
-
-	mcfile = ROOT.TFile(fullPath, "READONLY")
-	mctree = mcfile.Get("DecayTree")
-	mctree.SetName("MCtree")
 	
 	nbins = 100
 	masshist = ROOT.TH1F("masshist","Histogram of Lc mass",nbins,mass_range[0],mass_range[1])
@@ -84,7 +172,6 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	
 	mass = ROOT.RooRealVar("mass","Mass",mass_range[0],mass_range[1],"MeV/c^{2}")
 	#Here is where the different fit shapes are implemented with their various parameters
-
 	if shape == "GaussCB":
 		gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0], peak_range[1], peak_range[2])
 		gauss_width = ROOT.RooRealVar("gauss_width","Width",width_range[0], width_range[1], width_range[2])
@@ -148,24 +235,6 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 			"CB_n_val" : cb_n.getValV(),
 			"CB_n_err" : cb_n.getError()
 		}
-		
-	
-	# if shape == "Bukin":
-		# mainDict = {
-			# "yield_val" : signal_yield,
-			# "yield_err" : signal_error,
-			# "chi2ndf" : chi2ndf,
-			# "Bukin_Xp_val" : Bukin_Xp.getValV(),
-			# "Bukin_Xp_err" : Bukin_Xp.getError(),
-			# "Bukin_Sigp_val" : Bukin_Sigp.getValV(),
-			# "Bukin_Sigp_err" : Bukin_Sigp.getError(),
-			# "Bukin_xi_val" : Bukin_xi.getValV(),
-			# "Bukin_xi_err" : Bukin_xi.getError(),
-			# "Bukin_rho1_val" : Bukin_rho1.getValV(),
-			# "Bukin_rho1_err" : Bukin_rho1.getError(),
-			# "Bukin_rho2_val" : Bukin_rho2.getValV(),
-			# "Bukin_rho2_err" : Bukin_rho2.getError()
-		# }
 	
 	pullpad2.cd()
 	framepull = mass.frame()
@@ -188,6 +257,9 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	#PDF CREATION#
 	if PDF == True:
 		strName = "./PDF_output/"+ fullname + ".pdf"
-		c1.SaveAs(strName)
+		c1.SaveAs(strName)	
+	
+	masshist.Delete()
+	ROOT.gDirectory.Delete("mymasshist")
 	
 	return mainDict
