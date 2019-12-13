@@ -1,5 +1,7 @@
 
-year = '2017'
+year = '2016'
+decay = 'Lc2pKpi'
+
 # when running ganga, make sure year matches the dst year
 
 from Configurables import DaVinci, LHCbApp
@@ -7,12 +9,12 @@ from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
 
-decay = "Lc2pKpi"
+#decay = "Lc2pKpi"
 #decay = "Lc2pKpi_noipchi2"
 #decay = "Lb2LcMuX"
 
 events = -1   # for all. Default for ganga!
-#events = 10000
+#events = 20000
 
 
 ####################
@@ -20,7 +22,7 @@ events = -1   # for all. Default for ganga!
 
 Turbo = False
 
-if (decay == "Lc2pKpi") :
+if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
   # (prompt) Lc -> p K pi 
   striplines  = ["LambdaCForPromptCharm"]
   stream      = "Charm"
@@ -29,8 +31,14 @@ if (decay == "Lc2pKpi") :
 
   if year in ["2016","2017","2018"] :
     Turbo = True
-    stream = "Charmspec"
-    striplines = ["Hlt2CharmHadLcpToPpKmPipTurbo", "Hlt2CharmHadXicpToPpKmPipTurbo"]
+    if (decay == "Lc2pKpi") : 
+      striplines = ["Hlt2CharmHadLcpToPpKmPipTurbo"]
+      stream = "Charmspec"
+      if( year == "2016" ) :
+        stream = "Charmspecprescaled"
+    if (decay ==  "Xic2pKpi") :
+      striplines = ["Hlt2CharmHadXicpToPpKmPipTurbo"]
+      stream = "Charmmultibody"
 
 if (decay == "Lb2LcMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
@@ -50,10 +58,11 @@ if (decay == "Lc2pKpi_noipchi2") :
 ## Define ntuples
 
 mytuple = DecayTreeTuple( 'tuple_{0}'.format(decay) )
+mytuple.setDescriptorTemplate( decaystring )
+if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
 if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
 if(Turbo)             : mytuple.Inputs = ['{0}/Particles'.format(stripline) for stripline in striplines ]
-if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
-mytuple.setDescriptorTemplate( decaystring )
+if(Turbo and year in ["2015","2016"]) : mytuple.InputPrimaryVertices = '/Event/Turbo/Primary'
 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 if( "Lc2pKpi" in decay ) :
@@ -111,7 +120,7 @@ for tup in tuples:
     
     # refit PVs with exclusion of our tracks of interest
     tup.ReFitPVs = True
-
+  
     # add ntuple to the list of running algorithms
     DaVinci().UserAlgorithms += [tup]
 
@@ -126,8 +135,13 @@ if not Turbo :
   DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
-if(inputtype=="MDST") : DaVinci().RootInTES = "/Event/{0}".format(stream)
-if(Turbo)             : DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
+if(inputtype=="MDST") : 
+  DaVinci().RootInTES = "/Event/{0}".format(stream)
+if(Turbo)             : 
+  DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
+  if(year in ["2015","2016"]) :
+    DaVinci().RootInTES = "/Event/Turbo".format(stream)
+
 DaVinci().InputType = inputtype
 DaVinci().DataType = year
 DaVinci().Simulation = False

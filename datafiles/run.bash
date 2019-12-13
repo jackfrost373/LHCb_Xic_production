@@ -27,14 +27,22 @@
 #magnets=( "MagUp" "MagDown" )
 magnets=( "MagDown" )
 #years=( "2011" "2012" "2015" "2016" "2017" "2018" )
-years=( "2017" )
+#years=( "2016" "2017" "2018" )
+years=( "2016" )
+decays=( "Lc2pKpi" ) # takes both Lc and Xic from the stripping line
+#decays=( "Lc2pKpi" "Xic2pKpi" ) # only needed for run2 Turbo, as it splits Lc and Xic into different streams
+#decays=( "Xic2pKpi" ) 
 for magnet in "${magnets[@]}"; do
   for year in "${years[@]}"; do
-    sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
-    sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
-    sed -i "3s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
+    for decay in "${decays[@]}"; do
+      sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
+      sed -i "3s/.*/decay = '${decay}'/" ./options/davinci_options.py
+      sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
+      sed -i "3s/.*/decay = '${decay}'/" ./options/ganga_options.py
+      sed -i "4s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
+      ganga ./options/ganga_options.py
+    done
   done
-  ganga ./options/ganga_options.py
 done
 
 
@@ -50,7 +58,7 @@ done
 #magnets=( "MagDown" )
 #years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-#years=( "2012" )
+#years=( "2016" )
 #eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
 #eventtypes=( 25103006 )
 #for magnet in "${magnets[@]}"; do
@@ -74,6 +82,8 @@ done
 #lhcb-proxy-init
 #lb-run LHCbDirac dirac-dms-get-file /lhcb/LHCb/Collision17/CHARM.MDST/00071700/0000/00071700_00000137_1.charm.mdst
 #lb-run LHCbDirac dirac-dms-get-file /lhcb/LHCb/Collision17/CHARMSPEC.MDST/00066595/0000/00066595_00000413_1.charmspec.mdst
+#lb-run LHCbDirac dirac-dms-get-file /lhcb/LHCb/Collision17/CHARMCHARGED.MDST/00066595/0000/00066595_00000992_1.charmcharged.mdst
+#lb-run LHCbDirac dirac-dms-get-file /lhcb/MC/2017/ALLSTREAMS.DST/00090974/0000/00090974_00000379_7.AllStreams.dst
 
 # Inspect TES locations inside dst
 #lb-run Bender/latest dst-dump -f -n 5000 ./data/Collision17_MagDown_Reco17_Stripping29r2_CHARM/00071700_00000137_1.charm.mdst
@@ -81,9 +91,12 @@ done
 
 
 # Run over local dst to test ntuple production [data]
+#LbLogin -c x86_64-centos7-gcc62-opt
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision17_MagDown_Reco17_Stripping29r2_CHARM/includeLocal.py | tee logs/davinciRun.log
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py ./data/Collision17_MagDown_Turbo04_CHARMSPEC/includeLocal.py | tee logs/davinciRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py ./data/Collision17_MagDown_Turbo04_CHARMMULTIBODY/includeLocal.py | tee logs/davinciRun.log
 #lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options.py /data/bfys/jdevries/dst/Collision16_MagDown_Reco16_Stripping28r1_SEMILEPTONIC/includeLocal.py
+
 
 
 # Run over local dst to test ntuple production [MC]
@@ -93,6 +106,7 @@ done
 # if restripping: run with correct DaVinci version (see http://lhcbdoc.web.cern.ch/lhcbdoc/davinci/releases/ , https://twiki.cern.ch/twiki/bin/view/Main/ProcessingPasses )
 #LbLogin -c x86_64-slc6-gcc48-opt
 #lb-run DaVinci/v36r1p5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2012_MagDown_Pythia8_Sim08a_Reco14_25103006_ALLSTREAMS/includeLocal.py | tee logs/davinciMCRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2017_MagDown_Pythia8_Sim09f_Reco17_26103090_ALLSTREAMS/includeLocal.py
 
 #mv *.root output/
 
