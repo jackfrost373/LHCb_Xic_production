@@ -38,71 +38,94 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 #wantedBin represents the type to combine ("both", "y" or "pt")
 #This script passes through all the folders and depending on the chosen wantedBin param
 #will combine the the bins in each year separately (MagUp and MagDown are donetogether)
-def combinedShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True):
-	years = [2011,2012,2015,2016,2017,2018]
+def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = True):
+	magPol = ["MagUp", "MagDown"]
+	
+	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
+
+	y = []
+	pt = []
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[2] not in y:
+				y.append(parseName[2])
+			if parseName[3] not in pt:
+				pt.append(parseName[3])
+
+	if(wantedBin == "both" or wantedBin == "y"):	
+		for binY in y:		
+			treeYlc = ROOT.TChain("DecayTree")
+			treeYxic = ROOT.TChain("DecayTree")
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Lc" and parseName[2] == binY):
+						treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
+			
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Xic" and parseName[2] == binY):
+						treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
+				
+	if(wantedBin == "both" or wantedBin == "pt"):
+		for binPT in pt:
+			treePTlc = ROOT.TChain("DecayTree")
+			treePTxic = ROOT.TChain("DecayTree")
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Lc" and parseName[3] == binPT):
+						treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
+			
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Xic" and parseName[3] == binPT):
+						treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
+
+#Assembles all files for a specific particle per year and fits it, and outputs a PDF file.
+def yearTotalShapeFit(year,shape,fittingDict,path, PDF = True):
 	magPol = ["MagUp", "MagDown"]
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 	
-	for year in years:
-		y = []
-		pt = []
-		for pol in magPol:
-			for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
-				parseName = filename.split('_')
-				if parseName[2] not in y:
-					y.append(parseName[2])
-				if parseName[3] not in pt:
-					pt.append(parseName[3])
+	treeLc = ROOT.TChain("DecayTree")
+	treeXic = ROOT.TChain("DecayTree")
+	
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[0] == "Xic":
+				treeXic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+	fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic")
+	
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[0] == "Lc":
+				treeLc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+	fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc")
 
-		if(wantedBin == "both" or wantedBin == "y"):	
-			for binY in y:		
-				treeYlc = ROOT.TChain("DecayTree")
-				treeYxic = ROOT.TChain("DecayTree")
-				added = 0
-				for pol in magPol:
-					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
-						parseName = filename.split('_')
-						if (parseName[0] == "Lc" and parseName[2] == binY):
-							treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-							added += 1
-				if added > 0:
-					fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
-				
-				added = 0
-				for pol in magPol:
-					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
-						parseName = filename.split('_')
-						if (parseName[0] == "Xic" and parseName[2] == binY):
-							treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-							added += 1
-				if added > 0:
-					fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
-					
-		if(wantedBin == "both" or wantedBin == "pt"):
-			for binPT in pt:
-				treePTlc = ROOT.TChain("DecayTree")
-				treePTxic = ROOT.TChain("DecayTree")
-				added = 0
-				for pol in magPol:
-					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
-						parseName = filename.split('_')
-						if (parseName[0] == "Lc" and parseName[3] == binPT):
-							treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-							added += 1
-				if added > 0:
-					fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
-				
-				added = 0
-				for pol in magPol:
-					for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
-						parseName = filename.split('_')
-						if (parseName[0] == "Xic" and parseName[3] == binPT):
-							treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-							added += 1
-				if added > 0:
-					fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
 		
+	
 	
 def fit(mctree, shape, fittingDict, fullname, particle, PDF=True):
 	
