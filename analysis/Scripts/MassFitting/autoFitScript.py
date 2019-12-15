@@ -1,7 +1,7 @@
 import ROOT, os, MassfitLib as mf 
 from fittingDict import fittingDict
 
-directory = "/home/exultimathule/Code/HonoursProgramme/LcAnalysis_Simon/analysis/Scripts/MassFitting/testDirectories/"
+directory = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
 years = [2011,2012,2015,2016,2017,2018]
 magPol = ["MagUp", "MagDown"]
 mainDict = {}
@@ -14,7 +14,7 @@ def main():
 		for j in magPol:
 			mainDict[i][j] = {}
 			for filename in os.listdir(directory + str(i) + "_" + j + "/bins/"):
-				mf.shapeFit("GaussCB", fittingDict, mf.pathFinder(directory,i,j,filename))
+				mainDict[i][j][filename] = mf.shapeFit("GaussCB", fittingDict, mf.pathFinder(directory,i,j,filename))
 				
 	
 	# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION

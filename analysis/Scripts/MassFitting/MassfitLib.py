@@ -38,7 +38,8 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 #wantedBin represents the type to combine ("both", "y" or "pt")
 #This script passes through all the folders and depending on the chosen wantedBin param
 #will combine the the bins in each year separately (MagUp and MagDown are donetogether)
-def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = True):
+def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = True):
+	paramDict = {}
 	magPol = ["MagUp", "MagDown"]
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
@@ -52,6 +53,9 @@ def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF
 				y.append(parseName[2])
 			if parseName[3] not in pt:
 				pt.append(parseName[3])
+				
+	paramDict["yBins"] = y
+	paramDict["ptBins"] = pt
 
 	if(wantedBin == "both" or wantedBin == "y"):	
 		for binY in y:		
@@ -65,7 +69,7 @@ def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF
 						treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
+				paramDict[binY + "_Lc"] = fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
 			
 			added = 0
 			for pol in magPol:
@@ -75,7 +79,7 @@ def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF
 						treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
+				paramDict[binY + "_Xic"] = fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
 				
 	if(wantedBin == "both" or wantedBin == "pt"):
 		for binPT in pt:
@@ -89,7 +93,7 @@ def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF
 						treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
+				paramDict[binPT + "_Lc"] = fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
 			
 			added = 0
 			for pol in magPol:
@@ -99,10 +103,14 @@ def yearCombinedBinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF
 						treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
+				paramDict[binPT + "_Xic"] = fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
+
+	return paramDict
 
 #Assembles all files for a specific particle per year and fits it, and outputs a PDF file.
+#returns a dictionary with the fitting parameters and yields
 def yearTotalShapeFit(year,shape,fittingDict,path, PDF = True):
+	paramDict = {}
 	magPol = ["MagUp", "MagDown"]
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
@@ -115,14 +123,16 @@ def yearTotalShapeFit(year,shape,fittingDict,path, PDF = True):
 			parseName = filename.split('_')
 			if parseName[0] == "Xic":
 				treeXic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-	fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic")
+	paramDict["Xic"] = fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic")
 	
 	for pol in magPol:
 		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
 			parseName = filename.split('_')
 			if parseName[0] == "Lc":
 				treeLc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-	fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc")
+	paramDict["Lc"] = fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc")
+	
+	return paramDict
 
 		
 	
@@ -145,20 +155,6 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF=True):
 			cb_alpha_range = fittingDict["GaussCB"][particle][fullname]["cb_alpha_range"]
 			cb_n_range = fittingDict["GaussCB"][particle][fullname]["cb_n_range"]
 			
-		elif(fullname.startswith("Combined")):
-			mass_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["mass_range"]
-			peak_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["peak_range"]
-			
-			normalisation_factor = fittingDict["GaussCB"][particle]["CombinedGeneral"]["normalisation_factor"]
-			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["CombinedGeneral"]["exponential_normalisation_factor"]
-			
-			exponential_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["exponential_range"]
-			
-			width_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["width_range"]
-			
-			cb_width_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_width_range"]
-			cb_alpha_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_alpha_range"]
-			cb_n_range = fittingDict["GaussCB"][particle]["CombinedGeneral"]["cb_n_range"]
 		else:
 			mass_range = fittingDict["GaussCB"][particle]["general"]["mass_range"]
 			peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
