@@ -15,7 +15,7 @@ def pathFinder(basePath, year, magPol, filename):
 #You just need to give the full path of the data file, the function will parse the important 
 #information from it it is important that the data file is arranged in a structure like this:
 #   .../year_MagPol/bins/file.root
-def shapeFit(shape,fittingDict,fullPath, PDF = True):
+def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/"):
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
@@ -33,12 +33,14 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True):
 	mctree = mcfile.Get("DecayTree")
 	mctree.SetName("MCtree")
 	
-	return fit(mctree, shape, fittingDict, fullname, particle, PDF)
+	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath)
 	
 #wantedBin represents the type to combine ("both", "y" or "pt")
 #This script passes through all the folders and depending on the chosen wantedBin param
-#will combine the the bins in each year separately (MagUp and MagDown are donetogether)
-def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = True):
+#will combine the the bins in each year separately (MagUp and MagDown are donetogether).
+#Returns a dictionary with the fitting parameters and yields. The keys "yBins" and "ptBins"
+#are associated with lists containing all the possible bin names.
+def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDFpath = "./PDF_output/", PDF = True):
 	paramDict = {}
 	magPol = ["MagUp", "MagDown"]
 	
@@ -69,7 +71,7 @@ def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = Tr
 						treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				paramDict[binY + "_Lc"] = fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc")
+				paramDict[binY + "_Lc"] = fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc",PDF,PDFpath)
 			
 			added = 0
 			for pol in magPol:
@@ -79,7 +81,7 @@ def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = Tr
 						treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				paramDict[binY + "_Xic"] = fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic")
+				paramDict[binY + "_Xic"] = fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic",PDF,PDFpath)
 				
 	if(wantedBin == "both" or wantedBin == "pt"):
 		for binPT in pt:
@@ -93,7 +95,7 @@ def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = Tr
 						treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				paramDict[binPT + "_Lc"] = fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc")
+				paramDict[binPT + "_Lc"] = fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc",PDF,PDFpath)
 			
 			added = 0
 			for pol in magPol:
@@ -103,13 +105,13 @@ def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDF = Tr
 						treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
 						added += 1
 			if added > 0:
-				paramDict[binPT + "_Xic"] = fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic")
-
+				paramDict[binPT + "_Xic"] = fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic",PDF,PDFpath)
+		
 	return paramDict
 
 #Assembles all files for a specific particle per year and fits it, and outputs a PDF file.
 #returns a dictionary with the fitting parameters and yields
-def yearTotalShapeFit(year,shape,fittingDict,path, PDF = True):
+def yearTotalShapeFit(year,shape,fittingDict,path, PDFpath = "./PDF_output/", PDF = True):
 	paramDict = {}
 	magPol = ["MagUp", "MagDown"]
 	
@@ -123,21 +125,19 @@ def yearTotalShapeFit(year,shape,fittingDict,path, PDF = True):
 			parseName = filename.split('_')
 			if parseName[0] == "Xic":
 				treeXic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-	paramDict["Xic"] = fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic")
+	paramDict["Xic"] = fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic",PDF,PDFpath)
 	
 	for pol in magPol:
 		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
 			parseName = filename.split('_')
 			if parseName[0] == "Lc":
 				treeLc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
-	paramDict["Lc"] = fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc")
+	paramDict["Lc"] = fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc",PDF,PDFpath)
 	
 	return paramDict
 
-		
-	
-	
-def fit(mctree, shape, fittingDict, fullname, particle, PDF=True):
+
+def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath):
 	
 	if shape == "GaussCB":		
 		if fullname in fittingDict["GaussCB"][particle]:
@@ -275,7 +275,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF=True):
 
 	#PDF CREATION#
 	if PDF == True:
-		strName = "./PDF_output/"+ fullname + ".pdf"
+		strName = PDFpath + fullname + ".pdf"
 		c1.SaveAs(strName)	
 	
 	masshist.Delete()
