@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2012'
-eventtype = 25103006
+year = '2016'
+eventtype = 26103090
 
 # Before running on the grid, please ensure that:
 # - davinci options file has no input file specified

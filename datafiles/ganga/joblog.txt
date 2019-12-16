@@ -62,3 +62,26 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
       87 | completed |MC_Lc2pKpi_25 |      25 |      GaudiExec |     Dirac |             None |        25103006_MagUp_Pythia8_2012 |       0/0/0/25 
       88 | completed |MC_Lc2pKpi_25 |      25 |      GaudiExec |     Dirac |             None |      25103006_MagDown_Pythia8_2012 |       0/0/0/25 
 
+      # switched to Turbo stream for run 2 [12-12-2019]
+      91 | submitted |Lc2pKpi_20 |     529 |      GaudiExec |          Dirac |           None |          2017_MagDown_Turbo04 |     4/41/3/176 
+      92 | submitted |Lc2pKpi_20 |     659 |      GaudiExec |          Dirac |           None |          2018_MagDown_Turbo05 |       0/5/0/45 
+
+      95 |    failed |MC_Lc2pKpi |     284 |      GaudiExec |          Dirac |           None |   25203000_MagUp_Pythia8_2017 |      0/1/0/283 
+      96 | submitted |MC_Lc2pKpi |     284 |      GaudiExec |          Dirac |           None |   26103090_MagUp_Pythia8_2017 |      13/1/4/82 
+      97 | completed |MC_Lc2pKpi |     283 |      GaudiExec |          Dirac |           None |   25203000_MagUp_Pythia8_2018 |      0/0/0/283 
+      98 |    failed |MC_Lc2pKpi |     278 |      GaudiExec |          Dirac |           None |   26103090_MagUp_Pythia8_2018 |      0/3/0/275 
+     101 | submitted |MC_Lc2pKpi |     285 |      GaudiExec |          Dirac |           None | 25203000_MagDown_Pythia8_2017 |        0/0/0/0 
+     102 |    failed |MC_Lc2pKpi |     281 |      GaudiExec |          Dirac |           None | 26103090_MagDown_Pythia8_2017 |      0/3/0/278 
+     103 | completed |MC_Lc2pKpi |     279 |      GaudiExec |          Dirac |           None | 25203000_MagDown_Pythia8_2018 |      0/0/0/279 
+     104 | completed |MC_Lc2pKpi |     277 |      GaudiExec |          Dirac |           None | 26103090_MagDown_Pythia8_2018 |      0/0/0/277 
+     105 |    failed |MC_Lc2pKpi |     281 |      GaudiExec |          Dirac |           None |   25203000_MagUp_Pythia8_2016 |     0/12/0/269 
+     106 |    failed |MC_Lc2pKpi |     286 |      GaudiExec |          Dirac |           None |   26103090_MagUp_Pythia8_2016 |     0/16/0/270 
+     107 |    failed |MC_Lc2pKpi |     290 |      GaudiExec |          Dirac |           None | 25203000_MagDown_Pythia8_2016 |     0/15/0/275 
+     108 |    failed |MC_Lc2pKpi |     282 |      GaudiExec |          Dirac |           None | 26103090_MagDown_Pythia8_2016 |      0/7/0/275 
+
+     115 | submitted |Xic2pKpi_2 |     186 |      GaudiExec |          Dirac |           None |         2016_MagDown_Turbo03a |      6/9/0/135 
+     116 | submitted |Xic2pKpi_2 |     257 |      GaudiExec |          Dirac |           None |          2017_MagDown_Turbo04 |       0/3/0/22 
+     117 | submitted |Xic2pKpi_2 |     471 |      GaudiExec |          Dirac |           None |          2018_MagDown_Turbo05 |     1/16/0/108 
+     119 | submitted |Lc2pKpi_20 |     527 |      GaudiExec |          Dirac |           None |         2016_MagDown_Turbo03a |      170/1/0/4 
+
+

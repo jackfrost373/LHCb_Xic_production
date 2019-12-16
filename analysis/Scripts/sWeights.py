@@ -1,4 +1,3 @@
-
 #################
 # Example of sWeight / sPlot using RooStats,
 # as per https://arxiv.org/abs/physics/0402083
