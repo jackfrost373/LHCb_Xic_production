@@ -2,6 +2,11 @@ import ROOT, os, math
 from array import array
 #/home/exultimathule/Code/HonoursProgramme/RatioPlotting
 
+#The next functions only use the data gotten from the fitting functions, stored in the returned
+#dictionaries (functions are yearTotalFitting.py, CombinedBinFitting.py and autoFitScript.py)
+
+#This creates the plot of the yield ratio vs. rapidity, and uses the dictionary returned from
+#the CombinedBinFitting.py script as parameter (it is safer to have run the fitting with param "both")
 def ratioVy(combBinDict):
 	years = [2011,2012,2015,2016,2017,2018]
 	
@@ -21,7 +26,7 @@ def ratioVy(combBinDict):
 			y = (float(parsedY[1])+float(parsedY[0]))/2
 			dataDict[year]["x"].append(y)
 			dataDict[year]["y"].append(combBinDict[year][yBin+"_Xic"]["yield_val"]/combBinDict[year][yBin+"_Lc"]["yield_val"])
-			dataDict[year]["ex"].append(0)#(float(parsedY[1])-float(parsedY[0]))/2) #This is for the x errors
+			dataDict[year]["ex"].append(float(parsedY[1])-float(parsedY[0]))/2) #This is for the x errors, size of the bins
 			dataDict[year]["ey"].append(math.sqrt((combBinDict[year][yBin+"_Xic"]["yield_err"]/combBinDict[year][yBin+"_Xic"]["yield_val"])**2 + (combBinDict[year][yBin+"_Lc"]["yield_err"]/combBinDict[year][yBin+"_Lc"]["yield_val"])**2))
 	
 	color = 0
@@ -44,7 +49,7 @@ def ratioVy(combBinDict):
 		
 		color+=1
 	
-	mg.SetTitle("Xic/Lc Ratio vs. Rapidity (y) per Year")
+	mg.SetTitle("Xic/Lc Ratio vs. Rapidity per Year")
 	mg.GetXaxis().SetTitle( 'Rapidity' )
 	mg.GetXaxis().SetRangeUser(2.2,4.8)
 	mg.GetYaxis().SetTitle( 'Xic/Lc Yield Ratio' )
@@ -56,6 +61,8 @@ def ratioVy(combBinDict):
 	c1.SaveAs("RatioVsRapidity.pdf")
 	input("Press enter to quit...")
 
+#This creates the plot of the yield ratio vs. transverse momentum, and uses the dictionary returned from
+#the CombinedBinFitting.py script as parameter (it is safe to have computed with param "both")
 def ratioVpt(combBinDict):
 	years = [2011,2012,2015,2016,2017,2018]
 	
@@ -78,7 +85,7 @@ def ratioVpt(combBinDict):
 			y = (bin1+bin2)/2
 			dataDict[year]["x"].append(y)
 			dataDict[year]["y"].append(combBinDict[year][ptBin+"_Xic"]["yield_val"]/combBinDict[year][ptBin+"_Lc"]["yield_val"])
-			dataDict[year]["ex"].append(0) #xerr) #This is for the x errors
+			dataDict[year]["ex"].append(xerr) #This is for the x errors, size of the bins
 			dataDict[year]["ey"].append(math.sqrt((combBinDict[year][ptBin+"_Xic"]["yield_err"]/combBinDict[year][ptBin+"_Xic"]["yield_val"])**2 + (combBinDict[year][ptBin+"_Lc"]["yield_err"]/combBinDict[year][ptBin+"_Lc"]["yield_val"])**2))
 	
 	color = 0
@@ -102,19 +109,20 @@ def ratioVpt(combBinDict):
 		
 		color+=1
 	
-	mg.SetTitle("Xic/Lc Ratio vs. Transverse Momentum (y) per Year")
+	mg.SetTitle("Xic/Lc Ratio vs. Transverse Momentum per Year")
 	mg.GetXaxis().SetTitle( 'Transverse Momentum (MeV/c)' )
 	mg.GetXaxis().SetRangeUser(3000,18000)
 	mg.GetYaxis().SetTitle( 'Xic/Lc Yield Ratio' )
 	mg.GetYaxis().SetRangeUser(0.01,0.33)
 	mg.Draw('AL*')
-	c1.BuildLegend(.15,.8,.25,.6,"Years")
+	c1.BuildLegend(.75,.8,.85,.6,"Years")
 	c1.Update()		
 	c1.Draw()
 	c1.SaveAs("RatioVsTransverseMomentum.pdf")
 	input("Press enter to quit...")
 
-#Less acurate
+#Less acurate as it uses the values from autoFitScript.py and adds it all up, so the little errors in each
+#values are all added up.
 def ratioVpt_allfiles(autoFitDict):
 	years = [2011,2012,2015,2016,2017,2018]
 	magPol = ["MagDown","MagUp"]
@@ -171,18 +179,19 @@ def ratioVpt_allfiles(autoFitDict):
 		
 		color+=1
 	
-	mg.SetTitle("Xic/Lc Ratio vs. Transverse Momentum (y) per Year")
+	mg.SetTitle("Xic/Lc Ratio vs. Transverse Momentum per Year")
 	mg.GetXaxis().SetTitle( 'Transverse Momentum (MeV/c)' )
 	mg.GetXaxis().SetRangeUser(3000,18000)
 	mg.GetYaxis().SetTitle( 'Xic/Lc Yield Ratio' )
-	#mg.GetYaxis().SetRangeUser(0.01,0.33)
 	mg.Draw('AL*')
-	c1.BuildLegend(.15,.8,.25,.6,"Years")
+	c1.BuildLegend(.75,.8,.85,.6,"Years")
 	c1.Update()		
 	c1.Draw()
 	c1.SaveAs("RatioVsTransverseMomentum_allFiles.pdf")
 	input("Press enter to quit...")
 	
+#This creates the plot of the yield ratios vs. year, and uses the dictionary returned from
+#the yearTotalFitting.py script as parameter.
 def yieldVyear(yearTotDict):
 	years = [2011,2012,2015,2016,2017,2018]
 	XicYield = []
@@ -236,6 +245,8 @@ def yieldVyear(yearTotDict):
 	c1.SaveAs("YieldVYear.pdf")
 	input("Press enter to quit...")
 		
+#This creates the plot of the yield ratios vs. year, and uses the dictionary returned from
+#the yearTotalFitting.py script as parameter.
 def ratioVyear(yearTotDict):
 	
 	years = [2011,2012,2015,2016,2017,2018]
