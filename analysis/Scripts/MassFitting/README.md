@@ -24,10 +24,13 @@ The basePath parameter is a path string that points to the folder containing the
 
 This function then returns the full path of the file. Is made to be used in the shapefit function as the fullpath variable.
 
-**combinedShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True)**
+**combYPTbinShapeFit(shape,fittingDict,path, wantedBin = "both", PDF = True)**
 
-This function loops through each year and depending on the value of the wantedBin parameter ("y", "pt" or "both"), it will make fits for the combined bins and output a PDF.
+This function loops through each year and depending on the value of the wantedBin parameter ("y", "pt" or "both"), it will make fits for the combined bins and output a PDF as well as a dictionnary with the fitting data.
 
+**yearTotalShapeFit(year,shape,fittingDict,path, PDFpath = "./PDF_output/", PDF = True)**
+
+Chains all of the data together per year (adding the two polarities) for each particles and output a PDF as well as a dictionnary with the fitting data.
 
 ## autoFitScript.py
 This script gives a good example of how to use the above functions, as it runs automatically through all the repositories with the structure YEAR_MagPolarity/bins/event.root. It outputs .pdf files of the drawn fits and a python file containing a dictionnary with all the parameters for the fitted PDFs.
@@ -53,3 +56,24 @@ It is important to have the following folders in the **same** directory as the m
 ## fittingDict.py
 This is a file containing a library necessary to make the fits of all above functions. It contains the default values for fitting the Gauss, Crystal Ball and Exponential curves to real data, as well as values that have been found for specific data sets that didn't get fitted correctly with the defauld values
 
+# Yield and Ratio Plotting
+## ratioPlottingLib.py
+
+The next functions only use the data recieved from the fitting functions as parameter, stored in the returned dictionaries  (functions are yearTotalFitting.py, CombinedBinFitting.py and autoFitScript.py). They allow to plot graphs of the yields and ratios in multiple ways, as explained below. For the moment the output path for the PDF file is hardcoded and saves it in the same folder as the script.
+
+**ratioVy(combBinDict) function**
+
+This function outputs a plot of the yield ratio (Xic/Lc) in function of the combined rapidity bins for each year. It takes the dictionnary from the CombinedBinFitting.py script.
+
+**ratioVpt(combBinDict) function**
+
+This function outputs a plot of the yield ratio (Xic/Lc) in function of the combined transverse momentum bins for each year. It takes the dictionnary from the CombinedBinFitting.py script.
+
+**ratioVpt_allfiles(autoFitDict) function**
+
+This function outputs a plot of the yield ratio (Xic/Lc) in function of the combined rapidity bins for each year. It takes the dictionnary from the autoFitScript.py script.
+It is not advised to used this function as the cumulation of infividual fits adds alot of error compared to the TChain of data, better use the two functions above.
+
+**yieldVyear(yearTotDict) and ratioVyear(yearTotDict)**
+
+These functions plot the yield vs years. This is useful to observe trends in the ratio and yield curves. Both make use of the dictionnary from the yearTotalFitting.py script. 

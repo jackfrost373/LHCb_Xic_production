@@ -15,7 +15,7 @@ def pathFinder(basePath, year, magPol, filename):
 #You just need to give the full path of the data file, the function will parse the important 
 #information from it it is important that the data file is arranged in a structure like this:
 #   .../year_MagPol/bins/file.root
-def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/"):
+def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False):
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
@@ -33,7 +33,7 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/"):
 	mctree = mcfile.Get("DecayTree")
 	mctree.SetName("MCtree")
 	
-	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath)
+	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp)
 	
 #wantedBin represents the type to combine ("both", "y" or "pt")
 #This script passes through all the folders and depending on the chosen wantedBin param
@@ -136,8 +136,8 @@ def yearTotalShapeFit(year,shape,fittingDict,path, PDFpath = "./PDF_output/", PD
 	
 	return paramDict
 
-
-def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath):
+#fitComp is a boolean that can add graphically the components of the fitted shape
+def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
 	
 	if shape == "GaussCB":		
 		if fullname in fittingDict["GaussCB"][particle]:
@@ -235,6 +235,11 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath):
 	#Plot the data component of the shape and the background one separately to see more clearly
 	fullshape.plotOn(frame, ROOT.RooFit.Components("Actual_signalshape"),ROOT.RooFit.LineColor(2), ROOT.RooFit.LineStyle(2))
 	fullshape.plotOn(frame, ROOT.RooFit.Components("myexponential"), ROOT.RooFit.LineColor(46), ROOT.RooFit.LineStyle(2))
+
+	if fitComp == True:
+		fullshape.plotOn(frame, ROOT.RooFit.Components("myGauss"),ROOT.RooFit.LineColor(7), ROOT.RooFit.LineStyle(2),ROOT.RooFit.LineWidth(1))
+		fullshape.plotOn(frame, ROOT.RooFit.Components("myCB"),ROOT.RooFit.LineColor(40), ROOT.RooFit.LineStyle(2),ROOT.RooFit.LineWidth(1))
+	
 
 	frame.Draw()
 
