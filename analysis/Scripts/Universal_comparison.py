@@ -1,6 +1,6 @@
 #This script is used to plot series of comparison plots over multiple variables using the plot_comparison function as defined in the Imports script. The script generated may include some lines used as indications as to whether a possible cut could be applied and the canvasses are automatically saved in a desired location
 
-import ROOT, os, Imports
+import ROOT, os, Plot_comparison
 from ROOT import TChain, TCanvas, TH1
 
 #select the user in order to have the right directory for saving the plots
@@ -22,12 +22,8 @@ variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_P
 #this dictionary should contain all of the variables that want to be plotted with a line. The key should be a string of the variable and its value should be the x value at which the line should be plotted
 variables_to_plot_with_line = {}
 
-#import the trees which need to be plotted by using the relative Imports functions
-Imports.datatree()
-Imports.Xic_MC_datatree_1()
-
-tree1 = Imports.tree # tree that will be plotted in red
-tree2 = Imports.Xic_MC_tree_1 # tree that will be plotted in blue
+tree1 = None # tree that will be plotted in red
+tree2 =  None # tree that will be plotted in blue
 
 #directory = Imports.getDirectory(user)
 directory = "/dcache/bfys/scalo"
@@ -60,7 +56,7 @@ leg.AddEntry(histogram2, extralabel2, "l")
 
 for variable in variables_to_plot:
 
-    Imports.plot_comparison(variable, tree1=tree1, tree2=tree2, cuts1=cuts1, cuts2=cuts2, normalized=True, legendLocation="Right")
+    Plot_comparison.plot_comparison(variable, tree1=tree1, tree2=tree2, cuts1=cuts1, cuts2=cuts2, normalized=True, legendLocation="Right")
     leg.Draw()
     if variable in variables_to_plot_with_line:
         point = variables_to_plot_with_line[variable]
