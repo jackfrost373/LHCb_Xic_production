@@ -1,0 +1,14 @@
+configfile: 'cfg.yaml'
+
+rule all:
+     input:[ ]
+
+rule split:
+     input:["Imports.py", "tuples_prep_scripts/Strip.py", "tuples_prep_scripts/SetBranch.py", "tuples_prep_scripts/SplitScript.py", "dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/{job_number}/*"]
+     output:["/dcache/bfys/scalo/{job_name}/bins/ybins/*.root","/dcache/bfys/scalo/{job_name}/bins/ptbins/*.root", /dcache/bfys/scale/{job_name}/bins/y_ptbins/*.root"]
+     shell:"lbpython tuples_prep_main.py"
+
+rule mass_fitting:
+     input:
+     output:
+     shell:
