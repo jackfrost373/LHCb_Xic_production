@@ -4,17 +4,37 @@ import ROOT, os
 #as the fullPath variable. BasePath variable is the place you store the folders name in the style year_MagPol
 #For the other variables, it is just easy to make arrays containing the years an magPols
 #of interest and loop over them (see MainProgram.py for an example)
-def pathFinder(basePath, year, magPol, filename):
-	if basePath[-1] != '/':
-		fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/" + filename
-	else :
-		fullPath = basePath + str(year) + "_" + magPol + "/bins/" + filename
-		
+#mode can be "single" or "pt_combined" or "y_combined, "year""
+def pathFinder(basePath, year, magPol, filename, mode):
+	if mode == "single":
+		if basePath[-1] != '/':
+			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/y_ptbins/" + filename
+		else :
+			fullPath = basePath + str(year) + "_" + magPol + "/bins/y_ptbins/" + filename
+			
+	elif mode == "pt_combined":
+		if basePath[-1] != '/':
+			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/ptbins/" + filename
+		else :
+			fullPath = basePath + str(year) + "_" + magPol + "/bins/ptbins/" + filename
+			
+	elif mode == "y_combined":
+		if basePath[-1] != '/':
+			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/ybins/" + filename
+		else :
+			fullPath = basePath + str(year) + "_" + magPol + "/bins/ybins/" + filename
+			
+	elif mode == "year":
+		if basePath[-1] != '/':
+			fullPath = basePath + '/' + str(year) + "_" + magPol + "/" + filename
+		else :
+			fullPath = basePath + str(year) + "_" + magPol + "/" + filename
+			
 	return fullPath
 
 #You just need to give the full path of the data file, the function will parse the important 
 #information from it it is important that the data file is arranged in a structure like this:
-#   .../year_MagPol/bins/file.root
+#   .../year_MagPol/bins/file.root 
 def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False):
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
@@ -22,7 +42,10 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 	parsePath = fullPath.split('/')
 	filename = parsePath[-1]
 	parseFName =  filename.split('_')
-	parseFolder = parsePath[-3].split('_')
+	if parseFName[-1] == "total.root":
+		parseFolder = parsePath[-2].split('_')
+	else:
+		parseFolder = parsePath[-4].split('_')
 	year = parseFolder[0]
 	magPol = parseFolder[1]
 	particle = parseFName[0]
