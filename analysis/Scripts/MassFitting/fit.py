@@ -81,7 +81,7 @@ def main(argv):
 			
 			if arguments[m] == "single":
 				
-				if os.path.isfile("Dict_output/singleFit_DictFile.py"):
+				if os.path.isfile("singleFit_DictFile.py"):
 					from Dict_output.singleFit_DictFile import mainDict as singleDict
 					
 				
@@ -106,7 +106,7 @@ def main(argv):
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(mainDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -126,7 +126,7 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/y_ptbins/"):
 							singleDict[year][i][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"single"),True,PDF_PATH_S)
 							
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -163,7 +163,7 @@ def main(argv):
 								elif parseName[0] == particle:
 									singleDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -205,7 +205,7 @@ def main(argv):
 							elif parseName[0] == particle:
 								singleDict[year][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename),True,PDF_PATH_S)
 				
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -249,7 +249,7 @@ def main(argv):
 								elif parseName[0] == particle and parseName[2] == rapidity:
 									singleDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -292,7 +292,7 @@ def main(argv):
 								elif parseName[0] == particle and parseName[-1][:-5] == pt:
 									singleDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -340,7 +340,7 @@ def main(argv):
 								elif parseName[0] == particle and parseName[-1][:-5] == pt and parseName[2] == rapidity:
 									singleDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -387,7 +387,7 @@ def main(argv):
 							elif parseName[0] == particle and parseName[2] == rapidity:
 								singleDict[year][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename),True,PDF_PATH_S)
 				
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -435,7 +435,7 @@ def main(argv):
 							elif parseName[0] == particle and parseName[-1][:-5] == pt:
 								singleDict[year][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -488,7 +488,7 @@ def main(argv):
 							elif parseName[0] == particle and parseName[-1][:-5] == pt and parseName[2] == rapidity:
 								singleDict[year][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename),True,PDF_PATH_S)
 					
-					dictF = open("Dict_output/singleFit_DictFile.py","w")
+					dictF = open("singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -501,7 +501,7 @@ def main(argv):
 			elif arguments[m] == "combined":
 				# THE CODE THAT MAKES IT WORK FOR COMBINED BIN FILES
 				
-				if os.path.isfile("Dict_output/combinedFit_DictFile.py"):
+				if os.path.isfile("combinedFit_DictFile.py"):
 					from Dict_output.combinedFit_DictFile import mainDict as combinedDict
 					
 				
@@ -530,7 +530,7 @@ def main(argv):
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(mainDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -552,7 +552,7 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ybins/"):
 							combinedDict[year][i][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C)
 								
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -597,7 +597,7 @@ def main(argv):
 									combinedDict[i][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
 					
 					
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -646,7 +646,7 @@ def main(argv):
 							elif parseName[0] == particle:
 								combinedDict[year][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
 				
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -692,7 +692,7 @@ def main(argv):
 									combinedDict[i][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
 									
 					
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -736,7 +736,7 @@ def main(argv):
 									combinedDict[i][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
 							
 					
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -784,7 +784,7 @@ def main(argv):
 							elif parseName[0] == particle and parseName[-1][:-5] == rapidity:
 								combinedDict[year][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
 							
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -832,7 +832,7 @@ def main(argv):
 							elif parseName[0] == particle and parseName[-1][:-5] == pt:
 								combinedDict[year][j][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C)
 						
-					dictF = open("Dict_output/combinedFit_DictFile.py","w")
+					dictF = open("combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -846,7 +846,7 @@ def main(argv):
 				
 				# THE CODE THAT MAKES IT WORK FOR TOTAL YEAR FILES
 				
-				if os.path.isfile("Dict_output/yearFit_DictFile.py"):
+				if os.path.isfile("yearFit_DictFile.py"):
 					from Dict_output.yearFit_DictFile import mainDict as yearDict
 					
 				
@@ -872,7 +872,7 @@ def main(argv):
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
-					dictF = open("Dict_output/yearFit_DictFile.py","w")
+					dictF = open("yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(mainDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -893,7 +893,7 @@ def main(argv):
 							if filename != "bins":
 								yearDict[year][i][filename] = mf.shapeFit("GaussCB", yearFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"year"),True,PDF_PATH_Y)
 								
-					dictF = open("Dict_output/yearFit_DictFile.py","w")
+					dictF = open("yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -932,7 +932,7 @@ def main(argv):
 										yearDict[i][j][filename] = mf.shapeFit("GaussCB", yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y)
 								
 					
-					dictF = open("Dict_output/yearFit_DictFile.py","w")
+					dictF = open("yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
@@ -975,7 +975,7 @@ def main(argv):
 								elif parseName[0] == particle:
 									yearDict[year][j][filename] = mf.shapeFit("GaussCB", yearFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"year"),True,PDF_PATH_Y)
 								
-					dictF = open("Dict_output/yearFit_DictFile.py","w")
+					dictF = open("yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
