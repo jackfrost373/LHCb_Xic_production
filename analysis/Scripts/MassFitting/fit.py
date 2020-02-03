@@ -15,8 +15,8 @@ import textwrap
 #filename structure : Lc_ybin_2.0-2.5_ptbin_3200-4000.root
 
 #This is the base path without the particle location (until binned_files in our case)
-#BASE_PATH = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
-BASE_PATH = "/dcache/bfys/scalo/binned_files/"
+BASE_PATH = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
+#BASE_PATH = "/dcache/bfys/scalo/binned_files/"
 
 PDF_PATH_S = "PDF_output/Single/"
 PDF_PATH_C = "PDF_output/Combined/"
@@ -849,6 +849,7 @@ def main(argv):
 				if os.path.isfile("yearFit_DictFile.py"):
 					from yearFit_DictFile import mainDict as yearDict
 					
+				
 				
 				del arguments[m]
 				del options[m]

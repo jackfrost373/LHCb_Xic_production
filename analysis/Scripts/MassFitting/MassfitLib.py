@@ -171,16 +171,16 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
-			"gauss_mean_val" : gauss_mean.getValV(),
-			"gauss_mean_err" : gauss_mean.getError(),
-			"gauss_width_val" : gauss_width.getValV(),
-			"gauss_width_err" : gauss_width.getError(),
-			"CB_width_val" : cb_width.getValV(),
-			"CB_width_err" : cb_width.getError(),
-			"CB_alpha_val" : cb_alpha.getValV(),
-			"CB_alpha_err" : cb_alpha.getError(),
-			"CB_n_val" : cb_n.getValV(),
-			"CB_n_err" : cb_n.getError()
+			# "gauss_mean_val" : gauss_mean.getValV(),
+			# "gauss_mean_err" : gauss_mean.getError(),
+			# "gauss_width_val" : gauss_width.getValV(),
+			# "gauss_width_err" : gauss_width.getError(),
+			# "CB_width_val" : cb_width.getValV(),
+			# "CB_width_err" : cb_width.getError(),
+			# "CB_alpha_val" : cb_alpha.getValV(),
+			# "CB_alpha_err" : cb_alpha.getError(),
+			# "CB_n_val" : cb_n.getValV(),
+			# "CB_n_err" : cb_n.getError()
 		}
 	
 	pullpad2.cd()
