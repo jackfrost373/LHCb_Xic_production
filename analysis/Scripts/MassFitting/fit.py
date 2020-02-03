@@ -96,10 +96,10 @@ def main(argv):
 					mainDict = {}
 	
 					for i in years:
+						mainDict[i] = {}
 						for j in magPol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
 								continue
-							mainDict[i] = {}
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								mainDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
@@ -516,10 +516,10 @@ def main(argv):
 					mainDict = {}
 	
 					for i in years:
+						mainDict[i] = {}
 						for j in magPol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
 								continue
-							mainDict[i] = {}
 							mainDict[i][j] = {}
 							
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
@@ -861,11 +861,12 @@ def main(argv):
 					# EVERYTHING HAS TO BE DONE
 					mainDict = {}
 	
+	
 					for i in years:
+						mainDict[i] = {}
 						for j in magPol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
 								continue
-							mainDict[i] = {}
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/"):
 								if filename != "bins":
