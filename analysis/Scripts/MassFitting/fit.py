@@ -96,8 +96,10 @@ def main(argv):
 					mainDict = {}
 	
 					for i in years:
-						mainDict[i] = {}
 						for j in magPol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
+							mainDict[i] = {}
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								mainDict[i][j][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
@@ -119,6 +121,8 @@ def main(argv):
 						sys.exit()
 						
 					for i in magPol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/y_ptbins/"):
 							singleDict[year][i][filename] = mf.shapeFit("GaussCB", singleFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"single"),True,PDF_PATH_S)
 							
@@ -150,6 +154,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both":
@@ -190,6 +196,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both":
@@ -232,6 +240,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[2] == rapidity :
@@ -273,6 +283,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt :
@@ -319,6 +331,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt and parseName[2] == rapidity:
@@ -364,6 +378,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[2] == rapidity :
@@ -410,6 +426,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt :
@@ -461,6 +479,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt and parseName[2] == rapidity:
@@ -479,7 +499,6 @@ def main(argv):
 ###############################################################################################################################################################
 				
 			elif arguments[m] == "combined":
-				
 				# THE CODE THAT MAKES IT WORK FOR COMBINED BIN FILES
 				
 				if os.path.isfile("Dict_output/combinedFit_DictFile.py"):
@@ -497,8 +516,10 @@ def main(argv):
 					mainDict = {}
 	
 					for i in years:
-						mainDict[i] = {}
 						for j in magPol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
+							mainDict[i] = {}
 							mainDict[i][j] = {}
 							
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
@@ -524,6 +545,8 @@ def main(argv):
 						sys.exit()
 						
 					for i in magPol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ptbins/"):
 							combinedDict[year][i][filename] = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"pt_combined"),True,PDF_PATH_C)
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ybins/"):
@@ -557,6 +580,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both":
@@ -605,6 +630,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both":
@@ -654,6 +681,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ybins/"):
 								parseName = filename.split('_')
 								
@@ -697,6 +726,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt :
@@ -743,6 +774,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ybins/"):
 							parseName = filename.split('_')
 							
@@ -790,6 +823,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt :
@@ -826,8 +861,10 @@ def main(argv):
 					mainDict = {}
 	
 					for i in years:
-						mainDict[i] = {}
 						for j in magPol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
+							mainDict[i] = {}
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/"):
 								if filename != "bins":
@@ -850,6 +887,8 @@ def main(argv):
 						sys.exit()
 						
 					for i in magPol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/"):
 							if filename != "bins":
 								yearDict[year][i][filename] = mf.shapeFit("GaussCB", yearFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"year"),True,PDF_PATH_Y)
@@ -882,6 +921,8 @@ def main(argv):
 					
 					for i in years:
 						for j in magpol:
+							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
+								continue
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/"):
 								if filename != "bins":
 									parseName = filename.split('_')
@@ -924,6 +965,8 @@ def main(argv):
 						sys.exit()
 					
 					for j in magpol:
+						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
+							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/"):
 							if filename != "bins":
 								parseName = filename.split('_')
