@@ -82,7 +82,7 @@ def main(argv):
 			if arguments[m] == "single":
 				
 				if os.path.isfile("singleFit_DictFile.py"):
-					from Dict_output.singleFit_DictFile import mainDict as singleDict
+					from singleFit_DictFile import mainDict as singleDict
 					
 				
 				del arguments[m]
@@ -502,7 +502,7 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR COMBINED BIN FILES
 				
 				if os.path.isfile("combinedFit_DictFile.py"):
-					from Dict_output.combinedFit_DictFile import mainDict as combinedDict
+					from combinedFit_DictFile import mainDict as combinedDict
 					
 				
 				del arguments[m]
@@ -847,7 +847,7 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR TOTAL YEAR FILES
 				
 				if os.path.isfile("yearFit_DictFile.py"):
-					from Dict_output.yearFit_DictFile import mainDict as yearDict
+					from yearFit_DictFile import mainDict as yearDict
 					
 				
 				del arguments[m]
