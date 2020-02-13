@@ -1,5 +1,7 @@
 
-year = "2017"  
+year = '2016'
+decay = 'Lc2pKpi'
+
 # when running ganga, make sure year matches the dst year
 
 from Configurables import DaVinci, LHCbApp
@@ -7,22 +9,36 @@ from Configurables import DecayTreeTuple, TupleToolDecay
 from DecayTreeTuple.Configuration import *
 
 
-decay = "Lc2pKpi"
-decay = "Lc2pKpi_noipchi2"
+#decay = "Lc2pKpi"
+#decay = "Lc2pKpi_noipchi2"
 #decay = "Lb2LcMuX"
 
 events = -1   # for all. Default for ganga!
+#events = 20000
 
 
 ####################
 # Define settings according to decay
 
-if (decay == "Lc2pKpi") :
+Turbo = False
+
+if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
   # (prompt) Lc -> p K pi 
   striplines  = ["LambdaCForPromptCharm"]
   stream      = "Charm"
   decaystring = '${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC'
   inputtype   = "MDST"
+
+  if year in ["2016","2017","2018"] :
+    Turbo = True
+    if (decay == "Lc2pKpi") : 
+      striplines = ["Hlt2CharmHadLcpToPpKmPipTurbo"]
+      stream = "Charmspec"
+      if( year == "2016" ) :
+        stream = "Charmspecprescaled"
+    if (decay ==  "Xic2pKpi") :
+      striplines = ["Hlt2CharmHadXicpToPpKmPipTurbo"]
+      stream = "Charmmultibody"
 
 if (decay == "Lb2LcMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
@@ -42,9 +58,11 @@ if (decay == "Lc2pKpi_noipchi2") :
 ## Define ntuples
 
 mytuple = DecayTreeTuple( 'tuple_{0}'.format(decay) )
-if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
-if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
 mytuple.setDescriptorTemplate( decaystring )
+if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
+if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
+if(Turbo)             : mytuple.Inputs = ['{0}/Particles'.format(stripline) for stripline in striplines ]
+if(Turbo and year in ["2015","2016"]) : mytuple.InputPrimaryVertices = '/Event/Turbo/Primary'
 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 if( "Lc2pKpi" in decay ) :
@@ -74,6 +92,7 @@ tupletools.append("TupleToolRecoStats")  # nPVs, nTracks, etc.
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
  "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
+ "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision",
  "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:
@@ -101,27 +120,35 @@ for tup in tuples:
     
     # refit PVs with exclusion of our tracks of interest
     tup.ReFitPVs = True
-
+  
     # add ntuple to the list of running algorithms
     DaVinci().UserAlgorithms += [tup]
 
               
 
 # Filter events for faster processing. (Note the case for multiple lines)
-from PhysConf.Filters import LoKi_Filters
-fltrs = LoKi_Filters (
-        STRIP_Code = "HLT_PASS_RE('Stripping{0}.*Decision')".format(striplines[0])
-        )
-DaVinci().EventPreFilters = fltrs.filters('Filters')
+if not Turbo : 
+  from PhysConf.Filters import LoKi_Filters
+  fltrs = LoKi_Filters (
+          STRIP_Code = "HLT_PASS_RE('Stripping{0}.*Decision')".format(striplines[0])
+          )
+  DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
-if(inputtype=="MDST") : DaVinci().RootInTES = "/Event/{0}".format(stream)
+if(inputtype=="MDST") : 
+  DaVinci().RootInTES = "/Event/{0}".format(stream)
+if(Turbo)             : 
+  DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
+  if(year in ["2015","2016"]) :
+    DaVinci().RootInTES = "/Event/Turbo".format(stream)
+
 DaVinci().InputType = inputtype
 DaVinci().DataType = year
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
 DaVinci().EvtMax = events
+DaVinci().Turbo = Turbo
 #DaVinci().DDDBtag   = "dddb-20170721-3"         # Gauss-2016 (sim09b)
 #DaVinci().CondDBtag = "sim-20170721-2-vc-md100" # Gauss-2016 (sim09b)
 #DaVinci().appendToMainSequence(tuples)

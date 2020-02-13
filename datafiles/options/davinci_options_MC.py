@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2012'
-eventtype = 25103006
+year = '2016'
+eventtype = 26103090
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -22,6 +22,10 @@ eventtype = 25103006
 restripversion = "" # empty = no restripping
 if(eventtype == 25103006 and year == '2012') :
   restripversion = 'stripping21'
+
+Turbo = False # False means simply use stripping output
+if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) : 
+  Turbo = True
 
 ############################################################
 
@@ -59,10 +63,38 @@ tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
                             'pplus'  : '[Lambda_c+ -> ^p+ K- pi+]CC',
                             'kminus' : '[Lambda_c+ -> p+ ^K- pi+]CC',
                             'piplus' : '[Lambda_c+ -> p+ K- ^pi+]CC' })
-#tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') # new quicker setup 
+#tuple_Lc2pKpi.setDescriptorTemplate('${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC') # new setup, replaces Decay and addBranches 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
+
+
+# Build combinations ourselves instead of depending on stripping output.
+if(Turbo) :
+  from PhysConf.Selections import AutomaticData
+  Pions = AutomaticData('Phys/StdAllNoPIDsPions/Particles')
+  Kaons = AutomaticData('Phys/StdAllLooseKaons/Particles')
+  Protons = AutomaticData('Phys/StdAllLooseProtons/Particles')
+
+  from Configurables import CombineParticles
+  Lc2pKpi_combiner = CombineParticles(
+    'Lc2pKpi_combiner',
+     DecayDescriptor='[Lambda_c+ -> p+ K- pi+]cc',
+     DaughtersCuts={'p+' : '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)',
+                    'K-' : '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)',
+                    'pi+': '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)'},
+     CombinationCut="(AMAXDOCA('') < 0.2*mm) & ( (ADAMASS('Lambda_c+') < 110*MeV) | (ADAMASS('Xi_c+') < 110*MeV) )",
+     MotherCut="(VFASPF(VCHI2/VDOF)< 9) & ( (ADMASS('Lambda_c+') < 80*MeV) | (ADMASS('Xi_c+') < 80*MeV) )"
+  )
+
+  from PhysConf.Selections import Selection, SelectionSequence
+  Lc2pKpi_sel = Selection('Lc2pKpi_sel', Algorithm=Lc2pKpi_combiner, RequiredSelections=[Pions, Kaons, Protons] )
+  Lc2pKpi_seq = SelectionSequence('Lc2pKpi_seq', TopSelection=Lc2pKpi_sel)
+  DaVinci().UserAlgorithms += [ Lc2pKpi_seq.sequence() ]
+  tuple_Lc2pKpi.Inputs = [ Lc2pKpi_sel.outputLocation() ]
+
+if(Turbo and year in ["2015","2016"]) : tuple_Lc2pKpi.InputPrimaryVertices = '/Event/Turbo/Primary'
+
 
 
 # (detached) B -> (Lc -> p K pi) mu nu
@@ -73,6 +105,9 @@ dtftool.constrainToOriginVertex = True
 
 
 tuples = [tuple_Lc2pKpi]
+
+
+
 
 # Define common tuple tools
 tupletools = []
@@ -91,6 +126,7 @@ tupletools.append("TupleToolMCBackgroundInfo") # BKGCAT information
 
 triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
  "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
+ "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision",
  "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
 
 for tup in tuples:
@@ -125,7 +161,7 @@ for tup in tuples:
 
 # Filter events for faster processing
 from PhysConf.Filters import LoKi_Filters
-if (restripversion == "") :
+if (restripversion == "" and Turbo == False) :
   fltrs = LoKi_Filters (
           STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(line1)
           )
@@ -149,6 +185,8 @@ fName = "MC_Lc2pKpiTuple_{0}".format(eventtype)
 #DaVinci().HistogramFile = 'output/{0}-histos.root'.format(fName)
 DaVinci().TupleFile = "{0}.root".format(fName)
 DaVinci().HistogramFile = '{0}-histos.root'.format(fName)
+
+
 
 
 
@@ -190,4 +228,23 @@ if not (restripversion == "") :
   tuple_Lc2pKpi.Inputs = MyStream.outputLocations()
 
 
+
+'''
+# Fix MC truth for Turbo (https://twiki.cern.ch/twiki/bin/view/LHCb/MakeNTupleFromTurbo#Monte_Carlo_truth)
+if(Turbo) :
+  from TeslaTools import TeslaTruthUtils
+
+  # Location of the truth tables for PersistReco objects
+  if (year in ["2017","2018"]) :
+    relations = TeslaTruthUtils.getRelLocs() + [TeslaTruthUtils.getRelLoc(''), 'Relations/Hlt2/Protos/Charged' ]
+  if (year in ["2015","2016"]) :
+    relations = [TeslaTruthUtils.getRelLoc(hlt2_line + '/')]
+
+  mc_tools = [
+        'MCTupleToolKinematic',
+        # ...and any other tools you'd like to use
+  ]
+  for dtt in tuples :
+    TeslaTruthUtils.makeTruth(dtt, relations, mc_tools)
+'''
 
