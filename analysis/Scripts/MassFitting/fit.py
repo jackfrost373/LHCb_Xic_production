@@ -1,5 +1,7 @@
 import sys, getopt
 
+#Creating python path for the importing of the Imports.py module(has to be one directory behind)
+# and the dictionnaries in Dict_output directory
 sys.path.insert(1, '../')
 sys.path.insert(1, './Dict_output')
 
@@ -10,8 +12,6 @@ from yearTotalFit_Dict import fittingDict as yearFitDict
 import os.path
 import textwrap
 import Imports
-
-print("GOT OUT")
 
 #folder structure : 
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
