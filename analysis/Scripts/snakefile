@@ -1,3 +1,5 @@
+import glob
+
 configfile: 'cfg.yaml'
 
 rule all:
@@ -11,13 +13,23 @@ rule all:
      #output:["/dcache/bfys/scalo/{job_name}/bins/ybins/*.root","/dcache/bfys/scalo/{job_name}/bins/ptbins/*.root", /dcache/bfys/scalo/{job_name}/bins/y_ptbins/*.root"]
      #shell:"lbpython tuples_prep_main.py"
 
-rule mass_fitting:
-     input:scripts=["MassFitting/autoFitScript.py", "MassFitting/fittingDict.py","/dcache/bfys/scalo/job_name/bins/ptbins/*.root","/dcache/bfys/scalo/job_name/bins/y_ptbins/*.root" , "/dcache/bfys/scalo/job_name/bins/ybins/*.root"],
-          particle=config['particle_type']
-     output:[]
+rule mass_fitting_all:
+     input: ["MassFitting/fit.py","fittingDict.py"]
+     output:["MassFitting/singleFit_DictFile.py", glob.glob (/data/bfys/jdevries/LcAnalysis_plots/MassFitting/single/*.pdf)]
+     shell:"lbpython MassFitting/fit.py -m single"
+
+rule mass_fitting_years:
+     input: []
+     output: []
      run:
-         for f in input.particle:
-             shell:"lbpython autoFitScript.py f"
+
+rule mass_fitting_pt_bins
+     input: [] 
+     output: [ ]
+     run: 
+
+rule mass_fitting_y_bins
+
 
 rule sWeights:
      input:[ ]
