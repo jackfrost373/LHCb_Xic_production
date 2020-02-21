@@ -14,9 +14,9 @@ def getDataCuts (run):
 	if run == 1:
 		trigger_cuts = "lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
         
-	elif run == 2:
-		trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
-	return cuts + " && " + trigger_cuts
+  elif run == 2:
+    trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
+  return cuts + " && " + trigger_cuts
 
 def getBackgroundCuts(particle):
     if particle == "Lc":
@@ -33,6 +33,5 @@ def getYbins():
 
 
 def getFoldersDict():
-	#a dictionary containing the details of the all the years' data according to joblog.txt
-	folders_dict = {"42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "91":["2017_MagDown_Lc", 529], "92":["2018_MagDown_Lc", 659], "115":["2016_MagDown_Xic", 186], "116":["2017_MagDown_Xic", 257], "117":["2018_MagDown_Xic", 471], "119":["2016_MagDown_Lc", 527]}
-	return folders_dict
+    folders_dict = {"42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "91":["2017_MagDown_Lc", 529], "92":["2018_MagDown_Lc", 659], "115":["2016_MagDown_Xic", 186], "116":["2017_MagDown_Xic", 257], "117":["2018_MagDown_Xic", 471], "119":["2016_MagDown_Lc", 527]} 
+    return folders_dict
