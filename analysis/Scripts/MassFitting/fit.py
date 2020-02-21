@@ -2,8 +2,8 @@ import sys, getopt
 
 #Creating python path for the importing of the Imports.py module(has to be one directory behind)
 # and the dictionnaries in Dict_output directory
-sys.path.insert(1, '../')
-sys.path.insert(1, './Dict_output')
+sys.path.append('./')
+sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
 from fittingDict import fittingDict as singleFitDict
