@@ -58,6 +58,106 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 	
 	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp)
 	
+#wantedBin represents the type to combine ("both", "y" or "pt")
+#This script passes through all the folders and depending on the chosen wantedBin param
+#will combine the the bins in each year separately (MagUp and MagDown are donetogether).
+#Returns a dictionary with the fitting parameters and yields. The keys "yBins" and "ptBins"
+#are associated with lists containing all the possible bin names.
+def combYPTbinShapeFit(year,shape,fittingDict,path, wantedBin = "both", PDFpath = "./PDF_output/", PDF = True):
+	paramDict = {}
+	magPol = ["MagUp", "MagDown"]
+	
+	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
+
+	y = []
+	pt = []
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[2] not in y:
+				y.append(parseName[2])
+			if parseName[3] not in pt:
+				pt.append(parseName[3])
+				
+	paramDict["yBins"] = y
+	paramDict["ptBins"] = pt
+
+	if(wantedBin == "both" or wantedBin == "y"):	
+		for binY in y:		
+			treeYlc = ROOT.TChain("DecayTree")
+			treeYxic = ROOT.TChain("DecayTree")
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Lc" and parseName[2] == binY):
+						treeYlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				paramDict[binY + "_Lc"] = fit(treeYlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binY, "Lc",PDF,PDFpath)
+			
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Xic" and parseName[2] == binY):
+						treeYxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				paramDict[binY + "_Xic"] = fit(treeYxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binY, "Xic",PDF,PDFpath)
+				
+	if(wantedBin == "both" or wantedBin == "pt"):
+		for binPT in pt:
+			treePTlc = ROOT.TChain("DecayTree")
+			treePTxic = ROOT.TChain("DecayTree")
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Lc" and parseName[3] == binPT):
+						treePTlc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				paramDict[binPT + "_Lc"] = fit(treePTlc, shape, fittingDict, "Combined_" + "Lc" + '_' + str(year) + '_' + binPT, "Lc",PDF,PDFpath)
+			
+			added = 0
+			for pol in magPol:
+				for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+					parseName = filename.split('_')
+					if (parseName[0] == "Xic" and parseName[3] == binPT):
+						treePTxic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+						added += 1
+			if added > 0:
+				paramDict[binPT + "_Xic"] = fit(treePTxic, shape, fittingDict, "Combined_" + "Xic" + '_' + str(year) + '_' + binPT, "Xic",PDF,PDFpath)
+		
+	return paramDict
+
+#Assembles all files for a specific particle per year and fits it, and outputs a PDF file.
+#returns a dictionary with the fitting parameters and yields
+def yearTotalShapeFit(year,shape,fittingDict,path, PDFpath = "./PDF_output/", PDF = True):
+	paramDict = {}
+	magPol = ["MagUp", "MagDown"]
+	
+	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
+	
+	treeLc = ROOT.TChain("DecayTree")
+	treeXic = ROOT.TChain("DecayTree")
+	
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[0] == "Xic":
+				treeXic.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+	paramDict["Xic"] = fit(treeXic, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Xic", "Xic",PDF,PDFpath)
+	
+	for pol in magPol:
+		for filename in os.listdir(path + str(year) + "_" + pol + "/bins/"):
+			parseName = filename.split('_')
+			if parseName[0] == "Lc":
+				treeLc.Add(path + str(year) + "_" + pol + "/bins/" + filename)
+	paramDict["Lc"] = fit(treeLc, shape, fittingDict, "Total" + "_" + str(year) + '_' + "Lc", "Lc",PDF,PDFpath)
+	
+	return paramDict
 
 #fitComp is a boolean that can add graphically the components of the fitted shape
 def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
@@ -171,16 +271,16 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
-			# "gauss_mean_val" : gauss_mean.getValV(),
-			# "gauss_mean_err" : gauss_mean.getError(),
-			# "gauss_width_val" : gauss_width.getValV(),
-			# "gauss_width_err" : gauss_width.getError(),
-			# "CB_width_val" : cb_width.getValV(),
-			# "CB_width_err" : cb_width.getError(),
-			# "CB_alpha_val" : cb_alpha.getValV(),
-			# "CB_alpha_err" : cb_alpha.getError(),
-			# "CB_n_val" : cb_n.getValV(),
-			# "CB_n_err" : cb_n.getError()
+			"gauss_mean_val" : gauss_mean.getValV(),
+			"gauss_mean_err" : gauss_mean.getError(),
+			"gauss_width_val" : gauss_width.getValV(),
+			"gauss_width_err" : gauss_width.getError(),
+			"CB_width_val" : cb_width.getValV(),
+			"CB_width_err" : cb_width.getError(),
+			"CB_alpha_val" : cb_alpha.getValV(),
+			"CB_alpha_err" : cb_alpha.getError(),
+			"CB_n_val" : cb_n.getValV(),
+			"CB_n_err" : cb_n.getError()
 		}
 	
 	pullpad2.cd()
