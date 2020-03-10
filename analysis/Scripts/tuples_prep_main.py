@@ -12,13 +12,15 @@ particle = "Lc"
 for element in folders_dict:
     #These commented lines should be uncommented in case nTracks is a variable needed for the PID efficiency calculation
     if int(element) < 47:
-       extra_variables = ["nTracks", "lcplus_Hlt1AllL0Decision_TOS", "lcplus_Hlt2CharmHad2DHHHDecision_TOS"]
+       extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
        run = 1
     else:
-       extra_variables = ["Brunel_nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
+       extra_variables = ["nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
        run = 2
     if (int(element) > 114 and int(element) < 118):
         particle = "Xic"
+    else:
+        particle = "Lc"
     cuts = Imports.getDataCuts(run)
     name = folders_dict[element][0]
     subjobs = folders_dict[element][1]
