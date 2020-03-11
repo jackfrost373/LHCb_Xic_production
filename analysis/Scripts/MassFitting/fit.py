@@ -9,7 +9,8 @@ import sys, getopt
 
 #Creating python path for the importing of the Imports.py module(has to be one directory behind)
 # and the dictionnaries in Dict_output directory
-sys.path.append('./')
+
+sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
 sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
@@ -24,7 +25,7 @@ import Imports
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/ybins
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/ptbins
-#	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/LC_total.root
+#	/dcache/bfys/scalo/binned_files/2011_MagUp/LC_total.root
 
 #filename structure : Lc_ybin_2.0-2.5_ptbin_3200-4000.root
 
@@ -71,6 +72,7 @@ def main(argv):
 	
 	options = []
 	arguments = []
+	objList = []
 	
 	for opt,arg in opts:
 		options.append(opt)
