@@ -2,8 +2,8 @@ import sys, getopt
 
 #Creating python path for the importing of the Imports.py module(has to be one directory behind)
 # and the dictionnaries in Dict_output directory
-sys.path.insert(1, '../')
-sys.path.insert(1, './Dict_output')
+sys.path.append('./')
+sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
 from fittingDict import fittingDict as singleFitDict
@@ -105,7 +105,7 @@ def main(argv):
 			if arguments[m] == "single":
 				
 				if os.path.isfile(Dict_PATH + "singleFit_DictFile.py"):
-					from Dict_output.singleFit_DictFile import mainDict as singleDict
+					from singleFit_DictFile import mainDict as singleDict
 					
 				
 				del arguments[m]
@@ -525,7 +525,7 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR COMBINED BIN FILES
 				
 				if os.path.isfile(Dict_PATH + "combinedFit_DictFile.py"):
-					from Dict_output.combinedFit_DictFile import mainDict as combinedDict
+					from combinedFit_DictFile import mainDict as combinedDict
 					
 				
 				del arguments[m]
@@ -870,7 +870,7 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR TOTAL YEAR FILES
 				
 				if os.path.isfile(Dict_PATH + "yearFit_DictFile.py"):
-					from Dict_output.yearFit_DictFile import mainDict as yearDict
+					from yearFit_DictFile import mainDict as yearDict
 					
 				
 				
