@@ -1,6 +1,11 @@
 # Mass fitting
 ## fit.py
 
+This information can be found by using 
+```
+python fit.py -h
+```
+
 Before running the script make sure you have two folders in the programme directory with the following structure:
 -	Dict_output/
 -	PDF_output/Single
