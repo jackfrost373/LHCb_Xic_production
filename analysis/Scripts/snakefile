@@ -7,31 +7,23 @@ rule all:
 
 #todo below - add in {placeholders} where file names are known/predictable
 
-#splitting is ignored for now
-#rule split:
-     #input:["Imports.py", "tuples_prep_scripts/Strip.py", "tuples_prep_scripts/SetBranch.py", "tuples_prep_scripts/SplitScript.py", "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/{job_number}/{subjob_number}/*.root"]
-     #output:["/dcache/bfys/scalo/{job_name}/bins/ybins/*.root","/dcache/bfys/scalo/{job_name}/bins/ptbins/*.root", /dcache/bfys/scalo/{job_name}/bins/y_ptbins/*.root"]
-     #shell:"lbpython tuples_prep_main.py"
-
 rule mass_fitting_all:
-     input: ["MassFitting/fit.py","fittingDict.py"]
-     output:["MassFitting/singleFit_DictFile.py", glob.glob (/data/bfys/jdevries/LcAnalysis_plots/MassFitting/single/*.pdf)]
-     shell:"lbpython MassFitting/fit.py -m single"
+     input: ["MassFitting/fit.py","MassFitting/fittingDict.py"]
+     output:["Dict_output/singleFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Single/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m single"
 
 rule mass_fitting_years:
-     input: []
-     output: []
-     run:
+     input: ["MassFitting/fit.py", "MassFitting/yearTotalFit_Dict.py"]
+     output: ["Dict_output/yearFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Year/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m year"
 
-rule mass_fitting_pt_bins
-     input: [] 
-     output: [ ]
-     run: 
-
-rule mass_fitting_y_bins
+rule mass_fitting_comb_bins:
+     input: ["MassFitting/fit.py", "MassFitting/CombinedBinFit_Dict.py"] 
+     output: ["Dict_output/combinedFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Combined/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m combined"
 
 
-rule sWeights:
-     input:[ ]
-     output: [ ]
-     shell:" "
+#rule sWeights:
+     #input:[ ]
+     #output: [ ]
+     #shell:" "
