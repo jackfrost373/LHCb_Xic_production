@@ -34,14 +34,10 @@ def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1=
     histogram2.SetLineWidth(1)
 
 
-    # allow normalized drawing but check which to draw first
+    # allow normalized drawing
     if(normalized) :
-        if ((histogram1.GetMaximum()/histogram1.GetEntries())<(histogram2.GetMaximum()/histogram2.GetEntries())):
-            histogram2.DrawNormalized()
-            histogram1.DrawNormalized("same")
-        else:
-            histogram1.DrawNormalized()
-            histogram2.DrawNormalized("same")
+        histogram2.DrawNormalized()
+        histogram1.DrawNormalized("same")
     else :
         histogram2.Draw()
         histogram1.Draw("same")

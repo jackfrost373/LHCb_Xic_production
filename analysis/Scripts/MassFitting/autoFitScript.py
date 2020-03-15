@@ -2,16 +2,14 @@ import ROOT, os, MassfitLib as mf
 from fittingDict import fittingDict
 
 #STOOMBOOT 
-path = "/dcache/bfys/scalo/binned_files/"
-#COMP
-#path = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
+#path = "/dcache/bfys/scalo/binned_files/"
+path = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
 
 #STOOMBOOT 
-PDFpath = "~/PDF_output/"
-DictPath = "~/Dict_output/"
-#COMP
-#PDFpath = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/PDF_output/"
-#DictPath = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/Dict_output/"
+#PDFpath = "~/PDF_output/"
+#DictPath = "~/Dict_output/"
+PDFpath = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/PDF_output/"
+DictPath = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/Dict_output/"
 
 years = [2011,2012,2015,2016,2017,2018]
 magPol = ["MagUp", "MagDown"]

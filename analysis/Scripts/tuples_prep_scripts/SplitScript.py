@@ -1,5 +1,4 @@
 import ROOT, os, Imports
-import Strip
 from ROOT import TChain, TFile
 
 #### This function requires a .root file as an input that in its structure has DecayTree immediately there without any intermediate structure. The TTree is divided into bins and these are saved in the saving_dir (which is a string of the saving directory) ####
@@ -9,7 +8,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
     ybins = Imports.getYbins() #Rapidity bins
     
     ptbins = Imports.getPTbins()
-
+    
     if run == 1:
         particles = ["Lc", "Xic"]
     else:
@@ -34,7 +33,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
                 ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
                 if (ybin[0] == 2.0):
                     allcuts = " {0} && {1}".format(ptcuts, mass_cuts)
-                    Strip.strip_n_save(0,0, allcuts, "", saving_dir + "ptbins/" + particle + "_ptbin_{0}-{1}.root".format(ptbin[0], ptbin[1]), extra_variables = [""], particle = mother_particle, bins = True,tree = tree)
+                    Strip.strip_n_save(0,0, allcuts, "", saving_dir + "ptbins/" + particle + "_ptbin_{0}-{1}.root".format(ptbin[0], ptbin[1]), y_2017=False, extra_variables = [""], bins = True,tree = tree)
                 yptcut = ycuts + " && " + ptcuts
                 allcuts = " {0} && {1}".format(yptcut, mass_cuts)
-                Strip.strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables = [""], particle = mother_particle, bins = True, tree = tree)
+                Strip.strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables = [""], bins = True, tree = tree)
