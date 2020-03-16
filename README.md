@@ -1,4 +1,2 @@
-# LcAnalysis_Simon
-Honours programme analysis at MSP for Simon and Jonas, measuring the production ratio of Xi_c over L_c in the LHCb experiment.
-test
-
+# LHCb_Xic_production
+Repository for the LHCb analysis of the production ratio of Xic over Lc baryons, using the pKpi decay modes.
