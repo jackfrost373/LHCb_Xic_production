@@ -1,0 +1,29 @@
+import glob
+
+configfile: 'cfg.yaml'
+
+rule all:
+     input:[ ]
+
+#todo below - add in {placeholders} where file names are known/predictable
+
+rule mass_fitting_all:
+     input: ["MassFitting/fit.py","MassFitting/fittingDict.py"]
+     output:["Dict_output/singleFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Single/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m single"
+
+rule mass_fitting_years:
+     input: ["MassFitting/fit.py", "MassFitting/yearTotalFit_Dict.py"]
+     output: ["Dict_output/yearFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Year/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m year"
+
+rule mass_fitting_comb_bins:
+     input: ["MassFitting/fit.py", "MassFitting/CombinedBinFit_Dict.py"] 
+     output: ["Dict_output/combinedFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Combined/*.pdf")]
+     shell: "python -i MassFitting/fit.py -m combined"
+
+
+#rule sWeights:
+     #input:[ ]
+     #output: [ ]
+     #shell:" "
