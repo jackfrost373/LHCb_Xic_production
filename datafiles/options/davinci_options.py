@@ -1,6 +1,6 @@
 
-year = '2016'
-decay = 'Lc2pKpi'
+year = '2017'
+decay = 'Xib2XicMuX'
 
 # when running ganga, make sure year matches the dst year
 
@@ -40,11 +40,14 @@ if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
       striplines = ["Hlt2CharmHadXicpToPpKmPipTurbo"]
       stream = "Charmmultibody"
 
-if (decay == "Lb2LcMuX") :
+if (decay == "Lb2LcMuX" or decay == "Xib2XicMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
   stream      = "Semileptonic"
   decaystring = '${lambdab0}[Lambda_b0 -> ${lambdacplus}( Lambda_c+ -> ${kminus}K- ${pplus}p+ ${piplus}pi+ ) ${muplus}[mu+]cc ]CC'
   inputtype   = "DST"
+
+if (decay == "Xib2XicMuX") :
+  striplines = [ stripline.replace("L","Xi") for stripline in striplines ]
 
 if (decay == "Lc2pKpi_noipchi2") :
   # (prompt) Lc -> p K pi 

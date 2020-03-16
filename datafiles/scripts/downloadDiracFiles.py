@@ -3,7 +3,8 @@ import os
 
 #TODO: redo 40, 41 (to 329), 42 (total)
 #joblist = [39,40,41,42,43, 45,46,47,48,49,50]
-joblist = [91,92,95,96,97,98,101,102,103,104,105,106,107,108,115,116,117,118]
+#joblist = [91,92,95,96,97,98,101,102,103,104,105,106,107,108,115,116,117,119]
+joblist = [122,123]
 
 basedir = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga"
 

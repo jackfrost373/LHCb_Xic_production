@@ -28,10 +28,11 @@
 magnets=( "MagDown" )
 #years=( "2011" "2012" "2015" "2016" "2017" "2018" )
 #years=( "2016" "2017" "2018" )
-years=( "2016" )
-decays=( "Lc2pKpi" ) # takes both Lc and Xic from the stripping line
+years=( "2012" "2017" )
+#decays=( "Lc2pKpi" ) # takes both Lc and Xic from the stripping line
 #decays=( "Lc2pKpi" "Xic2pKpi" ) # only needed for run2 Turbo, as it splits Lc and Xic into different streams
 #decays=( "Xic2pKpi" ) 
+decays=( "Lb2LcMuX" "Xib2XicMuX" )
 for magnet in "${magnets[@]}"; do
   for year in "${years[@]}"; do
     for decay in "${decays[@]}"; do
@@ -58,9 +59,11 @@ done
 #magnets=( "MagDown" )
 #years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-#years=( "2016" )
+#years=( "2012" )
 #eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
+#eventtypes=( 25103006 25103029 ) #25103006 = old Lc, 25103029 = old Xic
 #eventtypes=( 25103006 )
+#eventtypes=( 25103029 )
 #for magnet in "${magnets[@]}"; do
 #  for year in "${years[@]}"; do
 #    for eventtype in "${eventtypes[@]}"; do
@@ -100,13 +103,12 @@ done
 
 
 # Run over local dst to test ntuple production [MC]
-## for local MC: be sure to set eventtype to 25103006 and copy mcdatabase to current folder 
+## for local MC: be sure to set eventtype in davinci options manually, and copy mcdatabase to current folder 
 #LbLogin -c x86_64-centos7-gcc62-opt
-#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2012_MagDown_Pythia8_Sim08a_Reco14_25103006_ALLSTREAMS/includeLocal.py | tee logs/davinciMCRun.log
+#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2017_MagDown_Pythia8_Sim09f_Reco17_26103090_ALLSTREAMS/includeLocal.py
 # if restripping: run with correct DaVinci version (see http://lhcbdoc.web.cern.ch/lhcbdoc/davinci/releases/ , https://twiki.cern.ch/twiki/bin/view/Main/ProcessingPasses )
 #LbLogin -c x86_64-slc6-gcc48-opt
 #lb-run DaVinci/v36r1p5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2012_MagDown_Pythia8_Sim08a_Reco14_25103006_ALLSTREAMS/includeLocal.py | tee logs/davinciMCRun.log
-#lb-run DaVinci/v44r5 gaudirun.py ./options/davinci_options_MC.py ./data/MC_2017_MagDown_Pythia8_Sim09f_Reco17_26103090_ALLSTREAMS/includeLocal.py
 
 #mv *.root output/
 

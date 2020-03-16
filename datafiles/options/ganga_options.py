@@ -1,6 +1,6 @@
 
-year = '2016'
-decay = 'Lc2pKpi'
+year = '2017'
+decay = 'Xib2XicMuX'
 magnet = 'MagDown'
 
 # Before running on the grid, please ensure in the davinci options that:
@@ -11,23 +11,28 @@ magnet = 'MagDown'
 
 #decay = "Lc2pKpi"
 #decay = "Lc2pKpi_noipchi2"
-streamsuffix = "CHARM.MDST"
+#streamsuffix = "CHARM.MDST"
 
 #decay = "Lb2LcMuX"
 #streamsuffix = "SEMILEPTONIC.DST"
 
 #################################
 
+Turbo = False
+streamsuffix = "CHARM.MDST"
 
+if (decay=="Lc2pKpi" or decay=="Xic2pKpi") :
+  if (year in ["2016","2017","2018"]) :
+    Turbo = True
+    if (decay == "Lc2pKpi") : 
+      streamsuffix = "CHARMSPEC.MDST"
+      if( year == "2016" ) :
+        streamsuffix = "CHARMSPECPRESCALED.MDST"
+    if (decay ==  "Xic2pKpi") :
+      streamsuffix = "CHARMMULTIBODY.MDST"
 
-if (streamsuffix == "CHARM.MDST" and year in ["2016","2017","2018"]) :
-  Turbo = True
-  if (decay == "Lc2pKpi") : 
-    streamsuffix = "CHARMSPEC.MDST"
-    if( year == "2016" ) :
-      streamsuffix = "CHARMSPECPRESCALED.MDST"
-  if (decay ==  "Xic2pKpi") :
-    streamsuffix = "CHARMMULTIBODY.MDST"
+if (decay=="Lb2LcMuX" or decay=="Xib2XicMuX") :
+  streamsuffix = "SEMILEPTONIC.DST"
 
 yeardict = {}
 yeardict["2011"] = { "recsel" : "Reco14/Stripping21r1" , "energy" : "3500" , "eventtype" : "90000000" }

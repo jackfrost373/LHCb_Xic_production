@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2016'
-eventtype = 26103090
+year = '2012'
+eventtype = 25103006
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -76,15 +76,18 @@ if(Turbo) :
   Kaons = AutomaticData('Phys/StdAllLooseKaons/Particles')
   Protons = AutomaticData('Phys/StdAllLooseProtons/Particles')
 
+  # Cuts should not be tighter than the Hlt2 Turbo line:
+  #https://gitlab.cern.ch/lhcb/Hlt/blob/2018-patches/Hlt/Hlt2Lines/python/Hlt2Lines/CharmHad/Lines.py#L727
+  #https://gitlab.cern.ch/lhcb/Hlt/blob/2018-patches/Hlt/Hlt2Lines/python/Hlt2Lines/CharmHad/Lines.py#L130
   from Configurables import CombineParticles
   Lc2pKpi_combiner = CombineParticles(
     'Lc2pKpi_combiner',
      DecayDescriptor='[Lambda_c+ -> p+ K- pi+]cc',
-     DaughtersCuts={'p+' : '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)',
-                    'K-' : '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)',
-                    'pi+': '(PT > 250*MeV) & (P > 4000*MeV) & (MIPCHI2DV(PRIMARY) > 6)'},
-     CombinationCut="(AMAXDOCA('') < 0.2*mm) & ( (ADAMASS('Lambda_c+') < 110*MeV) | (ADAMASS('Xi_c+') < 110*MeV) )",
-     MotherCut="(VFASPF(VCHI2/VDOF)< 9) & ( (ADMASS('Lambda_c+') < 80*MeV) | (ADMASS('Xi_c+') < 80*MeV) )"
+     DaughtersCuts={'p+' : '(PT > 200*MeV) & (P > 2000*MeV) & (MIPCHI2DV(PRIMARY) > 4)',
+                    'K-' : '(PT > 200*MeV) & (P > 2000*MeV) & (MIPCHI2DV(PRIMARY) > 4)',
+                    'pi+': '(PT > 200*MeV) & (P > 2000*MeV) & (MIPCHI2DV(PRIMARY) > 4)'},
+     CombinationCut="( (ADAMASS('Lambda_c+') < 110*MeV) | (ADAMASS('Xi_c+') < 110*MeV) )",
+     MotherCut="( (VFASPF(VCHI2/VDOF)< 10) & ( (ADMASS('Lambda_c+') < 80*MeV) | (ADMASS('Xi_c+') < 80*MeV) )"
   )
 
   from PhysConf.Selections import Selection, SelectionSequence
@@ -157,7 +160,21 @@ for tup in tuples:
     # add ntuple to the list of running algorithms
     DaVinci().UserAlgorithms += [tup]
 
-              
+
+# MCParticle ntuple
+from Configurables import MCDecayTreeTuple
+mctuple = MCDecayTreeTuple( 'mctuple_Lc2pKpi' )
+mctuple.Decay = '[Lambda_c+ => ^p+ ^K- ^pi+]CC'
+mctuple.Branches = { 'lcplus' : '[Lambda_c+ => p+ K- pi+]CC',
+                     'pplus'  : '[Lambda_c+ => ^p+ K- pi+]CC',
+                     'kminus' : '[Lambda_c+ => p+ ^K- pi+]CC',
+                     'piplus' : '[Lambda_c+ => p+ K- ^pi+]CC' }
+#mctuple.ToolList = ["MCTupleToolKinematic"]
+DaVinci().UserAlgorithms += [mctuple]
+
+
+
+
 
 # Filter events for faster processing
 from PhysConf.Filters import LoKi_Filters
