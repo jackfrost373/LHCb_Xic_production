@@ -3,31 +3,63 @@
 # as per https://arxiv.org/abs/physics/0402083
 #################
 
-
-import ROOT, Imports, sys
+import ROOT, Imports, sys, getopt
 from Imports import *
-sys.path.append('./MassFitting/')
 from fittingDict import fittingDict
+sys.path.append('./MassFitting/')
 
+#Which steps of the sWeights do we want to do?
 getData        = True  # Load data.
 makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
 makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
 plotVariable   = False  # make an sPlot using sWeights in RooDataSet from workspace.
 testFriendTree = True  # test sWeights from friend tree to do an sPlot.
 
-
+#Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
 inputdir = "/dcache/bfys/scalo/binned_files/"
 outputdir = "/dcache/bfys/cpawley/sWeights/"
+
+#Get Cuts/selection:
 cuts=Imports.getDataCuts()
 
-folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] } #a dictionary containing the details of the all the years' data according to joblog.txt
-
-y_bins = ["_y2.0-2.5","_y2.5-3.0","_y3.0-3.5","_y3.5-4.0"]
-pt_bins = ["_pt3000-4000","_pt4000-5000","_pt5000-6000","_pt6000-7000","_pt7000-8000", "_pt8000-10000", "_pt10000-20000"]
+#Years, Mag pol and part. types hardcoded
+years = [2011,2012,2015,2016,2017,2018]
+magPol= ["MagUp","MagDown"]
 particle_types=["Lc","Xic"]
+
+#y and pt bins may vary - so we import them
+y_bin_temp = Imports.getYbins()
+y_bin=[]
+for y in y_bin_temp:
+  y_bin.append("{}--{}".format(y[0],y[1]))
+pt_bin_temp = Imports.getPTbins() 
+pt_bin=[]
+for pt in pt_bin_temp:
+  pt_bin.append("{}--{}{}".format(pt[0],pt[1]))
 
 #Stop ROOT printing graphs so much
 ROOT.gROOT.SetBatch(True)
+
+## parse the arguments from command line into arrays for us to check:
+
+try:
+  opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
+except getopt.GetoptError:
+  print("Incorrect Arguements used in sWeights")
+  sys.exit(2)
+
+options=[]
+arguments=[]
+
+for obj,arg in opts:
+  options.append(opt)
+  arguments.append(arg)
+
+
+
+
+
+
 
 #We loop over all our data year and mag polarities
 
