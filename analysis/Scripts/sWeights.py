@@ -56,9 +56,43 @@ for obj,arg in opts:
   arguments.append(arg)
 
 
+#Check inputs are viable/match what is possible
 
+mode=arguments[optoons.index("-m")]
+if (mode!="single"&mode!="combined"&mode!="year"):
+  print ("Wrong looping mode input to sWeights...exiting...")
+  sys.exit()
 
+year=int(arguments[options.index("-y")])
+if year not in years:
+  print("Wrong year input to sWeights...exiting...")
+  sys.exit()
 
+magpol=arguments[options.index("-o")]
+if (magpol=="up"):
+  magpol="MagUp"
+elif (magpol=="down"):
+  magpol="MagDown"
+elif (magpol=="both"):
+  magpol=magpol
+else:
+  print ("Wrong magnet polarity input to sWeights...exiting...")
+  sys.exit()
+
+particle = arguments[options.index("-p")]
+if (particle!="Xic" & particle!="Lc" & particle!="both"):
+  print("Wrong particle name input to sWeights...exiting...")
+  sys.exit()
+
+rapidity=arguments[options.index("-r")]
+if rapidity not in y_bin:
+  print("Wrong y bin input to sWeights...exiting...")
+  sys.exit()
+
+pt=arguments[options.index("-t")]
+if pt not in pt_bin:
+  print("Wrong Pt bin input to sWeights...exiting...")
+  sys.exit()
 
 
 #We loop over all our data year and mag polarities
