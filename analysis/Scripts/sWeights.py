@@ -3,9 +3,8 @@
 # as per https://arxiv.org/abs/physics/0402083
 #################
 
-import ROOT, Imports, sys, getopt
+import ROOT, Imports, sys, getopt, os
 from Imports import *
-from fittingDict import fittingDict
 sys.path.append('./MassFitting/')
 
 #Which steps of the sWeights do we want to do?
@@ -19,8 +18,7 @@ testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 inputdir = "/dcache/bfys/scalo/binned_files/"
 outputdir = "/dcache/bfys/cpawley/sWeights/"
 
-#Get Cuts/selection:
-cuts=Imports.getDataCuts()
+
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
@@ -35,131 +33,133 @@ for y in y_bin_temp:
 pt_bin_temp = Imports.getPTbins() 
 pt_bin=[]
 for pt in pt_bin_temp:
-  pt_bin.append("{}--{}{}".format(pt[0],pt[1]))
+  pt_bin.append("{}--{}".format(pt[0],pt[1]))
 
-#Stop ROOT printing graphs so much
-ROOT.gROOT.SetBatch(True)
+def main(argv):
 
-## parse the arguments from command line into arrays for us to check:
+  #Stop ROOT printing graphs so much
+  ROOT.gROOT.SetBatch(True)
 
-try:
-  opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
-except getopt.GetoptError:
-  print("Incorrect Arguements used in sWeights")
-  sys.exit(2)
+  ## parse the arguments from command line into arrays for us to check:
+  print ("Starting to parse the command line input")
+  try:
+    opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
+  except getopt.GetoptError:
+    print("Incorrect Arguements used in sWeights")
+    sys.exit(2)
 
-options=[]
-arguments=[]
+  options=[]
+  arguments=[]
 
-for obj,arg in opts:
-  options.append(opt)
-  arguments.append(arg)
+  for opt,arg in opts:
+    options.append(opt)
+    arguments.append(arg)
 
 
-#Check inputs are viable/match what is possible
-#What happens when we don't enter parameters? maybe we need to look for length>0 first
+    #Check inputs are viable/match what is possible
+    #What happens when we don't enter parameters? maybe we need to look for length>0 first
+  print ("Checking for parameter errors")
+  mode=arguments[options.index("-m")]
+  if (mode!="single" and mode!="combined" and mode!="year"):
+    print ("Wrong looping mode input to sWeights...exiting...")
+    sys.exit()
 
-mode=arguments[optoons.index("-m")]
-if (mode!="single"&mode!="combined"&mode!="year"):
-  print ("Wrong looping mode input to sWeights...exiting...")
-  sys.exit()
+  year=int(arguments[options.index("-y")])
+  if year not in years:
+    print("Wrong year input to sWeights...exiting...")
+    sys.exit()
 
-year=int(arguments[options.index("-y")])
-if year not in years:
-  print("Wrong year input to sWeights...exiting...")
-  sys.exit()
+  magpol=arguments[options.index("-o")]
+  if (magpol=="up"):
+    magpol="MagUp"
+  elif (magpol=="down"):
+    magpol="MagDown"
+  else:
+    print ("Wrong magnet polarity input to sWeights...exiting...")
+    sys.exit()
 
-magpol=arguments[options.index("-o")]
-if (magpol=="up"):
-  magpol="MagUp"
-elif (magpol=="down"):
-  magpol="MagDown"
-else:
-  print ("Wrong magnet polarity input to sWeights...exiting...")
-  sys.exit()
+  particle = arguments[options.index("-p")]
+  if (particle!="Xic" and particle!="Lc" ):
+    print("Wrong particle name input to sWeights...exiting...")
+    sys.exit()
+  
+  if set(options)==set(["-r"]):
+    rapidity=arguments[options.index("-r")]
+    if rapidity not in y_bin:
+      print("Wrong y bin input to sWeights...exiting...")
+      sys.exit()
 
-particle = arguments[options.index("-p")]
-if (particle!="Xic" & particle!="Lc" ):
-  print("Wrong particle name input to sWeights...exiting...")
-  sys.exit()
-
-rapidity=arguments[options.index("-r")]
-if rapidity not in y_bin:
-  print("Wrong y bin input to sWeights...exiting...")
-  sys.exit()
-
-pt=arguments[options.index("-t")]
-if pt not in pt_bin:
-  print("Wrong Pt bin input to sWeights...exiting...")
-  sys.exit()
+  if set(options)==set(["-t"]):
+    pt=arguments[options.index("-t")]
+    if pt not in pt_bin:
+      print("Wrong Pt bin input to sWeights...exiting...")
+      sys.exit()
 
 #Check sufficient parameters entered
 
-if mode=="single":
-  #all parameters need to be entered
-  if set(options)!=set(["-y","-o","-p","-r","-t"]):
-    print("Entered too few parameters in sWeights mode <single>...exiting...")
-    sys.exit()
-elif mode=="combined":
-  #one of r and t must be missing
-  if set(options)!=set(["-y","-o","-p","-r"]) and set(options)!=set(["-y","-o","-p","-t"]):
-    print("Entered too few parameters in sWeights mode <combined>...exiting...")
-    sys.exit()
-elif mode=="year":
-  #r and t must both be missing, all other params present
-  if set(options)!=set(["-y","-o","-p"]):
-    print("Entered too few parameters in sWeights mode <year>...exiting...")
-    sys.exit()
 
-
-
-
-if(getData) :
-#get the data
   if mode=="single":
-    print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
-    filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
-    outputname=str(year)+"_"+magpol+"/bins/y_ptbins"
-  elif mode=="combined":
-    if(set(options)==set(["-r"]) ):
-      print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
-      filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-      outputname=str(year)+"_"+magpol+"/bins/ybins"
-    else:
-      print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
-      filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-      outputname=str(year)+"_"+magpol+"/bins/ptbins"
-  elif mode=="year":
-    print ("I am working on "+str(year)+" "+magpol+" "+particle+"Total")
-    filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
-    outputname=str(year)+"_"+magpol
-  f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
-  tree = f.Get("DecayTree")
-  cuts = "1==1"
-  #We need to check for the output directory; this is probably depending on the type of procedure we're asked to run
-  if not os.path.exists(outputdir + outputname):
-    os.mkdir(outputdir + outputname)        
-  if particle == "Lc":
-          
-    mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
-    #todo: check number of entries, inclusive or exclusive???
-    momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
-    lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
-              
-  elif particle == "Xic":
-                       
-    mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
-    momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
-    lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
-                       
-  else: print ("I did not find the right particle, this is a problem")
+    #all parameters need to be entered
+    if set(options)!=set(["-y","-o","-p","-r","-t"]):
+      print("Entered too few parameters in sWeights mode <single>...exiting...")
+      sys.exit()
+    elif mode=="combined":
+    #one of r and t must be missing
+      if set(options)!=set(["-y","-o","-p","-r"]) and set(options)!=set(["-y","-o","-p","-t"]):
+        print("Entered too few parameters in sWeights mode <combined>...exiting...")
+        sys.exit()
+    elif mode=="year":
+    #r and t must both be missing, all other params present
+      if set(options)!=set(["-y","-o","-p"]):
+        print("Entered too few parameters in sWeights mode <year>...exiting...")
+        sys.exit()
 
-  print ("I am adding data to a tree") #Just to keep us informed 
-  # Get RooDataSet (unbinned) from TTree.
-  # We add momentum/lifetime for easy plotting of their sWeighted versions later
-  data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
+  if(getData) :
+#get the data
+    if mode=="single":
+      print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
+      filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
+      outputname=str(year)+"_"+magpol+"/bins/y_ptbins"
+    elif mode=="combined":
+      if(set(options)==set(["-r"]) ):
+        print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
+        filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
+        outputname=str(year)+"_"+magpol+"/bins/ybins"
+      else:
+        print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
+        filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
+        outputname=str(year)+"_"+magpol+"/bins/ptbins"
+    elif mode=="year":
+      print ("I am working on "+str(year)+" "+magpol+" "+particle+"Total")
+      filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
+      outputname=str(year)+"_"+magpol
+    f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
+    tree = f.Get("DecayTree")
+    cuts = "1==1"
+    
+    if not os.path.exists(outputdir + outputname):
+      os.mkdir(outputdir + outputname)        
+    if particle == "Lc":
+          
+      mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
+      #todo: check number of entries, inclusive or exclusive???
+      momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
+      lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+              
+    elif particle == "Xic":
+                       
+      mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
+      momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
+      lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
+                       
+    else: print ("I did not find the right particle, this is a problem")
+
+    print ("I am adding data to a tree") #Just to keep us informed 
+    # Get RooDataSet (unbinned) from TTree.
+    # We add momentum/lifetime for easy plotting of their sWeighted versions later
+    data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
  
-if(makesWeights) :
+  if(makesWeights) :
 
          # build the fit model
 
@@ -278,7 +278,7 @@ if(makesWeights) :
 
          #f.Close()  # keeps mass fit plot alive
 
-if(makeFriendTree) :
+  if(makeFriendTree) :
           # Make a new TTree that contains the sWeights for every event.
           # Makes use of the previously defined data and sData objects.
 
@@ -308,7 +308,7 @@ if(makeFriendTree) :
           swtree.Write()
           wfile.Close()
 
-if(plotVariable) :
+  if(plotVariable) :
 
           # Plot sWeighted variable distribution from RooDataSet.
           
@@ -344,7 +344,7 @@ if(plotVariable) :
           c2.Update()
           c2.SaveAs("{0}/{1}_sPlot_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,variable))
         
-if(testFriendTree) :
+  if(testFriendTree) :
 
           # Make an sPlot using the sWeights from the friendTree, without RooFit / RooStats functionality.
           # Can be used to plot any variable in the original TTree.
@@ -397,3 +397,6 @@ if(testFriendTree) :
           
           c4.Update()
           c4.SaveAs("{0}/{1}_sPlot_swTree_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,var))
+
+if __name__=="__main__":
+  main(sys.argv[1:])
