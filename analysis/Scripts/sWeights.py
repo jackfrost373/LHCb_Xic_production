@@ -30,11 +30,11 @@ particle_types=["Lc","Xic"]
 y_bin_temp = Imports.getYbins()
 y_bin=[]
 for y in y_bin_temp:
-  y_bin.append("{}--{}".format(y[0],y[1]))
+  y_bin.append("{}-{}".format(y[0],y[1]))
 pt_bin_temp = Imports.getPTbins() 
 pt_bin=[]
 for pt in pt_bin_temp:
-  pt_bin.append("{}--{}".format(pt[0],pt[1]))
+  pt_bin.append("{}-{}".format(pt[0],pt[1]))
 
 def getVarfromList (name,list_to_search):
   #search a list for a var name - as used in Bs2mumu by JdV
@@ -89,17 +89,19 @@ def main(argv):
     print("Wrong particle name input to sWeights...exiting...")
     sys.exit()
   
-  if set (options) == set (["-r"]):
-    rapidity=arguments[options.index("-r")]
-    if rapidity not in y_bin:
-      print("Wrong y bin input to sWeights...exiting...")
-      sys.exit()
+  for r in range(len(options)):
+    if options[r]=="-r":
+      rapidity=arguments[options.index("-r")]
+      if rapidity not in y_bin:
+        print("Wrong y bin input to sWeights...exiting...")
+        sys.exit()
 
-  if set (options) == set (["-t"]):
-    pt=arguments[options.index("-t")]
-    if pt not in pt_bin:
-      print("Wrong Pt bin input to sWeights...exiting...")
-      sys.exit()
+  for t in range(len(options)):
+    if options[t]=="-t":
+      pt=arguments[options.index("-t")]
+      if pt not in pt_bin:
+        print("Wrong Pt bin input to sWeights...exiting...")
+        sys.exit()
 
 #Check sufficient parameters entered
 
@@ -127,14 +129,15 @@ def main(argv):
       filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
       outputname=str(year)+"_"+magpol+"/bins/y_ptbins"
     elif mode=="combined":
-      if(set(options)==set(["-r"]) ):
-        print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
-        filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-        outputname=str(year)+"_"+magpol+"/bins/ybins"
-      else:
-        print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
-        filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-        outputname=str(year)+"_"+magpol+"/bins/ptbins"
+      for r in range(len(options)):
+        if options[r]=="-r":
+          print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
+          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
+          outputname=str(year)+"_"+magpol+"/bins/ybins"
+        else:
+          print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
+          filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
+          outputname=str(year)+"_"+magpol+"/bins/ptbins"
     elif mode=="year":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+"Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
@@ -164,7 +167,7 @@ def main(argv):
     # Get RooDataSet (unbinned) from TTree.
     # We add momentum/lifetime for easy plotting of their sWeighted versions later
     data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
- 
+    print ("The tree contains " + str(tree.GetEntries()))
   if(makesWeights) :
 
          # build the fit model
@@ -178,9 +181,10 @@ def main(argv):
         [varlist,shapelist] = fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
       
     elif mode == "combined":
-      if set(options)=="-r":
+      for r in range(len(options)):
+        if options[r]=="-r":
           [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
-      else:
+        else:
           [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
         [varlist,shapelist] = fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
@@ -197,10 +201,7 @@ def main(argv):
       if (var in yieldVars) : continue #allow of yieldVars to freely float
       var.setConstant()
            
-    print (data)
-    print (model)
-    print (yieldVars)
-      # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
+    # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
     sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList( *yieldVars ) )
 
       # Check sWeights
