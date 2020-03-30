@@ -36,6 +36,11 @@ pt_bin=[]
 for pt in pt_bin_temp:
   pt_bin.append("{}--{}".format(pt[0],pt[1]))
 
+def getVarfromList (name,list_to_search):
+  #search a list for a var name - as used in Bs2mumu by JdV
+  var=next((x for x in list_to_search if x.GetName()==name),None)
+  return var
+
 def main(argv):
 
   #Stop ROOT printing graphs so much
@@ -84,13 +89,13 @@ def main(argv):
     print("Wrong particle name input to sWeights...exiting...")
     sys.exit()
   
-  if set(options)==set(["-r"]):
+  if set (options) == set (["-r"]):
     rapidity=arguments[options.index("-r")]
     if rapidity not in y_bin:
       print("Wrong y bin input to sWeights...exiting...")
       sys.exit()
 
-  if set(options)==set(["-t"]):
+  if set (options) == set (["-t"]):
     pt=arguments[options.index("-t")]
     if pt not in pt_bin:
       print("Wrong Pt bin input to sWeights...exiting...")
@@ -170,54 +175,33 @@ def main(argv):
       mag="up"
       
     if mode == "single":
-        model = fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
+        [varlist,shapelist] = fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
       
     elif mode == "combined":
       if set(options)=="-r":
-          model = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
+          [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
       else:
-          model = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
+          [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
-        list = fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
+        [varlist,shapelist] = fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
         
-    gauss_mean=list[0][0]
-    gauss_width=list[0][1]
-    cb_width=list[0][2]    
-    cb_alpha=list[0][3]
-    cb_n=list[0][4]
-    exponential=list[0][5]
-    exponential_Norm=list[0][6]
-    combined_norm=list[0][7]
-    Actual_signalshape_Norm=list[0][7]
+    model = getVarfromList("fullshape",shapelist)
+    yieldVars = [getVarfromList ("Actual_signalshape_Norm" ,varlist),
+                 getVarfromList ("exponential_Norm" ,varlist)]
     
-    myGauss=list[1][0]
-    myCB=list[1][1]
-    myexponential=list[1][2]
-    Actual_signalshape=list[1][3]
-    fullshape=list[1][4]
     
-    # Display the quality of the fit
-    #print ("plotting the fit...")
-    #c1 = ROOT.TCanvas("c1","c1")
-    #frame = mass.frame()
-    #data.plotOn(frame)
-    #model.plotOn(frame, ROOT.RooFit.Components("sigshape"), ROOT.RooFit.LineColor(8) , ROOT.RooFit.LineStyle(2))
-    #model.plotOn(frame, ROOT.RooFit.Components("bkgshape"), ROOT.RooFit.LineColor(46), ROOT.RooFit.LineStyle(2))
-    #model.plotOn(frame)
-    #frame.Draw()
-    #c1.Update()
-    #c1.SaveAs("{0}/{1}_sWeight_fit.pdf".format(outputdir+name, particle_type+y_bin+pt_bin))
-
-    #print("Chi2/NDF: {0}".format(frame.chiSquare()))
-    #sig_norm=ROOT.RooRealVar("sig_norm","Signal Yield",tree.GetEntries()/200*3/10,0,tree.GetEntries()*2)
-    #bkg_norm=ROOT.RooRealVar("bkg_norm","Background Yield",tree.GetEntries()/200*3/20,0,tree.GetEntries()*2)
 
          # Fix all parameters besides the signal yield
-    for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, combined_norm, exponential] :
+    for var in varlist :
+      if not (type(var)==ROOT.RooRealVar): continue #avoid setting something const that isnt a roorealvar
+      if (var in yieldVars) : continue #allow of yieldVars to freely float
       var.setConstant()
            
+    print (data)
+    print (model)
+    print (yieldVars)
       # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
-    sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, fullshape, ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
+    sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList( *yieldVars ) )
 
       # Check sWeights
     if(False) :
