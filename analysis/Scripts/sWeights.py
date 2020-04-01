@@ -19,6 +19,9 @@ testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 inputdir = "/dcache/bfys/scalo/binned_files/"
 outputdir = "/dcache/bfys/cpawley/sWeights/"
 
+#define these first for persistance
+varlist=[]
+shapelist=[]
 
 
 #Years, Mag pol and part. types hardcoded
@@ -127,21 +130,21 @@ def main(argv):
     if mode=="single":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
       filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
-      outputname=str(year)+"_"+magpol+"/bins/y_ptbins"
+      outputname=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ybins"
+          outputname=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity
         else:
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ptbins"
+          outputname=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt
     elif mode=="year":
-      print ("I am working on "+str(year)+" "+magpol+" "+particle+"Total")
+      print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
-      outputname=str(year)+"_"+magpol
+      outputname=str(year)+"_"+magpol+"/"+particle+"_total"
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
     cuts = "1==1"
@@ -178,34 +181,44 @@ def main(argv):
       mag="up"
       
     if mode == "single":
-        [varlist,shapelist] = fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
+        fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
       
     elif mode == "combined":
       for r in range(len(options)):
         if options[r]=="-r":
-          [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
+          fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
         else:
-          [varlist,shapelist] = fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
+          fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
-        [varlist,shapelist] = fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
-        
-    model = getVarfromList("fullshape",shapelist)
-    yieldVars = [getVarfromList ("Actual_signalshape_Norm" ,varlist),
-                 getVarfromList ("exponential_Norm" ,varlist)]
+        fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
+    print("opening model file")    
+    f1=ROOT.TFile.Open("MassFitting/model.root","READONLY")
+    w=f1.Get("w")
+    model=w.pdf("fullshape")
+    print("Setting YieldVars")
+    sig_norm=w.var("Actual_signalshape_Norm")
+    bkg_norm=w.var("exponential_Norm")
     
-    
-
-         # Fix all parameters besides the signal yield
-    for var in varlist :
+    #Fix all parameters besides the signal yield - DOES NOT WORK
+    print("Fitting is done, setting variables to constant")
+    for var in list(w.allCats()) :
+      print ("checking...")
+      print (var)
       if not (type(var)==ROOT.RooRealVar): continue #avoid setting something const that isnt a roorealvar
       if (var in yieldVars) : continue #allow of yieldVars to freely float
       var.setConstant()
+      print(var.GetName() + " is set constant")
+    
+    #for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, sigfrac, exponent] :
+     # var.setConstant()
            
     # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
-    sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList( *yieldVars ) )
-
+    #sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList( *yieldVars ) )
+    print ("Starting sWeights")
+    sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
+    print ("sWeights is done")
       # Check sWeights
-    if(False) :
+    if(True) :
       print("")
       print("sWeight sanity check:")
       print("sig Yield is {0}, from sWeights it is {1}".format(sig_norm.getVal(), sData.GetYieldFromSWeight("sig_norm")))
@@ -217,7 +230,7 @@ def main(argv):
     # This command saves the  dataset with weights to workspace file for later quick use - since we will use it directly it is commented now
     ws = ROOT.RooWorkspace("ws","workspace")
     getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
-    ws.writeToFile("{0}/sWeight_ws.root".format(outputdir+name))
+    ws.writeToFile("{0}+sWeight_ws.root".format(outputdir+outputname))
 
     #f.Close()  # keeps mass fit plot alive
 

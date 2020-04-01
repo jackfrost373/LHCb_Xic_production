@@ -1015,7 +1015,7 @@ def main(argv):
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
-				
+
 				return objList
 					
 					
