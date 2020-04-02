@@ -11,7 +11,7 @@ from Imports import *
 #Which steps of the sWeights do we want to do?
 getData        = True  # Load data.
 makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
-makeFriendTree = False  # create friend tree for simple future sweight plotting. Requires makesWeights.
+makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
 plotVariable   = False  # make an sPlot using sWeights in RooDataSet from workspace.
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
@@ -47,7 +47,7 @@ def getVarfromList (name,list_to_search):
 def main(argv):
 
   #Stop ROOT printing graphs so much
-  ROOT.gROOT.SetBatch(True)
+  #ROOT.gROOT.SetBatch(True)
 
   ## parse the arguments from command line into arrays for us to check:
   print ("Starting to parse the command line input")
@@ -195,38 +195,27 @@ def main(argv):
     f1=ROOT.TFile.Open("MassFitting/model.root","READONLY")
     w=f1.Get("w")
     model=w.pdf("fullshape")
-    print("Setting YieldVars")
+    data=w.data("masshist_RooFit")
+    w.Print()
     sig_norm=w.var("Actual_signalshape_Norm")
-    bkg_norm=w.var("exponential_Norm")
+    bkg_norm=w.obj("exponential_Norm")
     
-    #Fix all parameters besides the signal yield - DOES NOT WORK
-    print("Fitting is done, setting variables to constant")
-    for var in list(w.allCats()) :
-      print ("checking...")
-      print (var)
-      if not (type(var)==ROOT.RooRealVar): continue #avoid setting something const that isnt a roorealvar
-      if (var in yieldVars) : continue #allow of yieldVars to freely float
-      var.setConstant()
-      print(var.GetName() + " is set constant")
-    
-    #for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, sigfrac, exponent] :
-     # var.setConstant()
-           
     # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
-    #sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList( *yieldVars ) )
+    
     print ("Starting sWeights")
     sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
     print ("sWeights is done")
       # Check sWeights
-    if(True) :
+    if(False) :
       print("")
       print("sWeight sanity check:")
-      print("sig Yield is {0}, from sWeights it is {1}".format(sig_norm.getVal(), sData.GetYieldFromSWeight("sig_norm")))
-      print("big Yield is {0}, from sWeights it is {1}".format(bkg_norm.getVal(), sData.GetYieldFromSWeight("bkg_norm")))
+      print("sig Yield is {0}, from sWeights it is {1}".format(sig_norm.getVal(), sData.GetYieldFromSWeight("L_Actual_signalshape_Norm")))
+      print("big Yield is {0}, from sWeights it is {1}".format(bkg_norm.getVal(), sData.GetYieldFromSWeight("L_exponential_Norm")))
       print("First 10 events:")
       for i in range(10) :
         print(" {0}: sigWeight = {1}, bkgWeight = {2}, totWeight = {3}".format(
         i, sData.GetSWeight(i,"sig_norm"), sData.GetSWeight(i,"bkg_norm"), sData.GetSumOfEventSWeight(i)))
+    print (sData.GetSWeightVars())
     # This command saves the  dataset with weights to workspace file for later quick use - since we will use it directly it is commented now
     ws = ROOT.RooWorkspace("ws","workspace")
     getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
@@ -239,8 +228,8 @@ def main(argv):
           # Makes use of the previously defined data and sData objects.
 
           from array import array
-
-          wfile = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir+name,particle_type+y_bin+pt_bin),"RECREATE")
+                  
+          wfile = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
           swtree = ROOT.TTree("swTree","swTree")
 
           # TTrees directly access memory, so we define pointers.
@@ -256,8 +245,8 @@ def main(argv):
           for i in range(nEntries) :
             if(i%10000==0) : print("{0:.2f} %".format(float(i)/nEntries*100.))
             sw_mass[0] = data.get(i).getRealValue("lcplus_MM") 
-            sw_sig[0]  = sData.GetSWeight(i, "sig_norm")
-            sw_bkg[0]  = sData.GetSWeight(i, "bkg_norm")
+            sw_sig[0]  = sData.GetSWeight(i, "L_Actual_signalshape_Norm")
+            sw_bkg[0]  = sData.GetSWeight(i, "L_exponential_Norm")
             swtree.Fill()
 
           print("...done")
@@ -269,7 +258,7 @@ def main(argv):
           # Plot sWeighted variable distribution from RooDataSet.
           
           #variable = "lcplus_P"
-          variable = "lcplus_TAU"
+          variable = "lcplus_MM"
 
           # load sWeights from file (note: we will use 'data' as above, since we have just made it 
           # (i.e. we never expect to run plot without first getData) - thus it is commended out.
