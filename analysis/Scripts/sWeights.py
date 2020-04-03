@@ -12,7 +12,7 @@ from Imports import *
 getData        = True  # Load data.
 makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
 makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
-plotVariable   = False  # make an sPlot using sWeights in RooDataSet from workspace.
+plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspace.
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
@@ -47,7 +47,7 @@ def getVarfromList (name,list_to_search):
 def main(argv):
 
   #Stop ROOT printing graphs so much
-  #ROOT.gROOT.SetBatch(True)
+  ROOT.gROOT.SetBatch(True)
 
   ## parse the arguments from command line into arrays for us to check:
   print ("Starting to parse the command line input")
@@ -151,6 +151,7 @@ def main(argv):
     
     if not os.path.exists(outputdir + outputname):
       os.mkdir(outputdir + outputname)        
+    
     if particle == "Lc":
           
       mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
@@ -215,43 +216,22 @@ def main(argv):
       for i in range(10) :
         print(" {0}: sigWeight = {1}, bkgWeight = {2}, totWeight = {3}".format(
         i, sData.GetSWeight(i,"sig_norm"), sData.GetSWeight(i,"bkg_norm"), sData.GetSumOfEventSWeight(i)))
-    print (sData.GetSWeightVars())
-    # This command saves the  dataset with weights to workspace file for later quick use - since we will use it directly it is commented now
-    ws = ROOT.RooWorkspace("ws","workspace")
-    getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
-    ws.writeToFile("{0}+sWeight_ws.root".format(outputdir+outputname))
-
-    #f.Close()  # keeps mass fit plot alive
-
+    
   if(makeFriendTree) :
           # Make a new TTree that contains the sWeights for every event.
           # Makes use of the previously defined data and sData objects.
 
-          from array import array
+          print ("creating TTree and writing to file for sWeights...")
                   
-          wfile = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
-          swtree = ROOT.TTree("swTree","swTree")
+          fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
+          #fileFriendTree = ROOT.TFile.Open("Test_sWeight_swTree.root","RECREATE")
+          newData = sData.GetSDataSet()
+          dataNew = ROOT.RooDataSet("dataNew","dataNew",newData,newData.get())
+          friendTree = dataNew.GetClonedTree()
+          friendTree.Write()
+          fileFriendTree.Close()
+          print (".....TTree created with sWeights...")
 
-          # TTrees directly access memory, so we define pointers.
-          sw_mass = array( 'f', [0] )
-          sw_sig  = array( 'f', [0] )
-          sw_bkg  = array( 'f', [0] )
-          swtree.Branch('sw_mass', sw_mass, 'sw_mass/F')
-          swtree.Branch('sw_sig',  sw_sig,  'sw_sig/F' )
-          swtree.Branch('sw_bkg',  sw_bkg,  'sw_bkg/F' )
-
-          nEntries = int(data.sumEntries())
-          print ("Writing sWeights for {0} entries...".format(nEntries))
-          for i in range(nEntries) :
-            if(i%10000==0) : print("{0:.2f} %".format(float(i)/nEntries*100.))
-            sw_mass[0] = data.get(i).getRealValue("lcplus_MM") 
-            sw_sig[0]  = sData.GetSWeight(i, "L_Actual_signalshape_Norm")
-            sw_bkg[0]  = sData.GetSWeight(i, "L_exponential_Norm")
-            swtree.Fill()
-
-          print("...done")
-          swtree.Write()
-          wfile.Close()
 
   if(plotVariable) :
 
@@ -263,17 +243,22 @@ def main(argv):
           # load sWeights from file (note: we will use 'data' as above, since we have just made it 
           # (i.e. we never expect to run plot without first getData) - thus it is commended out.
 
-          fws = ROOT.TFile.Open("{0}/sWeight_ws.root".format(outputdir+name),"READONLY")
-          ws = fws.Get('ws')
-          var = ws.var(variable)
-          data = ws.data("swdata")
+          fileFriendTree = ROOT.TFile.Open("{0}_sWeight_swTree.root".format(outputdir+outputname),("READONLY"))
+          Friendtree = fileFriendTree.Get("dataNew")
+          cuts = "1==1"
 
-          data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "sig_norm_sw")
-          data_bkg = ROOT.RooDataSet("data_bkg", "sWeighed bkgrnd data", data, data.get(), "1==1", "bkg_norm_sw")
+          Actual_signalshape_Norm_sw=ROOT.RooRealVar("Actual_signalshape_Norm_sw","signal",-5,5)
+          exponential_Norm_sw=ROOT.RooRealVar("exponential_Norm_sw","background",-5,5)
+        
+          #fws = ROOT.TFile.Open("{0}/sWeight_ws.root".format(outputdir+name),"READONLY")
+          data = ROOT.RooDataSet("data","data set", Friendtree, ROOT.RooArgSet(mass,momentum,lifetime, Actual_signalshape_Norm_sw, exponential_Norm_sw), cuts)
+          
+          data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "Actual_signalshape_Norm_sw")
+          data_bkg = ROOT.RooDataSet("data_bkg", "sWeighed bkgrnd data", data, data.get(), "1==1", "exponential_Norm_sw")
           
           c2 = ROOT.TCanvas("c2","c2")
 
-          frame = var.frame()
+          frame = mass.frame()
           frame.SetTitle("sPlot from RooDataSet")
           data.plotOn(frame)
           data_sig.plotOn(frame, ROOT.RooFit.DataError(ROOT.RooAbsData.SumW2), ROOT.RooFit.MarkerColor(8) , ROOT.RooFit.Name("data_sig") )
@@ -287,8 +272,8 @@ def main(argv):
           leg.Draw("same")
 
           c2.Update()
-          c2.SaveAs("{0}/{1}_sPlot_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,variable))
-        
+          c2.SaveAs("{0}_sPlot_{1}.pdf".format(outputdir+outputname,variable))
+          #c2.SaveAs("Test_sPlot.pdf")
   if(testFriendTree) :
 
           # Make an sPlot using the sWeights from the friendTree, without RooFit / RooStats functionality.

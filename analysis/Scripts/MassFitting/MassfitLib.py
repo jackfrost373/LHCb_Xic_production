@@ -154,8 +154,8 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	#Get the parameters resulting from the fit
 	#varlist += [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, exponential_Norm, combined_Norm, Actual_signalshape_Norm]
 	#shapelist = [fullshape] + shapelist
-	#for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, combined_Norm]:
-	#	var.setConstant(ROOT.kTRUE)
+	for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, combined_Norm]:
+                var.setConstant(ROOT.kTRUE)
 	
 	w=ROOT.RooWorkspace("w")
 	getattr(w,'import')(masshist_RooFit)	
