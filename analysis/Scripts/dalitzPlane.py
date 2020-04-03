@@ -46,7 +46,8 @@ def invariantMass(p1, p2) :
     return M2
 
 def main(argv):
-
+  global outputdir
+  global sweightsdir
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
 
@@ -127,33 +128,55 @@ def main(argv):
         sys.exit()
 
   if(True) :
-#get the data
     if mode=="single":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
       filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
-      outputname=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt
+      outputdir +=  str(year)+"_"+magpol+"/bins/y_ptbins/"
+      sweightsdir +=  str (year)+"_"+magpol+"/bins/y_ptbins/"
+      outputname=particle+"_y_bin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity
+          outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
+          sweightsdir +=  str(year)+"_"+magpol+"/bins/ybins/"
+          outputname=particle+"_y_bin_"+rapidity
         else:
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt
+          outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
+          sweightsdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
+          outputname=particle+"_ptbin_"+pt
     elif mode=="year":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
-      outputname=str(year)+"_"+magpol+"/"+particle+"_total"
+      outputdir += str(year)+"_"+magpol+"/"
+      sweightsdir +=  str(year)+"_"+magpol+"/"
+      outputname=particle+"_total"
     print ("loading tree....")
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
     cuts = "1==1"
-    
-    #if not os.path.exists(outputdir + outputname):
-    #  os.mkdir(outputdir + outputname)        
-    
+
+    if not os.path.exists(outputdir):
+      try:
+        os.mkdir(outputdir)
+      except:
+        print ("I could not make a directory, trying again")
+      else:
+        try:
+          parsefile(outputdir.split("/")) 
+          os.mkr(outputdir-parsefile[len(parsefile)-1])
+          os.mkr(outputdir)
+        except:
+          print ("I could not make a directory for the 2nd time, trying again")
+        else:
+          try:
+            os.mkr(outputdir-parsefile[len(parsefile)-1]-parsefile[len(parsefile)-2])
+            os.mkr(outputdir-parsefile[len(parsefile)-1])
+            os.mkr(outputdir)
+          except: ("I did not manage to make a directory at all")
 
 #elif dataType == "MC": #Todo: check both trees for updates from ganga?
 #  cuts = getMCCuts(particle)

@@ -117,8 +117,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	masshist = ROOT.gDirectory.Get("mymasshist")
 	
 	mass = ROOT.RooRealVar("lcplus_MM","Mass",mass_range[0],mass_range[1],"MeV/c^{2}")
-	momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
-	lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+	
 	#Here is where the different fit shapes are implemented with their various parameters
 	if shape == "GaussCB":
 		gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0], peak_range[1], peak_range[2])
@@ -142,25 +141,25 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
 
-	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass, momentum, lifetime))
-	print (masshist_RooFit)
-	print (mctree.GetEntries())
+	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
+	
 	#Fit the data using the desired shape
 	fullshape.fitTo(masshist_RooFit)
 	frame = mass.frame()
 	masshist_RooFit.plotOn(frame)
 	fullshape.plotOn(frame)
 	
-	#Get the parameters resulting from the fit
-	#varlist += [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, exponential_Norm, combined_Norm, Actual_signalshape_Norm]
-	#shapelist = [fullshape] + shapelist
+	
+	#Important, if we use other variables/ define other shapes we need to ensure we return the non-yield vars as constants
 	for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, combined_Norm]:
                 var.setConstant(ROOT.kTRUE)
-	
+	#Get the parameters resulting from the fit
+	varlist += [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, exponential_Norm, combined_Norm, Actual_signalshape_Norm]
+	shapelist = [fullshape] + shapelist
+		
 	w=ROOT.RooWorkspace("w")
 	getattr(w,'import')(masshist_RooFit)	
 	getattr(w,'import')(fullshape)
-	w.Print()
 	w.writeToFile("MassFitting/model.root")
 
 	signal_yield = Actual_signalshape_Norm.getValV()

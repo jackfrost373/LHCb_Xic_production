@@ -19,11 +19,6 @@ testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 inputdir = "/dcache/bfys/scalo/binned_files/"
 outputdir = "/dcache/bfys/cpawley/sWeights/"
 
-#define these first for persistance
-varlist=[]
-shapelist=[]
-
-
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
 magPol= ["MagUp","MagDown"]
@@ -45,7 +40,8 @@ def getVarfromList (name,list_to_search):
   return var
 
 def main(argv):
-
+  global outputdir
+  
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
 
@@ -130,28 +126,48 @@ def main(argv):
     if mode=="single":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
       filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
-      outputname=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt
+      outputdir += str(year)+"_"+magpol+"/bins/y_ptbins/"
+      outputname=particle+"_y_bin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity
+          outputdir += str(year)+"_"+magpol+"/bins/ybins/"
+          outputname=particle+"_y_bin_"+rapidity
         else:
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-          outputname=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt
+          outputdir += str (year)+"_"+magpol+"/bins/ptbins/"
+          outputname = particle+"_ptbin_"+pt
     elif mode=="year":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
-      outputname=str(year)+"_"+magpol+"/"+particle+"_total"
+      outputdir += str(year)+"_"+magpol+"/"
+      outputname=particle+"_total"
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
     cuts = "1==1"
     
-    if not os.path.exists(outputdir + outputname):
-      os.mkdir(outputdir + outputname)        
-    
+    if not os.path.exists(outputdir):
+      try:
+        os.mkdir(outputdir)
+      except:
+        print ("I could not make a directory, trying again")
+      else:
+        try:
+          parsefile(outputdir.split("/")) 
+          os.mkr(outputdir-parsefile[len(parsefile)-1])
+          os.mkr(outputdir)
+        except:
+          print ("I could not make a directory for the 2nd time, trying again")
+        else:
+          try:
+            os.mkr(outputdir-parsefile[len(parsefile)-1]-parsefile[len(parsefile)-2])
+            os.mkr(outputdir-parsefile[len(parsefile)-1])
+            os.mkr(outputdir)
+          except: ("I did not manage to make a directory at all")
+              
     if particle == "Lc":
           
       mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
@@ -167,11 +183,6 @@ def main(argv):
                        
     else: print ("I did not find the right particle, this is a problem")
 
-    print ("I am adding data to a tree") #Just to keep us informed 
-    # Get RooDataSet (unbinned) from TTree.
-    # We add momentum/lifetime for easy plotting of their sWeighted versions later
-    data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
-    print ("The tree contains " + str(tree.GetEntries()))
   if(makesWeights) :
 
          # build the fit model
@@ -197,16 +208,15 @@ def main(argv):
     w=f1.Get("w")
     model=w.pdf("fullshape")
     data=w.data("masshist_RooFit")
-    w.Print()
     sig_norm=w.var("Actual_signalshape_Norm")
-    bkg_norm=w.obj("exponential_Norm")
+    bkg_norm=w.var("exponential_Norm")
     
     # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
     
     print ("Starting sWeights")
     sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
     print ("sWeights is done")
-      # Check sWeights
+      # Check sWeights - does not work in the current implimentation.
     if(False) :
       print("")
       print("sWeight sanity check:")
@@ -243,14 +253,13 @@ def main(argv):
           # load sWeights from file (note: we will use 'data' as above, since we have just made it 
           # (i.e. we never expect to run plot without first getData) - thus it is commended out.
 
-          fileFriendTree = ROOT.TFile.Open("{0}_sWeight_swTree.root".format(outputdir+outputname),("READONLY"))
+          fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),("READONLY"))
           Friendtree = fileFriendTree.Get("dataNew")
           cuts = "1==1"
 
           Actual_signalshape_Norm_sw=ROOT.RooRealVar("Actual_signalshape_Norm_sw","signal",-5,5)
           exponential_Norm_sw=ROOT.RooRealVar("exponential_Norm_sw","background",-5,5)
         
-          #fws = ROOT.TFile.Open("{0}/sWeight_ws.root".format(outputdir+name),"READONLY")
           data = ROOT.RooDataSet("data","data set", Friendtree, ROOT.RooArgSet(mass,momentum,lifetime, Actual_signalshape_Norm_sw, exponential_Norm_sw), cuts)
           
           data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "Actual_signalshape_Norm_sw")
