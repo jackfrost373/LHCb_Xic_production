@@ -166,7 +166,7 @@ def main(argv):
     cuts = "1==1"
 
     if not os.path.exists(outputdir):
-      os.mkdirs(outputdir)
+      os.makedirs(outputdir)
 
 
 #elif dataType == "MC": #Todo: check both trees for updates from ganga?

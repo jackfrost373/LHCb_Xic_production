@@ -151,7 +151,7 @@ def main(argv):
     cuts = "1==1"
     parsefile=(outputdir.split("/"))
     if not os.path.exists(outputdir):
-      os.mkdirs(outputdir)
+      os.makedirs(outputdir)
               
     if particle == "Lc":
           
