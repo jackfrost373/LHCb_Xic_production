@@ -17,8 +17,9 @@ addsWeights = True
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees are in sweightdir
 inputdir = "/dcache/bfys/scalo/binned_files/"
-sweightsdir = "/dcache/bfys/cpawley/sWeights/"
-outputdir = "/dcache/bfys/cpawley/dalitz/"
+sweightsdir = "/data/bfys/cpawley/sWeights/"
+outputdir = "/data/bfys/cpawley/dalitz/"
+
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
@@ -30,6 +31,7 @@ y_bin_temp = Imports.getYbins()
 y_bin=[]
 for y in y_bin_temp:
   y_bin.append("{}-{}".format(y[0],y[1]))
+
 pt_bin_temp = Imports.getPTbins() 
 pt_bin=[]
 for pt in pt_bin_temp:
@@ -51,6 +53,9 @@ def main(argv):
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
 
+  
+
+
   ## parse the arguments from command line into arrays for us to check:
   print ("Starting to parse the command line input")
   try:
@@ -71,19 +76,20 @@ def main(argv):
     #What happens when we don't enter parameters? maybe we need to look for length>0 first
   print ("Checking for parameter errors")
   mode=arguments[options.index("-m")]
+  print (mode)
   if (mode!="single" and mode!="combined" and mode!="year"):
     print ("Wrong looping mode input to Dalitz...exiting...")
     sys.exit()
-
+  
   year=int(arguments[options.index("-y")])
   if year not in years:
     print("Wrong year input to Dalitz...exiting...")
     sys.exit()
 
   magpol=arguments[options.index("-o")]
-  if (magpol=="up"):
+  if (magpol=="Up"):
     magpol="MagUp"
-  elif (magpol=="down"):
+  elif (magpol=="Down"):
     magpol="MagDown"
   else:
     print ("Wrong magnet polarity input to Dalitz...exiting...")
@@ -138,11 +144,11 @@ def main(argv):
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
-          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
+          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
           outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
           sweightsdir +=  str(year)+"_"+magpol+"/bins/ybins/"
           outputname=particle+"_y_bin_"+rapidity
-        else:
+        elif r==len(options):
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
           outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
@@ -154,29 +160,14 @@ def main(argv):
       outputdir += str(year)+"_"+magpol+"/"
       sweightsdir +=  str(year)+"_"+magpol+"/"
       outputname=particle+"_total"
-    print ("loading tree....")
+    print ("loading tree from "+inputdir+filestring)
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
     cuts = "1==1"
 
     if not os.path.exists(outputdir):
-      try:
-        os.mkdir(outputdir)
-      except:
-        print ("I could not make a directory, trying again")
-      else:
-        try:
-          parsefile(outputdir.split("/")) 
-          os.mkr(outputdir-parsefile[len(parsefile)-1])
-          os.mkr(outputdir)
-        except:
-          print ("I could not make a directory for the 2nd time, trying again")
-        else:
-          try:
-            os.mkr(outputdir-parsefile[len(parsefile)-1]-parsefile[len(parsefile)-2])
-            os.mkr(outputdir-parsefile[len(parsefile)-1])
-            os.mkr(outputdir)
-          except: ("I did not manage to make a directory at all")
+      os.mkdirs(outputdir)
+
 
 #elif dataType == "MC": #Todo: check both trees for updates from ganga?
 #  cuts = getMCCuts(particle)
@@ -193,9 +184,11 @@ def main(argv):
     print ("adding sWeights")
     # If we made an sWeight friend tree: add it, and use sWeights. Make sure same cuts (--> #entries) as swTree!
     wfile = ROOT.TFile.Open("{0}dalitz_temp.root".format(outputdir),"RECREATE")
-    swcuts = "lcplus_MM >= 2240 && lcplus_MM <= 2340 && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+    swcuts = "lcplus_MM >= 2240 && lcplus_MM <= 2340 "#&& lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+    #swcuts = "1==1"
     tree.Print()
     cuttree = tree.CopyTree(swcuts)
+    cuttree.Print()
     print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
     cuttree.AddFriend("dataNew","{0}_sWeight_swTree.root".format(sweightsdir+outputname))
     weightvar = "dataNew.L_Actual_signalshape_Norm"
@@ -212,6 +205,11 @@ def main(argv):
   print ("building invarient mass strings")
   m2_pK  = invariantMass("piplus","kminus")
   m2_Kpi = invariantMass("kminus","pplus")
+
+  #Define masses (missing from our nTuples)
+  piplus_M=139.57
+  kminus_M=493.68#MeV
+  pplus_M=938.27#MeV
 
   c1 = ROOT.TCanvas("c1","c1")
   ROOT.gStyle.SetOptStat(0)

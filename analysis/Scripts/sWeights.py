@@ -17,7 +17,7 @@ testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
 inputdir = "/dcache/bfys/scalo/binned_files/"
-outputdir = "/dcache/bfys/cpawley/sWeights/"
+outputdir = "/data/bfys/cpawley/sWeights/"
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
@@ -41,7 +41,7 @@ def getVarfromList (name,list_to_search):
 
 def main(argv):
   global outputdir
-  
+  fail=0
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
 
@@ -60,6 +60,7 @@ def main(argv):
     options.append(opt)
     arguments.append(arg)
 
+    print (options, arguments)
 
     #Check inputs are viable/match what is possible
     #What happens when we don't enter parameters? maybe we need to look for length>0 first
@@ -75,9 +76,9 @@ def main(argv):
     sys.exit()
 
   magpol=arguments[options.index("-o")]
-  if (magpol=="up"):
+  if (magpol=="Up"):
     magpol="MagUp"
-  elif (magpol=="down"):
+  elif (magpol=="Down"):
     magpol="MagDown"
   else:
     print ("Wrong magnet polarity input to sWeights...exiting...")
@@ -132,14 +133,14 @@ def main(argv):
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
-          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_y_bin_"+rapidity+".root"
-          outputdir += str(year)+"_"+magpol+"/bins/ybins/"
+          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
+          outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
           outputname=particle+"_y_bin_"+rapidity
-        else:
+        elif r==len(options):
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
-          outputdir += str (year)+"_"+magpol+"/bins/ptbins/"
-          outputname = particle+"_ptbin_"+pt
+          outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
+          outputname=particle+"_ptbin_"+pt    
     elif mode=="year":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
@@ -148,25 +149,9 @@ def main(argv):
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
     cuts = "1==1"
-    
+    parsefile=(outputdir.split("/"))
     if not os.path.exists(outputdir):
-      try:
-        os.mkdir(outputdir)
-      except:
-        print ("I could not make a directory, trying again")
-      else:
-        try:
-          parsefile(outputdir.split("/")) 
-          os.mkr(outputdir-parsefile[len(parsefile)-1])
-          os.mkr(outputdir)
-        except:
-          print ("I could not make a directory for the 2nd time, trying again")
-        else:
-          try:
-            os.mkr(outputdir-parsefile[len(parsefile)-1]-parsefile[len(parsefile)-2])
-            os.mkr(outputdir-parsefile[len(parsefile)-1])
-            os.mkr(outputdir)
-          except: ("I did not manage to make a directory at all")
+      os.mkdirs(outputdir)
               
     if particle == "Lc":
           
@@ -199,7 +184,7 @@ def main(argv):
       for r in range(len(options)):
         if options[r]=="-r":
           fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
-        else:
+        elif (r==len(options)):
           fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
         fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
@@ -233,7 +218,7 @@ def main(argv):
 
           print ("creating TTree and writing to file for sWeights...")
                   
-          fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
+          fileFriendTree = ROOT.TFile.Open("{0}{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
           #fileFriendTree = ROOT.TFile.Open("Test_sWeight_swTree.root","RECREATE")
           newData = sData.GetSDataSet()
           dataNew = ROOT.RooDataSet("dataNew","dataNew",newData,newData.get())
@@ -336,6 +321,6 @@ def main(argv):
           
           c4.Update()
           c4.SaveAs("{0}/{1}_sPlot_swTree_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,var))
-
+  return 
 if __name__=="__main__":
   main(sys.argv[1:])
