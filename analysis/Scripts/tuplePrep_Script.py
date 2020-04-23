@@ -3,7 +3,7 @@ from ROOT import TChain, TFile
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
-	folders_dict = {"43":["2011_MagDown", 907]} 
+	folders_dict = {"115":["2016_MagDown", 186,"Lc"]} 
 	
 	# folders_dict = {
 		# "43":["2011_MagDown", 907],
@@ -29,10 +29,12 @@ def main():
 		else:
 		   extra_variables = ["nSPDHits"]
 		   particle = folders_dict[element][2]
+		   
 		name = folders_dict[element][0]
 		subjobs = folders_dict[element][1]
 		saving_directory = PATH + name + "_clusters/"
-		os.mkdir(saving_directory)
+		if not os.path.exists(saving_directory):
+		   os.mkdir(saving_directory)
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
 			
 		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
@@ -58,10 +60,11 @@ def main():
 		for element in clusters:
 			final_chain.Add(saving_directory + element)
 
-		os.mkdir(PATH + name)
-		os.mkdir(PATH + name + "/bins")
+		
+		if not os.path.exists(PATH + name + "/bins"):
+		   os.mkdirs(PATH + name + "/bins")
 		saving_dir = PATH + name + "/bins/"
-		split_in_bins_n_save(final_chain, saving_dir, run) # split the datafile into mass-y-pt bins
+		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
 		print ("process completed for " + name)
 
@@ -98,9 +101,12 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
         particles = []
         particles.append(mother_particle)
     
-    os.mkdir(saving_dir + "ybins/")
-    os.mkdir(saving_dir + "ptbins/")
-    os.mkdir(saving_dir + "y_ptbins/")
+    if not os.path.exists(saving_dir + "ybins/"):
+		os.mkdir(saving_dir + "ybins/")
+	if not os.path.exists(saving_dir + "ptbins/"):
+		os.mkdir(saving_dir + "ptbins/")
+	if not os.path.exists(saving_dir + "y_ptbins/"):
+		os.mkdir(saving_dir + "y_ptbins/")
     
     extra_variables = [""]
     tree = root_file
@@ -112,7 +118,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
         for ybin in ybins:
             ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])
             allcuts = " {0} && {1}".format(ycuts, mass_cuts)
-            strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables, bins = True, tree = tree)
+            strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables,particle, bins = True, tree = tree)
             for ptbin in ptbins:
                 ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
                 if (ybin[0] == 2.0):
@@ -120,11 +126,11 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
                     strip_n_save(0,0, allcuts, "", saving_dir + "ptbins/" + particle + "_ptbin_{0}-{1}.root".format(ptbin[0], ptbin[1]), extra_variables, particle, bins = True,tree = tree)
                 yptcut = ycuts + " && " + ptcuts
                 allcuts = " {0} && {1}".format(yptcut, mass_cuts)
-                strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables = [""], particle, bins = True, tree = tree)
+                strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables, particle, bins = True, tree = tree)
 
 
 #### Function that takes as inputs: min and max which are 2 integers that indicates from which subjob to which subjob the TChain ranges; cuts are the cuts applied to the TTrees; directory is the directory in which the subjobs are to be found and saving_directory is the directory in which the stripped files are then saved. ####
-def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, particle = "Lc", bins = False, tree = None):
+def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, particle, bins = False, tree = None):
     
     if not (bins):
         filename = "{0}2pKpiTuple.root".format(particle)
@@ -142,7 +148,7 @@ def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, 
             return
 
         alldata = setBranch_funct(alldata, extra_variables)
-        extra_string = "_cluster_{0}-{1}.root".format(Min, Max)
+        extra_string = particle + "_cluster_{0}-{1}.root".format(Min, Max)
     else:
         if not (tree == None):
             alldata = tree
