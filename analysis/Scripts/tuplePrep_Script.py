@@ -3,7 +3,7 @@ from ROOT import TChain, TFile
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
-	folders_dict = {"115":["2016_MagDown", 186,"Lc"]} 
+	folders_dict = {"115":["2016_MagDown", 186,"Xic"]} 
 	
 	# folders_dict = {
 		# "43":["2011_MagDown", 907],
