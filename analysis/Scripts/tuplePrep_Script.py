@@ -3,16 +3,32 @@ from ROOT import TChain, TFile
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
-	folders_dict = {"31":["2017_MagDown", 1843]} 
+	folders_dict = {"43":["2011_MagDown", 907]} 
+	
+	# folders_dict = {
+		# "43":["2011_MagDown", 907],
+		# "45":["2011_MagUp", 817],
+		# "46":["2012_MagUp",1342],
+		# "42":["2012_MagDown",1155],
+		# "119":["2016_MagDown",527,"Lc"],
+		# "115":["2016_MagDown",186,"Xic"],
+		# "91":["2017_MagDown",529,"Lc"],
+		# "116":["2017_MagDown",257,"Xic"],
+		# "117":["2018_MagDown",471,"Xic"],
+		# "92":["2018_MagDown",656,"Lc"],
+		# } 
 
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	PATH = "/dcache/bfys/jtjepkem/"
-
+	run = ""
+	
 	for element in folders_dict:
-		if int(element) > 41 && int(element) < 47:
+		if int(element) > 41 and int(element) < 47:
 		   extra_variables = ["nTracks"]
+		   run = 1
 		else:
 		   extra_variables = ["nSPDHits"]
+		   particle = folders_dict[element][2]
 		name = folders_dict[element][0]
 		subjobs = folders_dict[element][1]
 		saving_directory = PATH + name + "_clusters/"
@@ -45,7 +61,7 @@ def main():
 		os.mkdir(PATH + name)
 		os.mkdir(PATH + name + "/bins")
 		saving_dir = PATH + name + "/bins/"
-		split_in_bins_n_save(final_chain, saving_dir) # split the datafile into mass-y-pt bins
+		split_in_bins_n_save(final_chain, saving_dir, run) # split the datafile into mass-y-pt bins
 
 		print ("process completed for " + name)
 
@@ -100,10 +116,10 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
                 ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
                 if (ybin[0] == 2.0):
                     allcuts = " {0} && {1}".format(ptcuts, mass_cuts)
-                    strip_n_save(0,0, allcuts, "", saving_dir + "ptbins/" + particle + "_ptbin_{0}-{1}.root".format(ptbin[0], ptbin[1]), extra_variables = [""], particle = mother_particle, bins = True,tree = tree)
+                    strip_n_save(0,0, allcuts, "", saving_dir + "ptbins/" + particle + "_ptbin_{0}-{1}.root".format(ptbin[0], ptbin[1]), extra_variables = [""], particle, bins = True,tree = tree)
                 yptcut = ycuts + " && " + ptcuts
                 allcuts = " {0} && {1}".format(yptcut, mass_cuts)
-                strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables = [""], particle = mother_particle, bins = True, tree = tree)
+                strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables = [""], particle, bins = True, tree = tree)
 
 
 #### Function that takes as inputs: min and max which are 2 integers that indicates from which subjob to which subjob the TChain ranges; cuts are the cuts applied to the TTrees; directory is the directory in which the subjobs are to be found and saving_directory is the directory in which the stripped files are then saved. ####
