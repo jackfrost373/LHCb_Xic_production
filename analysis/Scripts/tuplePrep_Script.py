@@ -22,7 +22,7 @@ def main():
 		# } 
 
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
-	PATH = "/dcache/bfys/jtjepkem/binned_files"
+	PATH = "/dcache/bfys/jtjepkem/binned_files/"
 	run = ""
 	
 	for element in folders_dict:
