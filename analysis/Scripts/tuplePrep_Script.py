@@ -42,11 +42,10 @@ def main():
 		Min = 0
 
 	# Loop used to apply global cuts on the data
-			
 		while (Max <= subjobs):
 			if Max == Min:
 				break
-			strip_n_save(Min, Max, cuts, file_directory, saving_directory, extra_variables)
+			strip_n_save(Min, Max, cuts, file_directory, saving_directory, extra_variables, particle)
 			temp = Max
 			if (Max+step > subjobs):
 				Max = subjobs
