@@ -4,8 +4,8 @@ from ROOT import TChain, TFile
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	folders_dict = {
-		"119":["2016_MagDown",527,"Lc"],
 		"115":["2016_MagDown", 186,"Xic"],
+		"119":["2016_MagDown",527,"Lc"],
 	} 
 	
 	# folders_dict = {
@@ -64,7 +64,7 @@ def main():
 
 		
 		if not os.path.exists(PATH + name + "/bins"):
-		   os.mkdirs(PATH + name + "/bins")
+		   os.makedirs(PATH + name + "/bins")
 		saving_dir = PATH + name + "/bins/"
 		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
