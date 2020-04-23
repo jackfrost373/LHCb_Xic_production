@@ -52,6 +52,10 @@ def main(argv):
   global sweightsdir
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
+  #Define masses (missing from our nTuples)
+  piplus_M=139.57#MeV
+  kminus_M=493.68#MeV
+  pplus_M=938.27#MeV
 
   
 
@@ -206,11 +210,7 @@ def main(argv):
   m2_pK  = invariantMass("piplus","kminus")
   m2_Kpi = invariantMass("kminus","pplus")
 
-  #Define masses (missing from our nTuples)
-  piplus_M=139.57
-  kminus_M=493.68#MeV
-  pplus_M=938.27#MeV
-
+  
   c1 = ROOT.TCanvas("c1","c1")
   ROOT.gStyle.SetOptStat(0)
 
