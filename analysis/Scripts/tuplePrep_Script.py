@@ -25,8 +25,6 @@ def main():
 	PATH = "/dcache/bfys/jtjepkem/binned_files"
 	run = ""
 	
-	if 
-	
 	for element in folders_dict:
 		if int(element) > 41 and int(element) < 47:
 		   extra_variables = ["nTracks"]
