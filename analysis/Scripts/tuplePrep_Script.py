@@ -3,7 +3,10 @@ from ROOT import TChain, TFile
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
-	folders_dict = {"115":["2016_MagDown", 186,"Xic"]} 
+	folders_dict = {
+		"119":["2016_MagDown",527,"Lc"],
+		"115":["2016_MagDown", 186,"Xic"],
+	} 
 	
 	# folders_dict = {
 		# "43":["2011_MagDown", 907],
@@ -19,22 +22,24 @@ def main():
 		# } 
 
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
-	PATH = "/dcache/bfys/jtjepkem/"
+	PATH = "/dcache/bfys/jtjepkem/binned_files"
 	run = ""
+	
+	if 
 	
 	for element in folders_dict:
 		if int(element) > 41 and int(element) < 47:
 		   extra_variables = ["nTracks"]
 		   run = 1
 		else:
-		   extra_variables = ["nSPDHits"]
+		   extra_variables = ["nSPDHits", "nTracks"]
 		   particle = folders_dict[element][2]
 		   
 		name = folders_dict[element][0]
 		subjobs = folders_dict[element][1]
 		saving_directory = PATH + name + "_clusters/"
 		if not os.path.exists(saving_directory):
-		   os.mkdir(saving_directory)
+		   os.mkdirs(saving_directory)
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
 			
 		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
@@ -135,7 +140,8 @@ def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, 
 		alldata = TChain("tuple_{0}2pKpi/DecayTree".format(particle))
 		extra_dir = ""
 		for job in range(Min, Max) :
-			alldata.Add("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename))
+			if not os.path.exists("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename)):
+				alldata.Add("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename))
     
     #Check if there are any issues with the data
 		if (alldata.GetEntries() == 0):
