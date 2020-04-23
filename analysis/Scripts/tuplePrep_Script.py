@@ -37,7 +37,7 @@ def main():
 		subjobs = folders_dict[element][1]
 		saving_directory = PATH + name + "_clusters/"
 		if not os.path.exists(saving_directory):
-		   os.mkdirs(saving_directory)
+		   os.makedirs(saving_directory)
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
 			
 		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
