@@ -4,35 +4,38 @@ from ROOT import TChain, TFile
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	folders_dict = {
-		#"43":["2011_MagDown", 907],
-		#"45":["2011_MagUp", 817],
-		#"46":["2012_MagUp",1342],
-		#"42":["2012_MagDown",1155],
-		#"119":["2016_MagDown",527,"Lc"],
-		#"115":["2016_MagDown",186,"Xic"],
+		"43":["2011_MagDown", 907],
+		"45":["2011_MagUp", 817],
+		"46":["2012_MagUp",1342],
+		"42":["2012_MagDown",1155],
+		"119":["2016_MagDown",527,"Lc"],
+		"115":["2016_MagDown",186,"Xic"],
 		"91":["2017_MagDown",529,"Lc"],
 		"116":["2017_MagDown",257,"Xic"],
 		"117":["2018_MagDown",471,"Xic"],
 		"92":["2018_MagDown",656,"Lc"],
 		} 
 
-	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	PATH = "/dcache/bfys/jtjepkem/binned_files/"
-	run = ""
 	
 	for element in folders_dict:
 		if int(element) > 41 and int(element) < 47:
-		   extra_variables = ["nTracks"]
+		   extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
 		   run = 1
 		else:
-		   extra_variables = ["nSPDHits", "nTracks"]
+		   extra_variables = ["nSPDHits", "nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
 		   particle = folders_dict[element][2]
+		   run = 2
 		   
 		name = folders_dict[element][0]
 		subjobs = folders_dict[element][1]
 		saving_directory = PATH + name + "_clusters/"
+		
+		cuts = Imports.getDataCuts(run)
+		
 		if not os.path.exists(saving_directory):
 		   os.makedirs(saving_directory)
+		   
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
 		
 		print ("\nStarting process for " + name)
@@ -93,7 +96,7 @@ def main():
 #### This function takes a ROOT file as an input, keeps the variables in useful_vars in the tree and throws the other ones away. The pruned tree is then returned. ###
 def setBranch_funct (root_file, extra_variables):
 
-	useful_vars = ["lcplus_MM", "lcplus_P", "lcplus_PT", "lcplus_ETA", "lcplus_RAPIDITY", "lcplus_TIP", "lcplus_IPCHI2_OWNPV", "lcplus_OWNPV_CHI2", "lcplus_TAU", "lcplus_L0HadronDecision_TOS", "pplus_M", "pplus_P", "pplus_PT", "pplus_RAPIDITY", "pplus_ETA", "pplus_ProbNNp", "piplus_M", "piplus_P", "piplus_PT", "piplus_RAPIDITY", "piplus_ETA", "piplus_ProbNNpi", "pplus_PIDp", "kminus_M", "kminus_P", "kminus_PT", "kminus_RAPIDITY", "kminus_ETA", "kminus_ProbNNk", "kminus_PIDK", "PVNTRACKS", ] # list of variables kept in the tree
+	useful_vars = ["lcplus_MM", "lcplus_P", "lcplus_PT", "lcplus_ETA", "lcplus_RAPIDITY", "lcplus_TIP", "lcplus_IPCHI2_OWNPV", "lcplus_OWNPV_CHI2", "lcplus_TAU", "lcplus_L0HadronDecision_TOS", "pplus_M", "pplus_P", "pplus_PT", "pplus_RAPIDITY", "pplus_ETA", "pplus_ProbNNp", "piplus_M", "piplus_P", "piplus_PT", "piplus_RAPIDITY", "piplus_ETA", "piplus_ProbNNpi", "pplus_PIDp", "kminus_M", "kminus_P", "kminus_PT", "kminus_RAPIDITY", "kminus_ETA", "kminus_ProbNNk", "kminus_PIDK", "PVNTRACKS", "piplus_PX", "pplus_PX", "kminus_PX", "piplus_PY", "pplus_PY", "kminus_PY", "piplus_PZ", "pplus_PZ", "kminus_PZ"] # list of variables kept in the tree
 
 	for extra_variable in extra_variables:
 		if not (extra_variable == ""): #if extra_variable is something needed, then it will be added to the array
