@@ -136,11 +136,11 @@ def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, 
 	if not (bins):
 		filename = "{0}2pKpiTuple.root".format(particle)
 		alldata = TChain("tuple_{0}2pKpi/DecayTree".format(particle))
-		print()
+		
 		extra_dir = ""
 		for job in range(Min, Max) :
-			print("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename))
 			if not os.path.exists("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename)):
+				print("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename))
 				alldata.Add("{0}/{1}{2}/{3}".format(directory,job,extra_dir,filename))
     
     #Check if there are any issues with the data
