@@ -149,7 +149,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 			print("Files with y({0})".format(ybin))
 			for ptbin in ptbins:
 				#FOR THE PROGRESSION BAR
-				if i < n;
+				if i < n:
 					j = (i + 1) / n
 					sys.stdout.write('\r')
 					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
