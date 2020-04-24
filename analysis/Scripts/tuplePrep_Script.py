@@ -22,6 +22,7 @@ def main():
 		if int(element) > 41 and int(element) < 47:
 		   extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
 		   run = 1
+		   particle = "Lc"
 		else:
 		   extra_variables = ["nSPDHits", "nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
 		   particle = folders_dict[element][2]
