@@ -45,7 +45,8 @@ def invariantMass(p1, p2) :
     E2 = "sqrt({0}**2 + {1}**2)".format(m2,ptot2)
     pvecdot = "({0}*{1} + {2}*{3} + {4}*{5})".format(px1,px2, py1,py2, pz1,pz2)
     M2 = "({0}**2 + {1}**2 + 2*{2}*{3} - 2*{4})".format(m1,m2,E1,E2,pvecdot)
-    return M2
+    #print (M2)
+    return (M2.replace("piplus_M","139.57").replace("kminus_M","493.68").replace("pplus_M","938.27")) #Returns Masses as numbers in MeV
 
 def main(argv):
   global outputdir
@@ -53,9 +54,9 @@ def main(argv):
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
   #Define masses (missing from our nTuples)
-  piplus_M=139.57#MeV
-  kminus_M=493.68#MeV
-  pplus_M=938.27#MeV
+  #piplus_M=139.57#MeV
+  #kminus_M=493.68#MeV
+  #pplus_M=938.27#MeV
 
   
 

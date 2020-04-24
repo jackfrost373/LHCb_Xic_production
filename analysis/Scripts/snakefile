@@ -8,22 +8,25 @@ rule all:
 #todo below - add in {placeholders} where file names are known/predictable
 
 rule mass_fitting_all:
-     input: ["MassFitting/fit.py","MassFitting/fittingDict.py"]
+     input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
      output:["Dict_output/singleFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Single/*.pdf")]
-     shell: "python -i MassFitting/fit.py -m single"
+     shell: "python  MassFitting/fit.py -m single"
 
 rule mass_fitting_years:
-     input: ["MassFitting/fit.py", "MassFitting/yearTotalFit_Dict.py"]
+     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
      output: ["Dict_output/yearFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Year/*.pdf")]
-     shell: "python -i MassFitting/fit.py -m year"
+     shell: "python  MassFitting/fit.py -m year"
 
 rule mass_fitting_comb_bins:
-     input: ["MassFitting/fit.py", "MassFitting/CombinedBinFit_Dict.py"] 
+     input: ["Imports.py","MassFitting/fit.py", "MassFitting/CombinedBinFit_Dict.py"] 
      output: ["Dict_output/combinedFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Combined/*.pdf")]
-     shell: "python -i MassFitting/fit.py -m combined"
+     shell: "python  MassFitting/fit.py -m combined"
 
+rule sWeights_all:
+     input: [expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
 
-#rule sWeights:
-     #input:[ ]
-     #output: [ ]
-     #shell:" "
+rule sWeights_years:
+     input: ["Imports.py","MassFitting/fit.py","MassFitting/MassfitLib.py", "MassFitting/yearTotalFit_Dict.py", expand("/dcache/bfys/scalo/binned_files/{year}_Mag{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
+     output: "/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root"
+     
+     run:shell ("python sWeights.py -m 'year' -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle}")
