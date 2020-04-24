@@ -39,12 +39,17 @@ def main():
 		if not os.path.exists(saving_directory):
 		   os.makedirs(saving_directory)
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
+		
+		print ("Starting process for " + name)
 			
 		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
 		Max = step
 		Min = 0
 
 	# Loop used to apply global cuts on the data
+		print("Creation of sclusters")
+		n = 20
+		i = 0
 		while (Max <= subjobs):
 			if Max == Min:
 				break
@@ -55,9 +60,16 @@ def main():
 			else:
 				Max += step
 			Min = temp
+			
+			j = (i + 1) / n
+			sys.stdout.write('\r')
+			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+			sys.stdout.flush()
+			i += 1
 
 		clusters = os.listdir(saving_directory)
-
+	
+		print("TChaining the clusters")
 		final_chain = TChain("DecayTree")
 		for element in clusters:
 			final_chain.Add(saving_directory + element)
@@ -68,7 +80,7 @@ def main():
 		saving_dir = PATH + name + "/bins/"
 		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
-		print ("process completed for " + name)
+		print ("Process completed for " + name)
 
 
 
@@ -117,10 +129,20 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 			mass_cuts = "lcplus_MM < 2375"
 		if particle == "Xic":
 			mass_cuts = "lcplus_MM > 2375"
+			
+		n = len(ybins)
+		i = 0
 		for ybin in ybins:
 			ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])
 			allcuts = " {0} && {1}".format(ycuts, mass_cuts)
 			strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables,particle, bins = True, tree = tree)
+			
+			j = (i + 1) / n
+			sys.stdout.write('\r')
+			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+			sys.stdout.flush()
+			i += 1
+			
 			for ptbin in ptbins:
 				ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
 				if (ybin[0] == 2.0):
