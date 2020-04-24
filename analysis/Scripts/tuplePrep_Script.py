@@ -47,10 +47,17 @@ def main():
 		Min = 0
 
 	# Loop used to apply global cuts on the data
-		print("Creation of sclusters")
+		print("Creation of Clusters")
 		n = 20
 		i = 0
 		while (Max <= subjobs):
+			
+			j = (i + 1) / n
+			sys.stdout.write('\r')
+			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+			sys.stdout.flush()
+			i += 1
+			
 			if Max == Min:
 				break
 			strip_n_save(Min, Max, cuts, file_directory, saving_directory, extra_variables, particle)
@@ -60,12 +67,6 @@ def main():
 			else:
 				Max += step
 			Min = temp
-			
-			j = (i + 1) / n
-			sys.stdout.write('\r')
-			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-			sys.stdout.flush()
-			i += 1
 
 		clusters = os.listdir(saving_directory)
 	
