@@ -47,11 +47,12 @@ def main():
 		i = 0
 		while (Max <= subjobs):
 			#FOR THE PROGRASSION BAR
-			j = (i + 1) / n
-			sys.stdout.write('\r')
-			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-			sys.stdout.flush()
-			i += 1
+			if i < n:
+				j = (i + 1) / n
+				sys.stdout.write('\r')
+				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+				sys.stdout.flush()
+				i += 1
 			
 			if Max == Min:
 				break
@@ -67,14 +68,15 @@ def main():
 	
 		print("\n\nTChaining the clusters")
 		final_chain = TChain("DecayTree")
-		n = len(clusers)
+		n = len(clusters)
 		i = 0
 		for element in clusters:
-			j = (i + 1) / n
-			sys.stdout.write('\r')
-			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-			sys.stdout.flush()
-			i += 1
+			if i < n:
+				j = (i + 1) / n
+				sys.stdout.write('\r')
+				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+				sys.stdout.flush()
+				i += 1
 			final_chain.Add(saving_directory + element)
 
 		
@@ -147,11 +149,12 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 			print("Files with y({0})".format(ybin))
 			for ptbin in ptbins:
 				#FOR THE PROGRESSION BAR
-				j = (i + 1) / n
-				sys.stdout.write('\r')
-				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-				sys.stdout.flush()
-				i += 1
+				if i < n;
+					j = (i + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					i += 1
 				
 				ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
 				if (ybin[0] == 2.0):
