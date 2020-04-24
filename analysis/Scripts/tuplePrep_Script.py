@@ -4,22 +4,17 @@ from ROOT import TChain, TFile
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	folders_dict = {
-		"115":["2016_MagDown", 186,"Xic"],
-		"119":["2016_MagDown",527,"Lc"],
-	} 
-	
-	# folders_dict = {
-		# "43":["2011_MagDown", 907],
-		# "45":["2011_MagUp", 817],
-		# "46":["2012_MagUp",1342],
-		# "42":["2012_MagDown",1155],
-		# "119":["2016_MagDown",527,"Lc"],
-		# "115":["2016_MagDown",186,"Xic"],
-		# "91":["2017_MagDown",529,"Lc"],
-		# "116":["2017_MagDown",257,"Xic"],
-		# "117":["2018_MagDown",471,"Xic"],
-		# "92":["2018_MagDown",656,"Lc"],
-		# } 
+		#"43":["2011_MagDown", 907],
+		#"45":["2011_MagUp", 817],
+		#"46":["2012_MagUp",1342],
+		#"42":["2012_MagDown",1155],
+		#"119":["2016_MagDown",527,"Lc"],
+		#"115":["2016_MagDown",186,"Xic"],
+		"91":["2017_MagDown",529,"Lc"],
+		"116":["2017_MagDown",257,"Xic"],
+		"117":["2018_MagDown",471,"Xic"],
+		"92":["2018_MagDown",656,"Lc"],
+		} 
 
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	PATH = "/dcache/bfys/jtjepkem/binned_files/"
@@ -40,7 +35,7 @@ def main():
 		   os.makedirs(saving_directory)
 		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
 		
-		print ("Starting process for " + name)
+		print ("\nStarting process for " + name)
 			
 		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
 		Max = step
@@ -89,7 +84,7 @@ def main():
 		print("\n\nCreating the final files")
 		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
-		print ("Process completed for " + name)
+		print ("\nProcess completed for " + name)
 
 
 
@@ -139,22 +134,25 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 		if particle == "Xic":
 			mass_cuts = "lcplus_MM > 2375"
 			
-		n = len(ybins)
-		i = 0
+		
 		for ybin in ybins:
-			#FOR THE PROGRESSION BAR
-			j = (i + 1) / n
-			sys.stdout.write('\r')
-			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-			sys.stdout.flush()
-			i += 1
 			
 			ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])
 			allcuts = " {0} && {1}".format(ycuts, mass_cuts)
 			
 			strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables,particle, bins = True, tree = tree)
 			
+			n = len(ptbins)
+			i = 0
+			print("Files with y({0})".format(ybin))
 			for ptbin in ptbins:
+				#FOR THE PROGRESSION BAR
+				j = (i + 1) / n
+				sys.stdout.write('\r')
+				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+				sys.stdout.flush()
+				i += 1
+				
 				ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
 				if (ybin[0] == 2.0):
 					allcuts = " {0} && {1}".format(ptcuts, mass_cuts)
@@ -162,6 +160,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 				yptcut = ycuts + " && " + ptcuts
 				allcuts = " {0} && {1}".format(yptcut, mass_cuts)
 				strip_n_save(0,0, allcuts, "", saving_dir + "y_ptbins/" + particle + "_ybin_{0}-{1}_ptbin_{2}-{3}.root".format(ybin[0],ybin[1],ptbin[0],ptbin[1]), extra_variables, particle, bins = True, tree = tree)
+			print("\n")
 
 #### Function that takes as inputs: min and max which are 2 integers that indicates from which subjob to which subjob the TChain ranges; cuts are the cuts applied to the TTrees; directory is the directory in which the subjobs are to be found and saving_directory is the directory in which the stripped files are then saved. ####
 def strip_n_save (Min, Max, cuts, directory, saving_directory, extra_variables, particle, bins = False, tree = None):
