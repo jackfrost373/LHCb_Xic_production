@@ -51,7 +51,7 @@ def main():
 		n = 20
 		i = 0
 		while (Max <= subjobs):
-			
+			#FOR THE PROGRASSION BAR
 			j = (i + 1) / n
 			sys.stdout.write('\r')
 			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
@@ -70,15 +70,23 @@ def main():
 
 		clusters = os.listdir(saving_directory)
 	
-		print("TChaining the clusters")
+		print("\n\nTChaining the clusters")
 		final_chain = TChain("DecayTree")
+		n = len(clusers)
+		i = 0
 		for element in clusters:
+			j = (i + 1) / n
+			sys.stdout.write('\r')
+			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+			sys.stdout.flush()
+			i += 1
 			final_chain.Add(saving_directory + element)
 
 		
 		if not os.path.exists(PATH + name + "/bins"):
 		   os.makedirs(PATH + name + "/bins")
 		saving_dir = PATH + name + "/bins/"
+		print("\n\nCreating the final files")
 		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
 		print ("Process completed for " + name)
@@ -134,15 +142,17 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 		n = len(ybins)
 		i = 0
 		for ybin in ybins:
-			ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])
-			allcuts = " {0} && {1}".format(ycuts, mass_cuts)
-			strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables,particle, bins = True, tree = tree)
-			
+			#FOR THE PROGRESSION BAR
 			j = (i + 1) / n
 			sys.stdout.write('\r')
 			sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
 			sys.stdout.flush()
 			i += 1
+			
+			ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])
+			allcuts = " {0} && {1}".format(ycuts, mass_cuts)
+			
+			strip_n_save(0,0, allcuts, "", saving_dir + "ybins/" + particle + "_ybin_{0}-{1}.root".format(ybin[0], ybin[1]), extra_variables,particle, bins = True, tree = tree)
 			
 			for ptbin in ptbins:
 				ptcuts = "lcplus_PT >= {0} && lcplus_PT < {1}".format(ptbin[0], ptbin[1])
