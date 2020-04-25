@@ -1,3 +1,6 @@
+TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
+RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+
 def getMCCuts (particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:

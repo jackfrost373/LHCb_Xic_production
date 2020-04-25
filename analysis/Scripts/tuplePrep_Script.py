@@ -1,8 +1,10 @@
 import ROOT, os, Imports, sys
 from ROOT import TChain, TFile
+from Imports import TUPLE_PATH, RAW_TUPLE_PATH
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
+	#Run 1 is automatically Lc, and Run 2 has particle specified.
 	folders_dict = {
 		"43":["2011_MagDown", 907],
 		"45":["2011_MagUp", 817],
@@ -16,7 +18,7 @@ def main():
 		"92":["2018_MagDown",656,"Lc"],
 		} 
 
-	PATH = "/dcache/bfys/jtjepkem/binned_files/"
+	PATH = TUPLE_PATH
 	
 	for element in folders_dict:
 		if int(element) > 41 and int(element) < 47:
@@ -37,7 +39,7 @@ def main():
 		if not os.path.exists(saving_directory):
 		   os.makedirs(saving_directory)
 		   
-		file_directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + element
+		file_directory = RAW_TUPLE_PATH + element
 		
 		print ("\nStarting process for " + name)
 			
@@ -91,6 +93,35 @@ def main():
 		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
 		print ("\nProcess completed for " + name)
+		
+	#CREATION OF THE TOTAL YEAR DATA FILES (e.g. 2012_MagUp/Xic_Total.root)
+	print("\Creation of the Total Year data files")
+	mother_particle = ["Xic", "Lc"]
+	BASE_PATH = TUPLE_PATH
+	
+	n = len(os.listdir(BASE_PATH))
+	p = 0
+	for i in os.listdir(BASE_PATH):
+		if p < n:
+				j = (p + 1) / n
+				sys.stdout.write('\r')
+				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+				sys.stdout.flush()
+				p += 1
+						
+		for part in mother_particle:
+			totfile = ROOT.TFile.Open(BASE_PATH + i + "/{}_total.root".format(part),"RECREATE")
+			totfile.cd()
+			tree = TChain("DecayTree")
+
+			for j in os.listdir(BASE_PATH + i +"/bins/ybins"):
+					if part in j:
+							tree.Add(BASE_PATH + i +"/bins/ybins/"+j)
+			tree.Write()
+			totfile.Close()
+			del totfile
+			
+	print("\nNTuple Preparation is done, happy analysis!")
 
 
 

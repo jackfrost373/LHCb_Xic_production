@@ -20,6 +20,7 @@ from yearTotalFit_Dict import fittingDict as yearFitDict
 import os.path
 import textwrap
 import Imports
+from Imports import TUPLE_PATH
 
 #folder structure : 
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
