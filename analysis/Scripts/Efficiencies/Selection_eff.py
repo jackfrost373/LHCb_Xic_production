@@ -1,13 +1,14 @@
 import ROOT, os
 from ROOT import TChain, TCanvas, TH1
+import Imports
 
 #directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
 #directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 #job = "78"
 ID = ""
 
-ybins = [[2.0, 2.5], [2.5, 3.0], [3.0, 3.5], [3.5, 4.0]]
-ptbins = [[3000, 4000], [4000, 5000], [5000, 6000], [6000, 8000], [8000, 20000]]
+ybins = Imports.getYbins()
+ptbins = Imports.getPTbins()
 
 #cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 &&  pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000"

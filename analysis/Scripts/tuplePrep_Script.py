@@ -5,18 +5,7 @@ from Imports import TUPLE_PATH, RAW_TUPLE_PATH
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
-	folders_dict = {
-		"43":["2011_MagDown", 907],
-		"45":["2011_MagUp", 817],
-		"46":["2012_MagUp",1342],
-		"42":["2012_MagDown",1155],
-		"119":["2016_MagDown",527,"Lc"],
-		"115":["2016_MagDown",186,"Xic"],
-		"91":["2017_MagDown",529,"Lc"],
-		"116":["2017_MagDown",257,"Xic"],
-		"117":["2018_MagDown",471,"Xic"],
-		"92":["2018_MagDown",656,"Lc"],
-		} 
+	folders_dict = Imports.getFoldersDict()
 
 	PATH = TUPLE_PATH
 	
