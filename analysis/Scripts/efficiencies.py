@@ -48,8 +48,17 @@ def main(argv):
 			
 			f_text = open("Selection_Eff_output.txt", "w+")
 			
+			n = len(MC_jobs_Dict)
+			i = 0
+			
 			for job in MC_jobs_Dict:
-				
+				#FOR THE PROGRESSION BAR
+				if i < n:
+					j = (i + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					i += 1
 				if job == "NA":
 					continue
 				
@@ -74,19 +83,9 @@ def main(argv):
  
  
 				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
-				
-				n = len(os.listdir(RAW_TUPLE_PATH + job))
-				i = 0
-			
+						
 				for subjob in os.listdir(RAW_TUPLE_PATH + job):
-					#FOR THE PROGRESSION BAR
-					if i < n:
-						j = (i + 1) / n
-						sys.stdout.write('\r')
-						sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-						sys.stdout.flush()
-						i += 1
-						Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
+					Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
 					
 				N= float(Lc_MC_tree.GetEntries()) #WHY DID SIMON USE A HARDCODED NUMBER OF ENTRIES??
 				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo))
