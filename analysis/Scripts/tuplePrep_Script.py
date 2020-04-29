@@ -1,11 +1,11 @@
 import ROOT, os, Imports, sys
 from ROOT import TChain, TFile
-from Imports import TUPLE_PATH, RAW_TUPLE_PATH
+from Imports import TUPLE_PATH, RAW_TUPLE_PATH, DATA_jobs_Dict
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
-	folders_dict = Imports.getFoldersDict()
+	folders_dict = DATA_jobs_Dict
 
 	PATH = TUPLE_PATH
 	

@@ -28,20 +28,20 @@ for job in dictionary:
     if (job == 30):
         particle = "Xic"
         #ID = "26103090"
-	ID = "25103029"
-	#turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
+		ID = "25103029"
+		#turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
         turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
         directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
-	Lc_MC_filename = "output/MC_Lc2pKpiTuple_" + ID + ".root"
+		Lc_MC_filename = "output/MC_Lc2pKpiTuple_" + ID + ".root"
 	
     else:
         particle = "Lc"
         #ID = "25203000"
-	ID = "25103006"
-	#turbo = "lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS==1"
-	turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
-	directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
-	Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
+		ID = "25103006"
+		#turbo = "lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS==1"
+		turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
+		directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+		Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
 	
     #cuts+= " && " + turbo    
     Lc_MC_filedir = directory + str(job)
@@ -60,18 +60,18 @@ for job in dictionary:
     string = "Particle: " + particle + " year: " + str(year) + MagPol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
     f_text.write(string)
 
-#    for ybin in ybins:
- #       for ptbin in ptbins:
-  #          yptcut = "lcplus_PT >= {0} && lcplus_PT < {1} && lcplus_RAPIDITY >= {2} && lcplus_RAPIDITY < {3}".format(ptbin[0], ptbin[1], ybin[0], ybin[1])
-            #N = float(Lc_MC_tree.GetEntries(yptcut + " && " + turbo + " && lcplus_L0HadronDecision_TOS==1"))
- #           N = tot_entries
-#	    if N==0.0:
-#                continue
-#            k = float(Lc_MC_tree.GetEntries(cuts + " && " + yptcut + " && " + turbo))
-#            eff = float(k/N)
-#            binom_error = (1/N)*((k*(1-k/N))**(0.5))
-#            string = "Particle: " + particle + "year: " +str(year) + MagPol + " Bin " + str(ybin[0]) + "-" + str(ybin[1]) + " pt: " + str(ptbin[0]) + "-" + str(ptbin[1]) +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
-#            f_text.write(string)
+	# for ybin in ybins:
+		# for ptbin in ptbins:
+			# yptcut = "lcplus_PT >= {0} && lcplus_PT < {1} && lcplus_RAPIDITY >= {2} && lcplus_RAPIDITY < {3}".format(ptbin[0], ptbin[1], ybin[0], ybin[1])
+			# N = float(Lc_MC_tree.GetEntries(yptcut + " && " + turbo + " && lcplus_L0HadronDecision_TOS==1"))
+			# N = tot_entries
+			# if N==0.0:
+				# continue
+			# k = float(Lc_MC_tree.GetEntries(cuts + " && " + yptcut + " && " + turbo))
+			# eff = float(k/N)
+			# binom_error = (1/N)*((k*(1-k/N))**(0.5))
+			# string = "Particle: " + particle + "year: " +str(year) + MagPol + " Bin " + str(ybin[0]) + "-" + str(ybin[1]) + " pt: " + str(ptbin[0]) + "-" + str(ptbin[1]) +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+			# f_text.write(string)
 
 f_text.close()
 
