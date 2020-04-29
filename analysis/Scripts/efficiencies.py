@@ -1,5 +1,5 @@
 from ROOT import TChain, TCanvas, TH1, TFile
-import ROOT, os, Imports, sys
+import ROOT, os, Imports, sys, getopt
 from Imports import TUPLE_PATH, RAW_TUPLE_PATH, MC_jobs_Dict
 
 ybins = Imports.getYbins()
@@ -49,8 +49,9 @@ def main(argv):
 			f_text = open("Selection_Eff_output.txt", "w+")
 			
 			for job in MC_jobs_Dict:
+				
 				if job == "NA":
-					pass
+					continue
 				
 				particle = MC_jobs_Dict[job][3]
 				year = MC_jobs_Dict[job][0]
@@ -72,16 +73,26 @@ def main(argv):
 				turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
  
  
-				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
+				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
 				
+				n = len(os.listdir(RAW_TUPLE_PATH + job))
+				i = 0
+			
 				for subjob in os.listdir(RAW_TUPLE_PATH + job):
-					Lc_MC_tree.Add(RAW_TUPLE_PATH + subjob + filename)
+					#FOR THE PROGRESSION BAR
+					if i < n:
+						j = (i + 1) / n
+						sys.stdout.write('\r')
+						sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+						sys.stdout.flush()
+						i += 1
+						Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
 					
 				N= float(Lc_MC_tree.GetEntries()) #WHY DID SIMON USE A HARDCODED NUMBER OF ENTRIES??
 				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
-				string = "Particle: " + particle + " year: " + str(year) + MagPol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+				string = "Particle: " + particle + " year: " + str(year) + pol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 			
 			f_text.close()
