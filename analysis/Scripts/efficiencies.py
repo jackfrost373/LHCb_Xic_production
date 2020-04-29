@@ -96,11 +96,64 @@ def main(argv):
 				string = "Particle: " + particle + " year: " + str(year) + pol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 			
-			print("\nEfficiencies calculations are done!")
+			print("\nSelection efficiency calculations are done!")
 			f_text.close()
 			
 		elif opt == "-t":
-			pass
+			
+			f_text = open("Trigger_Eff_output.txt", "w+")
+			
+			n = len(MC_jobs_Dict)
+			i = 0
+			
+			for job in MC_jobs_Dict:
+				#FOR THE PROGRESSION BAR
+				if i < n:
+					j = (i + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					i += 1
+				if job == "NA":
+					continue
+				
+				particle = MC_jobs_Dict[job][3]
+				year = MC_jobs_Dict[job][0]
+				pol = MC_jobs_Dict[job][1]
+				subjobs = MC_jobs_Dict[job][2]
+				identifier = MC_jobs_Dict[job][4]
+				
+				filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
+				
+				if int(year) <= 2012:
+					run = 1
+					cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1"
+					turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
+				else:
+					run = 2
+					cuts = Imports.getDataCuts(run)
+					turbo = "lcplus_Hlt1TrackMVADecision_TOS==1"
+				
+				#WHAT DO I NEED FOR TRIGGER CUTS?!!
+ 
+				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
+						
+				for subjob in os.listdir(RAW_TUPLE_PATH + job):
+					Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
+					
+				N=float(Lc_MC_tree.GetEntries( turbo + " && lcplus_L0HadronDecision_TOS==1"))
+				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo ))
+				eff = float(k/N)
+				binom_error = (1/N)*((k*(1-k/N))**(0.5))
+				string = "Particle: " + particle + " year: " +str(year) + MagPol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+				f_text.write(string)
+			
+			print("\nTrigger efficiency calculations are done!")
+			f_text.close()
+			
+			
+
+
 			
 		elif opt == "-p":
 			pass
