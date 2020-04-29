@@ -72,15 +72,16 @@ def main(argv):
 				
 				if int(year) <= 2012:
 					run = 1
+					cuts = Imports.getDataCuts(run)
 				else:
 					run = 2
+					cuts = Imports.getDataCuts(run)
 				
-				# APPARENTLY THAT THE ONLY CUTS THAT SIMON WAS LOOKING AT ---- !!!QUESTION!!!
-				cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 &&  pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000"
+				# # APPARENTLY THAT THE ONLY CUTS THAT SIMON WAS LOOKING AT ---- !!!QUESTION!!!
+				# cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 &&  pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000"
 				
-				#turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
-				turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
- 
+				# #turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
+				# turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
  
 				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
 						
@@ -88,12 +89,14 @@ def main(argv):
 					Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
 					
 				N= float(Lc_MC_tree.GetEntries()) #WHY DID SIMON USE A HARDCODED NUMBER OF ENTRIES??
-				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo))
+				#k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo)) SIMON VERSION
+				k = float(Lc_MC_tree.GetEntries(cuts))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
 				string = "Particle: " + particle + " year: " + str(year) + pol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 			
+			print("\nEfficiencies calculations are done!")
 			f_text.close()
 			
 		elif opt == "-t":
