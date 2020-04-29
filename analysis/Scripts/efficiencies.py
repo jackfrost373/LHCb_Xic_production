@@ -46,6 +46,8 @@ def main(argv):
 		
 		if opt == "-s":
 			
+			print("\nCreation of the selection efficiency files")
+			
 			f_text = open("Selection_Eff_output.txt", "w+")
 			
 			n = len(MC_jobs_Dict)
@@ -101,6 +103,8 @@ def main(argv):
 			
 		elif opt == "-t":
 			
+			print("\nCreation of the trigger efficiency files")
+			
 			f_text = open("Trigger_Eff_output.txt", "w+")
 			
 			n = len(MC_jobs_Dict)
@@ -145,15 +149,12 @@ def main(argv):
 				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo ))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
-				string = "Particle: " + particle + " year: " +str(year) + MagPol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+				string = "Particle: " + particle + " year: " +str(year) + pol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 			
 			print("\nTrigger efficiency calculations are done!")
 			f_text.close()
 			
-			
-
-
 			
 		elif opt == "-p":
 			pass
