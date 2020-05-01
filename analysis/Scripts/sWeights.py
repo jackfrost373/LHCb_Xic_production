@@ -16,7 +16,7 @@ plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspa
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
-inputdir = "/dcache/bfys/scalo/binned_files/"
+inputdir = "/dcache/bfys/jtjepkem/binned_files/"
 outputdir = "/data/bfys/cpawley/sWeights/"
 
 #Years, Mag pol and part. types hardcoded
@@ -41,12 +41,10 @@ def getVarfromList (name,list_to_search):
 
 def main(argv):
   global outputdir
-  fail=0
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
 
   ## parse the arguments from command line into arrays for us to check:
-  print ("Starting to parse the command line input")
   try:
     opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
   except getopt.GetoptError:
@@ -59,9 +57,6 @@ def main(argv):
   for opt,arg in opts:
     options.append(opt)
     arguments.append(arg)
-
-    print (options, arguments)
-
     #Check inputs are viable/match what is possible
     #What happens when we don't enter parameters? maybe we need to look for length>0 first
   print ("Checking for parameter errors")
@@ -148,7 +143,8 @@ def main(argv):
       outputname=particle+"_total"
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
-    cuts = "1==1"
+    cuts = "(1==1"
+    #cuts += " && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
     parsefile=(outputdir.split("/"))
     if not os.path.exists(outputdir):
       os.makedirs(outputdir)
@@ -157,15 +153,15 @@ def main(argv):
           
       mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
       #todo: check number of entries, inclusive or exclusive???
-      momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
-      lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
-              
+      #momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
+      #lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+      cuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340)"     
     elif particle == "Xic":
                        
       mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
-      momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
-      lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
-                       
+      #momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
+      #lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
+      cuts += " && lcplus_MM >= 2420 && lcplus_MM <= 2520)"                 
     else: print ("I did not find the right particle, this is a problem")
 
   if(makesWeights) :
@@ -188,7 +184,7 @@ def main(argv):
           fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
         fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
-    print("opening model file")    
+     
     f1=ROOT.TFile.Open("MassFitting/model.root","READONLY")
     w=f1.Get("w")
     model=w.pdf("fullshape")
@@ -198,9 +194,9 @@ def main(argv):
     
     # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
     
-    print ("Starting sWeights")
+    #print ("Starting sWeights")
     sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
-    print ("sWeights is done")
+    #print ("sWeights is done")
       # Check sWeights - does not work in the current implimentation.
     if(False) :
       print("")
@@ -216,7 +212,7 @@ def main(argv):
           # Make a new TTree that contains the sWeights for every event.
           # Makes use of the previously defined data and sData objects.
 
-          print ("creating TTree and writing to file for sWeights...")
+          #print ("creating TTree and writing to file for sWeights...")
                   
           fileFriendTree = ROOT.TFile.Open("{0}{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
           #fileFriendTree = ROOT.TFile.Open("Test_sWeight_swTree.root","RECREATE")
@@ -240,12 +236,12 @@ def main(argv):
 
           fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),("READONLY"))
           Friendtree = fileFriendTree.Get("dataNew")
-          cuts = "1==1"
+          #cuts = "1==1"
 
           Actual_signalshape_Norm_sw=ROOT.RooRealVar("Actual_signalshape_Norm_sw","signal",-5,5)
           exponential_Norm_sw=ROOT.RooRealVar("exponential_Norm_sw","background",-5,5)
         
-          data = ROOT.RooDataSet("data","data set", Friendtree, ROOT.RooArgSet(mass,momentum,lifetime, Actual_signalshape_Norm_sw, exponential_Norm_sw), cuts)
+          data = ROOT.RooDataSet("data","data set", Friendtree, ROOT.RooArgSet(mass, Actual_signalshape_Norm_sw, exponential_Norm_sw), cuts)
           
           data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "Actual_signalshape_Norm_sw")
           data_bkg = ROOT.RooDataSet("data_bkg", "sWeighed bkgrnd data", data, data.get(), "1==1", "exponential_Norm_sw")

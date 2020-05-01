@@ -7,8 +7,6 @@
 import ROOT, sys, getopt, os
 import Imports
 
-
-
 # Define what type of plot you want
 dataType = "MC" #dataType = MC (monte carlo), or = data
 particle = "Lc" # valid types :- Xic or Lc (For MC studies)
@@ -16,10 +14,9 @@ particle = "Lc" # valid types :- Xic or Lc (For MC studies)
 addsWeights = True
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees are in sweightdir
-inputdir = "/dcache/bfys/scalo/binned_files/"
+inputdir = "/dcache/bfys/jtjepkem/binned_files/"
 sweightsdir = "/data/bfys/cpawley/sWeights/"
 outputdir = "/data/bfys/cpawley/dalitz/"
-
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
@@ -46,23 +43,18 @@ def invariantMass(p1, p2) :
     pvecdot = "({0}*{1} + {2}*{3} + {4}*{5})".format(px1,px2, py1,py2, pz1,pz2)
     M2 = "({0}**2 + {1}**2 + 2*{2}*{3} - 2*{4})".format(m1,m2,E1,E2,pvecdot)
     #print (M2)
-    return (M2.replace("piplus_M","139.57").replace("kminus_M","493.68").replace("pplus_M","938.27")) #Returns Masses as numbers in MeV
+    #return (M2.replace("piplus_M","139.57").replace("kminus_M","493.68").replace("pplus_M","938.27")) #Returns Masses as numbers in MeV
+    return M2
 
 def main(argv):
   global outputdir
   global sweightsdir
   #Stop ROOT printing graphs so much
   ROOT.gROOT.SetBatch(True)
-  #Define masses (missing from our nTuples)
-  #piplus_M=139.57#MeV
-  #kminus_M=493.68#MeV
-  #pplus_M=938.27#MeV
 
-  
 
 
   ## parse the arguments from command line into arrays for us to check:
-  print ("Starting to parse the command line input")
   try:
     opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
   except getopt.GetoptError:
@@ -81,7 +73,6 @@ def main(argv):
     #What happens when we don't enter parameters? maybe we need to look for length>0 first
   print ("Checking for parameter errors")
   mode=arguments[options.index("-m")]
-  print (mode)
   if (mode!="single" and mode!="combined" and mode!="year"):
     print ("Wrong looping mode input to Dalitz...exiting...")
     sys.exit()
@@ -165,10 +156,10 @@ def main(argv):
       outputdir += str(year)+"_"+magpol+"/"
       sweightsdir +=  str(year)+"_"+magpol+"/"
       outputname=particle+"_total"
-    print ("loading tree from "+inputdir+filestring)
+    #print ("loading tree from "+inputdir+filestring)
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
     tree = f.Get("DecayTree")
-    cuts = "1==1"
+    cuts = "(1==1)"
 
     if not os.path.exists(outputdir):
       os.makedirs(outputdir)
@@ -189,12 +180,16 @@ def main(argv):
     print ("adding sWeights")
     # If we made an sWeight friend tree: add it, and use sWeights. Make sure same cuts (--> #entries) as swTree!
     wfile = ROOT.TFile.Open("{0}dalitz_temp.root".format(outputdir),"RECREATE")
-    swcuts = "lcplus_MM >= 2240 && lcplus_MM <= 2340 "#&& lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
-    #swcuts = "1==1"
-    tree.Print()
+    swcuts ="(1==1" #"(lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+    if particle=="Lc":
+      swcuts+="&& lcplus_MM > 2240 && lcplus_MM < 2340)"
+    else:
+      swcuts+="&& lcplus_MM > 2420 && lcplus_MM < 2520)"
+    
     cuttree = tree.CopyTree(swcuts)
-    cuttree.Print()
-    print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
+    #cuttree.Print()
+    #print("uncut tree nEvents = {0}".format(tree.GetEntries()))
+    #print("cutTree nEvents = {0}".format(cuttree.GetEntries()))
     cuttree.AddFriend("dataNew","{0}_sWeight_swTree.root".format(sweightsdir+outputname))
     weightvar = "dataNew.L_Actual_signalshape_Norm"
     print ("finished adding sWeights")
@@ -207,7 +202,7 @@ def main(argv):
   
   
 
-  print ("building invarient mass strings")
+  #print ("building invarient mass strings")
   m2_pK  = invariantMass("piplus","kminus")
   m2_Kpi = invariantMass("kminus","pplus")
 
@@ -215,7 +210,7 @@ def main(argv):
   c1 = ROOT.TCanvas("c1","c1")
   ROOT.gStyle.SetOptStat(0)
 
-  cuttree.Draw("{0}:{1}>>dalitzHist(100,300e3,2500e3,100,1800e3,5800e3)".format(m2_pK,m2_Kpi), "{0}*{1}".format(cuts,weightvar))
+  cuttree.Draw("{0}:{1}>>dalitzHist(100,2000e3,6000e3,100,300e3,2800e3)".format(m2_pK,m2_Kpi), "{0}*{1}".format(cuts,weightvar))
   dalitzHist = ROOT.gDirectory.Get("dalitzHist")
   dalitzHist.SetTitle("Dalitz plot of pK#pi")
   dalitzHist.GetYaxis().SetTitle("m^{2}_{pK} [MeV^{2}/c^{4}]")

@@ -31,7 +31,7 @@ import Imports
 
 #This is the base path without the particle location (until binned_files in our case)
 #BASE_PATH = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
-BASE_PATH = "/dcache/bfys/scalo/binned_files/"
+BASE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
 Dict_PATH = "./Dict_output/"
