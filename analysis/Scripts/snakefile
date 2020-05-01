@@ -42,7 +42,7 @@ rule sWeights_years:
 rule sWeights_comb_bins:
      input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/fittingDict.py", expand("/dcache/bfys/jtjepkem/binned_files/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}.root", year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"], rapidity=config["y_bins"])]
      output: "/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root"
-     run: shell ("python sWeights.py -m 'single' -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -r {wildcards.momentum}")
+     run: shell ("python sWeights.py -m 'single' -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -t {wildcards.momentum}")
 
 rule dalitz_plots_all:
      input: expand("/data/bfys/cpawley/dalitz/{year}_Mag{magpol}/{particle}_total.pdf", year=config["years"] , magpol=config["mag_pols"], particle=config["particle_types"])
