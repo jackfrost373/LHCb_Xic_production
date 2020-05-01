@@ -121,16 +121,16 @@ def main(argv):
 #get the data
     if mode=="single":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
-      filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_y_bin_"+rapidity+"_ptbin_"+pt+".root"
+      filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_ybin_"+rapidity+"_ptbin_"+pt+".root"
       outputdir += str(year)+"_"+magpol+"/bins/y_ptbins/"
-      outputname=particle+"_y_bin_"+rapidity+"_ptbin_"+pt
+      outputname=particle+"_ybin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
           outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
-          outputname=particle+"_y_bin_"+rapidity
+          outputname=particle+"_ybin_"+rapidity
         elif r==len(options):
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
