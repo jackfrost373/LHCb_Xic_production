@@ -22,7 +22,7 @@ rule mass_fitting_comb_bins:
      shell: "python  MassFitting/fit.py -m combined"
 
 rule sWeights_all:
-     input: [expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], momentum=config["pt_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"],momentum=config["pt_bins"])]
+     input: [expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], momentum=config["pt_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"],momentum=config["pt_bins"])]
 
 rule sWeights_ybins:
      input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/CombinedBinFit_Dict.py", expand("/dcache/bfys/jtjepkem/binned_files/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], rapidity=config["y_bins"])]
@@ -31,7 +31,7 @@ rule sWeights_ybins:
 
 rule sWeights_ptbins:
      input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/CombinedBinFit_Dict.py", expand("/dcache/bfys/jtjepkem/binned_files/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"])]
-     output: "/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ptbin_{momentum}_sWeight_swTree.root"
+     output: "/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}_sWeight_swTree.root"
      run:shell ("python sWeights.py -m 'combined' -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -t {wildcards.momentum}")
 
 rule sWeights_years:

@@ -103,19 +103,19 @@ def main(argv):
 
   if mode=="single":
     #all parameters need to be entered
-    if set(options)!=set(["-y","-o","-p","-r","-t"]):
+    if set(options)!=set(["-m","-y","-o","-p","-r","-t"]):
       print("Entered too few parameters in sWeights mode <single>...exiting...")
       sys.exit()
-    elif mode=="combined":
+  elif mode=="combined":
     #one of r and t must be missing
-      if set(options)!=set(["-y","-o","-p","-r"]) and set(options)!=set(["-y","-o","-p","-t"]):
-        print("Entered too few parameters in sWeights mode <combined>...exiting...")
-        sys.exit()
-    elif mode=="year":
+    if set(options)!=set(["-m","-y","-o","-p","-r"]) and set(options)!=set(["-m","-y","-o","-p","-t"]):
+      print("Entered too few parameters in sWeights mode <combined>...exiting...")
+      sys.exit()
+  elif mode=="year":
     #r and t must both be missing, all other params present
-      if set(options)!=set(["-y","-o","-p"]):
-        print("Entered too few parameters in sWeights mode <year>...exiting...")
-        sys.exit()
+    if set(options)!=set(["-m","-y","-o","-p"]):
+      print("Entered too few parameters in sWeights mode <year>...exiting...")
+      sys.exit()
 
   if(getData) :
 #get the data
@@ -126,12 +126,13 @@ def main(argv):
       outputname=particle+"_ybin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
+        print (r)
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
           outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
           outputname=particle+"_ybin_"+rapidity
-        elif r==len(options):
+        elif r==len(options)-1:
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
           outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
