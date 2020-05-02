@@ -122,24 +122,27 @@ def main(argv):
     if mode=="single":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
       filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_ybin_"+rapidity+"_ptbin_"+pt+".root"
+      modelfile="{0}_{1}_{2}_ybin_{3}_ptbin_{4}".format(year,magpol,particle,rapidity,pt)
       outputdir += str(year)+"_"+magpol+"/bins/y_ptbins/"
       outputname=particle+"_ybin_"+rapidity+"_ptbin_"+pt
     elif mode=="combined":
       for r in range(len(options)):
-        print (r)
         if options[r]=="-r":
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
           filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
+          modelfile="{0}_{1}_{2}_ybin_{3}".format(year,magpol,particle,rapidity)
           outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
           outputname=particle+"_ybin_"+rapidity
         elif r==len(options)-1:
           print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
           filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
+          modelfile="{0}_{1}_{2}_ptbin_{3}".format(year,magpol,particle,pt)
           outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
           outputname=particle+"_ptbin_"+pt    
     elif mode=="year":
       print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
       filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
+      modelfile="{0}_{1}_{2}_total".format(year,magpol,particle)
       outputdir += str(year)+"_"+magpol+"/"
       outputname=particle+"_total"
     f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
@@ -181,12 +184,12 @@ def main(argv):
       for r in range(len(options)):
         if options[r]=="-r":
           fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
-        elif (r==len(options)):
+        elif (r==(len(options)-1)):
           fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
     elif mode == "year":
         fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
      
-    f1=ROOT.TFile.Open("MassFitting/model.root","READONLY")
+    f1=ROOT.TFile.Open("MassFitting/{0}_model.root".format(modelfile),"READONLY")
     w=f1.Get("w")
     model=w.pdf("fullshape")
     data=w.data("masshist_RooFit")
@@ -194,7 +197,7 @@ def main(argv):
     bkg_norm=w.var("exponential_Norm")
     
     # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
-    
+    os.remove("MassFitting/{0}_model.root".format(modelfile))
     #print ("Starting sWeights")
     sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
     #print ("sWeights is done")

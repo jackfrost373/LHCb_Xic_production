@@ -62,6 +62,8 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 #fitComp is a boolean that can add graphically the components of the fitted shape
 def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
 	
+	splitfullname = fullname.split('.')
+	shortfullname = splitfullname[0]
 	# return lists for persistency in memory
 	varlist = []
 	shapelist = []
@@ -160,7 +162,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	w=ROOT.RooWorkspace("w")
 	getattr(w,'import')(masshist_RooFit)	
 	getattr(w,'import')(fullshape)
-	w.writeToFile("MassFitting/model.root")
+	w.writeToFile("MassFitting/{0}_model.root".format(shortfullname))
 
 	signal_yield = Actual_signalshape_Norm.getValV()
 	signal_error = Actual_signalshape_Norm.getError()
