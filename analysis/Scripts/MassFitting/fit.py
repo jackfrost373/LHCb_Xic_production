@@ -10,7 +10,7 @@ import sys, getopt
 #Creating python path for the importing of the Imports.py module(has to be one directory behind)
 # and the dictionnaries in Dict_output directory
 
-sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
+sys.path.append('./') #This one is to be able to access Imports.py, one folder up from this script
 sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
@@ -32,7 +32,7 @@ from Imports import TUPLE_PATH
 
 #This is the base path without the particle location (until binned_files in our case)
 #BASE_PATH = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
-BASE_PATH = "/dcache/bfys/scalo/binned_files/"
+BASE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
 Dict_PATH = "./Dict_output/"
@@ -40,8 +40,8 @@ Dict_PATH = "./Dict_output/"
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
-BASE_PDF_OUTPUT = "./"
-#BASE_PDF_OUTPUT = "/data/bfys/jdevries/LcAnalysis_plots/MassFitting/"
+#BASE_PDF_OUTPUT = "./"
+BASE_PDF_OUTPUT = "/data/bfys/jdevries/LcAnalysis_plots/MassFitting/"
 
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
@@ -1016,7 +1016,7 @@ def main(argv):
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
-				
+
 				return objList
 					
 					
