@@ -62,6 +62,8 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 #fitComp is a boolean that can add graphically the components of the fitted shape
 def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
 	
+	splitfullname = fullname.split('.root')
+	shortfullname = splitfullname[0]
 	# return lists for persistency in memory
 	varlist = []
 	shapelist = []
@@ -116,42 +118,52 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	mctree.Draw("lcplus_MM>>mymasshist")
 	masshist = ROOT.gDirectory.Get("mymasshist")
 	
-	mass = ROOT.RooRealVar("mass","Mass",mass_range[0],mass_range[1],"MeV/c^{2}")
+	mass = ROOT.RooRealVar("lcplus_MM","Mass",mass_range[0],mass_range[1],"MeV/c^{2}")
+	
 	#Here is where the different fit shapes are implemented with their various parameters
 	if shape == "GaussCB":
 		gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0], peak_range[1], peak_range[2])
 		gauss_width = ROOT.RooRealVar("gauss_width","Width",width_range[0], width_range[1], width_range[2])
 		myGauss     = ROOT.RooGaussian("myGauss","Gaussian", mass, gauss_mean, gauss_width)
-		
+		shapelist+=[myGauss]
 		cb_width    = ROOT.RooRealVar("cb_width","CB Width",cb_width_range[0], cb_width_range[1], cb_width_range[2])
 		cb_alpha    = ROOT.RooRealVar("cb_alpha","Exp.const",cb_alpha_range[0], cb_alpha_range[1], cb_alpha_range[2])
 		cb_n        = ROOT.RooRealVar("cb_n","Exp.crossover",cb_n_range[0], cb_n_range[1], cb_n_range[2])
 		myCB        = ROOT.RooCBShape("myCB","Crystal Ball", mass, gauss_mean, cb_width, cb_alpha, cb_n)
-		
+		shapelist+=[myCB]
 		exponential = ROOT.RooRealVar("exponential","C", exponential_range[0], exponential_range[1], exponential_range[2])
 		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", mctree.GetEntries()/nbins * 3/exponential_normalisation_factor, 0, mctree.GetEntries() * 2)
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
-
+		shapelist+=[myexponential]
 		combined_Norm = ROOT.RooRealVar("combined_Norm","Normalization for gaussCB", 0.5,0,1)
 
 		Actual_signalshape = ROOT.RooAddPdf ("Actual_signalshape", "Shape of the interesting events", myGauss, myCB, combined_Norm)
+		shapelist+=[Actual_signalshape]
 		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, 0, mctree.GetEntries() * 3)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
 
+	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
 	
-	masshist_RooFit = ROOT.RooDataHist("masshist_RooFit","masshist RooFit", ROOT.RooArgList(mass), masshist)
-
 	#Fit the data using the desired shape
-	fitresult = fullshape.fitTo(masshist_RooFit)
+	fullshape.fitTo(masshist_RooFit)
 	frame = mass.frame()
 	masshist_RooFit.plotOn(frame)
 	fullshape.plotOn(frame)
 	
+	
+	#Important, if we use other variables/ define other shapes we need to ensure we return the non-yield vars as constants
+	for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, combined_Norm]:
+                var.setConstant(ROOT.kTRUE)
 	#Get the parameters resulting from the fit
 	varlist += [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, exponential, exponential_Norm, combined_Norm, Actual_signalshape_Norm]
-	shapelist += [myGauss, myCB, myexponential, Actual_signalshape, fullshape]
-	
+	shapelist = [fullshape] + shapelist
+		
+	w=ROOT.RooWorkspace("w")
+	getattr(w,'import')(masshist_RooFit)	
+	getattr(w,'import')(fullshape)
+	w.writeToFile("MassFitting/{0}_model.root".format(shortfullname))
+
 	signal_yield = Actual_signalshape_Norm.getValV()
 	signal_error = Actual_signalshape_Norm.getError()
 	chi2ndf = frame.chiSquare()

@@ -2,251 +2,257 @@
 # Example of sWeight / sPlot using RooStats,
 # as per https://arxiv.org/abs/physics/0402083
 #################
-
-
-import ROOT, Imports, sys
-from Imports import *
+import sys
 sys.path.append('./MassFitting/')
-from fittingDict import fittingDict
+import ROOT, Imports, getopt, os,fit
+from Imports import *
 
+
+#Which steps of the sWeights do we want to do?
 getData        = True  # Load data.
 makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
 makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
-plotVariable   = False  # make an sPlot using sWeights in RooDataSet from workspace.
-testFriendTree = True  # test sWeights from friend tree to do an sPlot.
+plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspace.
+testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
+#Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
+inputdir = "/dcache/bfys/jtjepkem/binned_files/"
+outputdir = "/data/bfys/cpawley/sWeights/"
 
-inputdir = "/dcache/bfys/scalo/binned_files/"
-outputdir = "/dcache/bfys/cpawley/sWeights/"
-cuts=Imports.getDataCuts()
-
-folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] } #a dictionary containing the details of the all the years' data according to joblog.txt
-
-y_bins = ["_y2.0-2.5","_y2.5-3.0","_y3.0-3.5","_y3.5-4.0"]
-pt_bins = ["_pt3000-4000","_pt4000-5000","_pt5000-6000","_pt6000-7000","_pt7000-8000", "_pt8000-10000", "_pt10000-20000"]
+#Years, Mag pol and part. types hardcoded
+years = [2011,2012,2015,2016,2017,2018]
+magPol= ["MagUp","MagDown"]
 particle_types=["Lc","Xic"]
 
-#Stop ROOT printing graphs so much
-ROOT.gROOT.SetBatch(True)
+#y and pt bins may vary - so we import them
+y_bin_temp = Imports.getYbins()
+y_bin=[]
+for y in y_bin_temp:
+  y_bin.append("{}-{}".format(y[0],y[1]))
+pt_bin_temp = Imports.getPTbins() 
+pt_bin=[]
+for pt in pt_bin_temp:
+  pt_bin.append("{}-{}".format(pt[0],pt[1]))
 
-#We loop over all our data year and mag polarities
+def getVarfromList (name,list_to_search):
+  #search a list for a var name - as used in Bs2mumu by JdV
+  var=next((x for x in list_to_search if x.GetName()==name),None)
+  return var
 
-for element in folders_dict :
+def main(argv):
+  global outputdir
+  #Stop ROOT printing graphs so much
+  ROOT.gROOT.SetBatch(True)
 
-  name=folders_dict[element][0]
-  if not os.path.exists(outputdir+name):
-    os.mkdir(outputdir + name)
+  ## parse the arguments from command line into arrays for us to check:
+  try:
+    opts,args=getopt.getopt(argv,"hm:y:o:p:r:t:")
+  except getopt.GetoptError:
+    print("Incorrect Arguements used in sWeights")
+    sys.exit(2)
+
+  options=[]
+  arguments=[]
+
+  for opt,arg in opts:
+    options.append(opt)
+    arguments.append(arg)
+    #Check inputs are viable/match what is possible
+    #What happens when we don't enter parameters? maybe we need to look for length>0 first
+  print ("Checking for parameter errors")
+  mode=arguments[options.index("-m")]
+  if (mode!="single" and mode!="combined" and mode!="year"):
+    print ("Wrong looping mode input to sWeights...exiting...")
+    sys.exit()
+
+  year=int(arguments[options.index("-y")])
+  if year not in years:
+    print("Wrong year input to sWeights...exiting...")
+    sys.exit()
+
+  magpol=arguments[options.index("-o")]
+  if (magpol=="Up"):
+    magpol="MagUp"
+  elif (magpol=="Down"):
+    magpol="MagDown"
+  else:
+    print ("Wrong magnet polarity input to sWeights...exiting...")
+    sys.exit()
+
+  particle = arguments[options.index("-p")]
+  if (particle!="Xic" and particle!="Lc" ):
+    print("Wrong particle name input to sWeights...exiting...")
+    sys.exit()
+  
+  for r in range(len(options)):
+    if options[r]=="-r":
+      rapidity=arguments[options.index("-r")]
+      if rapidity not in y_bin:
+        print("Wrong y bin input to sWeights...exiting...")
+        sys.exit()
+
+  for t in range(len(options)):
+    if options[t]=="-t":
+      pt=arguments[options.index("-t")]
+      if pt not in pt_bin:
+        print("Wrong Pt bin input to sWeights...exiting...")
+        sys.exit()
+
+#Check sufficient parameters entered
 
 
-  #We loop over our binning by Pt, y, Particle type:
+  if mode=="single":
+    #all parameters need to be entered
+    if set(options)!=set(["-m","-y","-o","-p","-r","-t"]):
+      print("Entered too few parameters in sWeights mode <single>...exiting...")
+      sys.exit()
+  elif mode=="combined":
+    #one of r and t must be missing
+    if set(options)!=set(["-m","-y","-o","-p","-r"]) and set(options)!=set(["-m","-y","-o","-p","-t"]):
+      print("Entered too few parameters in sWeights mode <combined>...exiting...")
+      sys.exit()
+  elif mode=="year":
+    #r and t must both be missing, all other params present
+    if set(options)!=set(["-m","-y","-o","-p"]):
+      print("Entered too few parameters in sWeights mode <year>...exiting...")
+      sys.exit()
 
-  for y_bin in y_bins :
-
-    for pt_bin in pt_bins :
-
-      for particle_type in particle_types :
-
-        if(getData) :
-          
-          # Get the data
-          print ("I am working on "+name+"_"+particle_type+y_bin+pt_bin)
-          f = ROOT.TFile.Open(inputdir+name+"/bins/"+particle_type+"_bin"+y_bin+pt_bin+".root", "READONLY")
-          tree = f.Get("DecayTree")
-          cuts = "1==1"
-          
-
-          if particle_type == "Lc":
-          
-              mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
-              #todo: check number of entries, inclusive or exclusive???
-              momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
-              lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+  if(getData) :
+#get the data
+    if mode=="single":
+      print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity+" "+pt)
+      filestring=str(year)+"_"+magpol+"/bins/y_ptbins/"+particle+"_ybin_"+rapidity+"_ptbin_"+pt+".root"
+      modelfile="{0}_{1}_{2}_ybin_{3}_ptbin_{4}".format(year,magpol,particle,rapidity,pt)
+      outputdir += str(year)+"_"+magpol+"/bins/y_ptbins/"
+      outputname=particle+"_ybin_"+rapidity+"_ptbin_"+pt
+    elif mode=="combined":
+      for r in range(len(options)):
+        if options[r]=="-r":
+          print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+rapidity)
+          filestring=str(year)+"_"+magpol+"/bins/ybins/"+particle+"_ybin_"+rapidity+".root"
+          modelfile="{0}_{1}_{2}_ybin_{3}".format(year,magpol,particle,rapidity)
+          outputdir +=  str(year)+"_"+magpol+"/bins/ybins/"
+          outputname=particle+"_ybin_"+rapidity
+        elif r==len(options)-1:
+          print ("I am working on "+str(year)+" "+magpol+" "+particle+" "+pt)
+          filestring=str(year)+"_"+magpol+"/bins/ptbins/"+particle+"_ptbin_"+pt+".root"
+          modelfile="{0}_{1}_{2}_ptbin_{3}".format(year,magpol,particle,pt)
+          outputdir +=  str (year)+"_"+magpol+"/bins/ptbins/"
+          outputname=particle+"_ptbin_"+pt    
+    elif mode=="year":
+      print ("I am working on "+str(year)+" "+magpol+" "+particle+" Total")
+      filestring=str(year)+"_"+magpol+"/"+particle+"_total.root"
+      modelfile="{0}_{1}_{2}_total".format(year,magpol,particle)
+      outputdir += str(year)+"_"+magpol+"/"
+      outputname=particle+"_total"
+    f = ROOT.TFile.Open(inputdir+filestring, "READONLY")
+    tree = f.Get("DecayTree")
+    cuts = "(1==1"
+    #cuts += " && lcplus_P >= 5000 && lcplus_P <= 200000 && lcplus_TAU >= 0 && lcplus_TAU <= 0.007"
+    parsefile=(outputdir.split("/"))
+    if not os.path.exists(outputdir):
+      os.makedirs(outputdir)
               
-          elif particle_type == "Xic":
+    if particle == "Lc":
+          
+      mass = ROOT.RooRealVar("lcplus_MM","Lc_mass",2240,2340,"MeV/c^{2}")
+      #todo: check number of entries, inclusive or exclusive???
+      #momentum = ROOT.RooRealVar("lcplus_P","Lc_P",5000,200000,"MeV/c")
+      #lifetime = ROOT.RooRealVar("lcplus_TAU","Lc_tau",0,0.007,"ns")
+      cuts += " && lcplus_MM >= 2240 && lcplus_MM <= 2340)"     
+    elif particle == "Xic":
                        
-              mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
-              momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
-              lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
-                       
-          else: print ("I did not find the right particle, this is a problem")
+      mass= ROOT.RooRealVar("lcplus_MM","XiC_mass", 2420,2520,"MeC/c^{2}")
+      #momentum= ROOT.RooRealVar("lcplus_P","XiC_P",5000,200000,"MeV/c")
+      #lifetime= ROOT.RooRealVar("lcplus_TAU","XiC_tau",0,0.007,"ns")
+      cuts += " && lcplus_MM >= 2420 && lcplus_MM <= 2520)"                 
+    else: print ("I did not find the right particle, this is a problem")
 
-          print ("I am adding data to a tree") #Just to keep us informed 
-          # Get RooDataSet (unbinned) from TTree.
-          # We add momentum/lifetime for easy plotting of their sWeighted versions later
-
-
-          data = ROOT.RooDataSet("data","data set", tree, ROOT.RooArgSet(mass,momentum,lifetime), cuts)
- 
-        if(makesWeights) :
+  if(makesWeights) :
 
          # build the fit model
-
-         #######
-         #
-         # To Do: Make a generic function which recieved parameters for a given year, mag polarity, y and Pt bin, the fitting 
-         # function and the fitting parameters. For now, we use a generic gauss+cb shape. (For historical reasons)
-         #
-         #######
-
-         print ("Building the fit model...")
-
-         shape="GaussCB" #See above, default (for now)
-         particle=particle_type
-
-         fullname = name+"_"+particle_type+"_bin"+y_bin+pt_bin+".root"
-
-         if shape == "GaussCB":
-            if fullname in fittingDict["GaussCB"][particle]:
-              print ("I found special values in the dictionary...using them")
-              mass_range = fittingDict["GaussCB"][particle][fullname]["mass_range"]
-              peak_range = fittingDict["GaussCB"][particle][fullname]["peak_range"]
-			
-              normalisation_factor = fittingDict["GaussCB"][particle][fullname]["normalisation_factor"]
-              #gauss_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["gauss_normalisation_factor"]
-              exponential_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["exponential_normalisation_factor"]
-			
-              exponential_range = fittingDict["GaussCB"][particle][fullname]["exponential_range"]
-			
-              width_range = fittingDict["GaussCB"][particle][fullname]["width_range"]
-			
-              cb_width_range = fittingDict["GaussCB"][particle][fullname]["cb_width_range"]
-              cb_alpha_range = fittingDict["GaussCB"][particle][fullname]["cb_alpha_range"]
-              cb_n_range = fittingDict["GaussCB"][particle][fullname]["cb_n_range"]
-              #cb_normalisation_factor = fittingDict["GaussCB"][particle][fullname]["cb_normalisation_factor"]
-            else:
-              print ("I am using general values from the dictionary")
-              mass_range = fittingDict["GaussCB"][particle]["general"]["mass_range"]
-              peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
-			
-              normalisation_factor = fittingDict["GaussCB"][particle]["general"]["normalisation_factor"]
-              #gauss_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["gauss_normalisation_factor"]
-              exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
-			
-              exponential_range = fittingDict["GaussCB"][particle]["general"]["exponential_range"]
-			
-              width_range = fittingDict["GaussCB"][particle]["general"]["width_range"]
-			
-              cb_width_range = fittingDict["GaussCB"][particle]["general"]["cb_width_range"]
-              cb_alpha_range = fittingDict["GaussCB"][particle]["general"]["cb_alpha_range"]
-              cb_n_range = fittingDict["GaussCB"][particle]["general"]["cb_n_range"]
-              #cb_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["cb_normalisation_factor"]
-        
-         mass = ROOT.RooRealVar("lcplus_MM","Mass", mass_range[0],mass_range[1], "MeV/c^{2}")
-         
-         gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0],peak_range[1],peak_range[2])
-         gauss_width = ROOT.RooRealVar("gauss_width","Width",width_range[0],width_range[1],width_range[2])
-         Gauss       = ROOT.RooGaussian("Gauss","Gaussian signal part", mass, gauss_mean, gauss_width)
-
-         cb_width    = ROOT.RooRealVar("cb_width","CB Width",cb_width_range[0],cb_width_range[1],cb_width_range[2])
-         cb_alpha    = ROOT.RooRealVar("cb_alpha","CB Exp.const",cb_alpha_range[0],cb_alpha_range[1],cb_alpha_range[2])
-         cb_n        = ROOT.RooRealVar("cb_n","CB Exp.crossover",cb_n_range[0],cb_n_range[1],cb_n_range[2])
-         CB          = ROOT.RooCBShape("myCB","Crystal Ball signal part", mass, gauss_mean, cb_width, cb_alpha, cb_n)
-
-         sigfrac     = ROOT.RooRealVar("sigfrac","Gauss / CB fraction", 0.5, 0, 1)
-         sigshape    = ROOT.RooAddPdf ("sigshape", "Shape of the Signal", ROOT.RooArgList(Gauss, CB), ROOT.RooArgList(sigfrac))
-
-         exponent    = ROOT.RooRealVar("exponent","C", exponential_range[0],exponential_range[1],exponential_range[2])
-         bkgshape    = ROOT.RooExponential("bkgshape","Exponential Bkg shape", mass, exponent)
-
-         sig_norm = ROOT.RooRealVar("sig_norm","Signal Yield", tree.GetEntries()/200 * 3/10, 0, tree.GetEntries()*2)
-         bkg_norm = ROOT.RooRealVar("bkg_norm","Background Yield", tree.GetEntries()/200 * 3, 0, tree.GetEntries()*2)
-         model    = ROOT.RooAddPdf("model","Full model", ROOT.RooArgList(sigshape, bkgshape), ROOT.RooArgList(sig_norm, bkg_norm) )
-
-
-         # Fit the model
-         model.fitTo(data)
-
-         # Display the quality of the fit
-         print ("plotting the fit...")
-         c1 = ROOT.TCanvas("c1","c1")
-         frame = mass.frame()
-         data.plotOn(frame)
-         model.plotOn(frame, ROOT.RooFit.Components("sigshape"), ROOT.RooFit.LineColor(8) , ROOT.RooFit.LineStyle(2))
-         model.plotOn(frame, ROOT.RooFit.Components("bkgshape"), ROOT.RooFit.LineColor(46), ROOT.RooFit.LineStyle(2))
-         model.plotOn(frame)
-         frame.Draw()
-         c1.Update()
-         c1.SaveAs("{0}/{1}_sWeight_fit.pdf".format(outputdir+name, particle_type+y_bin+pt_bin))
-
-         print("Chi2/NDF: {0}".format(frame.chiSquare()))
-
-
-         # Fix all parameters besides the signal yield
-         for var in [gauss_mean, gauss_width, cb_width, cb_alpha, cb_n, sigfrac, exponent] :
-           var.setConstant()
-           
-           # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
-           sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm, bkg_norm) )
-
-         # Check sWeights
-         if(False) :
-           print("")
-           print("sWeight sanity check:")
-           print("sig Yield is {0}, from sWeights it is {1}".format(sig_norm.getVal(), sData.GetYieldFromSWeight("sig_norm")))
-           print("big Yield is {0}, from sWeights it is {1}".format(bkg_norm.getVal(), sData.GetYieldFromSWeight("bkg_norm")))
-           print("First 10 events:")
-           for i in range(10) :
-             print(" {0}: sigWeight = {1}, bkgWeight = {2}, totWeight = {3}".format(
-               i, sData.GetSWeight(i,"sig_norm"), sData.GetSWeight(i,"bkg_norm"), sData.GetSumOfEventSWeight(i)))
-
-         # This command saves the  dataset with weights to workspace file for later quick use - since we will use it directly it is commented now
-         ws = ROOT.RooWorkspace("ws","workspace")
-         getattr(ws,'import')(data, ROOT.RooFit.Rename("swdata")) # silly workaround due to 'import' keyword
-         ws.writeToFile("{0}/sWeight_ws.root".format(outputdir+name))
-
-         #f.Close()  # keeps mass fit plot alive
-
-        if(makeFriendTree) :
+    print ("Building the fit model...")
+    if magpol == "MagDown":
+      mag="down"
+    elif magpol == "MagUp":
+      mag="up"
+      
+    if mode == "single":
+        fit.main(["-m", "single","-y", year, "-o", mag, "-p", particle, "-r", rapidity, "-t", pt])
+      
+    elif mode == "combined":
+      for r in range(len(options)):
+        if options[r]=="-r":
+          fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-r", rapidity])
+        elif (r==(len(options)-1)):
+          fit.main(["-m", "combined","-y", year,"-o", mag, "-p", particle,"-t", pt])
+    elif mode == "year":
+        fit.main(["-m", "year", "-y", year, "-o", mag,"-p", particle])
+     
+    f1=ROOT.TFile.Open("MassFitting/{0}_model.root".format(modelfile),"READONLY")
+    w=f1.Get("w")
+    model=w.pdf("fullshape")
+    data=w.data("masshist_RooFit")
+    sig_norm=w.var("Actual_signalshape_Norm")
+    bkg_norm=w.var("exponential_Norm")
+    
+    # Create sPlot object. This will instantiate 'sig_norm_sw' and 'bkg_norm_sw' vars in the data. 
+    os.remove("MassFitting/{0}_model.root".format(modelfile))
+    #print ("Starting sWeights")
+    sData = ROOT.RooStats.SPlot("sData", "an SPlot", data, model, ROOT.RooArgList(sig_norm,bkg_norm) )
+    #print ("sWeights is done")
+      # Check sWeights - does not work in the current implimentation.
+    if(False) :
+      print("")
+      print("sWeight sanity check:")
+      print("sig Yield is {0}, from sWeights it is {1}".format(sig_norm.getVal(), sData.GetYieldFromSWeight("L_Actual_signalshape_Norm")))
+      print("big Yield is {0}, from sWeights it is {1}".format(bkg_norm.getVal(), sData.GetYieldFromSWeight("L_exponential_Norm")))
+      print("First 10 events:")
+      for i in range(10) :
+        print(" {0}: sigWeight = {1}, bkgWeight = {2}, totWeight = {3}".format(
+        i, sData.GetSWeight(i,"sig_norm"), sData.GetSWeight(i,"bkg_norm"), sData.GetSumOfEventSWeight(i)))
+    
+  if(makeFriendTree) :
           # Make a new TTree that contains the sWeights for every event.
           # Makes use of the previously defined data and sData objects.
 
-          from array import array
+          #print ("creating TTree and writing to file for sWeights...")
+                  
+          fileFriendTree = ROOT.TFile.Open("{0}{1}_sWeight_swTree.root".format(outputdir,outputname),"RECREATE")
+          #fileFriendTree = ROOT.TFile.Open("Test_sWeight_swTree.root","RECREATE")
+          newData = sData.GetSDataSet()
+          dataNew = ROOT.RooDataSet("dataNew","dataNew",newData,newData.get())
+          friendTree = dataNew.GetClonedTree()
+          friendTree.Write()
+          fileFriendTree.Close()
+          print (".....TTree created with sWeights...")
 
-          wfile = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir+name,particle_type+y_bin+pt_bin),"RECREATE")
-          swtree = ROOT.TTree("swTree","swTree")
 
-          # TTrees directly access memory, so we define pointers.
-          sw_mass = array( 'f', [0] )
-          sw_sig  = array( 'f', [0] )
-          sw_bkg  = array( 'f', [0] )
-          swtree.Branch('sw_mass', sw_mass, 'sw_mass/F')
-          swtree.Branch('sw_sig',  sw_sig,  'sw_sig/F' )
-          swtree.Branch('sw_bkg',  sw_bkg,  'sw_bkg/F' )
-
-          nEntries = int(data.sumEntries())
-          print ("Writing sWeights for {0} entries...".format(nEntries))
-          for i in range(nEntries) :
-            if(i%10000==0) : print("{0:.2f} %".format(float(i)/nEntries*100.))
-            sw_mass[0] = data.get(i).getRealValue("lcplus_MM") 
-            sw_sig[0]  = sData.GetSWeight(i, "sig_norm")
-            sw_bkg[0]  = sData.GetSWeight(i, "bkg_norm")
-            swtree.Fill()
-
-          print("...done")
-          swtree.Write()
-          wfile.Close()
-
-        if(plotVariable) :
+  if(plotVariable) :
 
           # Plot sWeighted variable distribution from RooDataSet.
           
           #variable = "lcplus_P"
-          variable = "lcplus_TAU"
+          variable = "lcplus_MM"
 
           # load sWeights from file (note: we will use 'data' as above, since we have just made it 
           # (i.e. we never expect to run plot without first getData) - thus it is commended out.
 
-          fws = ROOT.TFile.Open("{0}/sWeight_ws.root".format(outputdir+name),"READONLY")
-          ws = fws.Get('ws')
-          var = ws.var(variable)
-          data = ws.data("swdata")
+          fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),("READONLY"))
+          Friendtree = fileFriendTree.Get("dataNew")
+          #cuts = "1==1"
 
-          data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "sig_norm_sw")
-          data_bkg = ROOT.RooDataSet("data_bkg", "sWeighed bkgrnd data", data, data.get(), "1==1", "bkg_norm_sw")
+          Actual_signalshape_Norm_sw=ROOT.RooRealVar("Actual_signalshape_Norm_sw","signal",-5,5)
+          exponential_Norm_sw=ROOT.RooRealVar("exponential_Norm_sw","background",-5,5)
+        
+          data = ROOT.RooDataSet("data","data set", Friendtree, ROOT.RooArgSet(mass, Actual_signalshape_Norm_sw, exponential_Norm_sw), cuts)
+          
+          data_sig = ROOT.RooDataSet("data_sig", "sWeighed signal data", data, data.get(), "1==1", "Actual_signalshape_Norm_sw")
+          data_bkg = ROOT.RooDataSet("data_bkg", "sWeighed bkgrnd data", data, data.get(), "1==1", "exponential_Norm_sw")
           
           c2 = ROOT.TCanvas("c2","c2")
 
-          frame = var.frame()
+          frame = mass.frame()
           frame.SetTitle("sPlot from RooDataSet")
           data.plotOn(frame)
           data_sig.plotOn(frame, ROOT.RooFit.DataError(ROOT.RooAbsData.SumW2), ROOT.RooFit.MarkerColor(8) , ROOT.RooFit.Name("data_sig") )
@@ -260,9 +266,9 @@ for element in folders_dict :
           leg.Draw("same")
 
           c2.Update()
-          c2.SaveAs("{0}/{1}_sPlot_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,variable))
-        
-        if(testFriendTree) :
+          c2.SaveAs("{0}_sPlot_{1}.pdf".format(outputdir+outputname,variable))
+          #c2.SaveAs("Test_sPlot.pdf")
+  if(testFriendTree) :
 
           # Make an sPlot using the sWeights from the friendTree, without RooFit / RooStats functionality.
           # Can be used to plot any variable in the original TTree.
@@ -315,3 +321,6 @@ for element in folders_dict :
           
           c4.Update()
           c4.SaveAs("{0}/{1}_sPlot_swTree_{2}.pdf".format(outputdir+name,particle_type+y_bin+pt_bin,var))
+  return 
+if __name__=="__main__":
+  main(sys.argv[1:])
