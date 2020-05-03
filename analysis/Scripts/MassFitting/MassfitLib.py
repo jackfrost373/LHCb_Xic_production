@@ -62,7 +62,7 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 #fitComp is a boolean that can add graphically the components of the fitted shape
 def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
 	
-	splitfullname = fullname.split('.')
+	splitfullname = fullname.split('.root')
 	shortfullname = splitfullname[0]
 	# return lists for persistency in memory
 	varlist = []
