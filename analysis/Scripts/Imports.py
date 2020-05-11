@@ -1,4 +1,5 @@
 TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
+TUPLE_PATH_NOTRIG = "/dcache/bfys/jtjepkem/binned_files_noTrig/"
 RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
 def getMCCuts (particle, run):

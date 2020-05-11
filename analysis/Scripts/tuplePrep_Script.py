@@ -1,116 +1,136 @@
 import ROOT, os, Imports, sys
 from ROOT import TChain, TFile
-from Imports import TUPLE_PATH, RAW_TUPLE_PATH, DATA_jobs_Dict
+from Imports import TUPLE_PATH, TUPLE_PATH_NOTRIG, RAW_TUPLE_PATH, DATA_jobs_Dict
+
+def wantedCuts(run, trig):
+	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0 && lcplus_L0HadronDecision_TOS == 1"
+	
+	if run == 1 and trig:
+		trigger_cuts = "lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
+	elif run == 1:
+		trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
+	elif run == 2 and trig:
+		trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
+	elif run == 2:
+		trigger_cuts = ""
+		
+	return cuts + " && " + trigger_cuts
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
 	folders_dict = DATA_jobs_Dict
 
-	PATH = TUPLE_PATH
+	PATH = [TUPLE_PATH,TUPLE_PATH_NOTRIG]
 	
-	for element in folders_dict:
-		if int(element) > 41 and int(element) < 47:
-		   extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
-		   run = 1
-		   particle = "Lc"
+	for path in PATH:
+		if path = TUPLE_PATH:
+			trig = True
 		else:
-		   extra_variables = ["nSPDHits", "nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
-		   particle = folders_dict[element][2]
-		   run = 2
-		   
-		name = folders_dict[element][0]
-		subjobs = folders_dict[element][1]
-		saving_directory = PATH + name + "_clusters/"
+			trig = False
 		
-		cuts = Imports.getDataCuts(run)
-		
-		if not os.path.exists(saving_directory):
-		   os.makedirs(saving_directory)
-		   
-		file_directory = RAW_TUPLE_PATH + element
-		
-		print ("\nStarting process for " + name)
-			
-		step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
-		Max = step
-		Min = 0
-
-	# Loop used to apply global cuts on the data
-		print("Creation of Clusters")
-		n = 20
-		i = 0
-		while (Max <= subjobs):
-			#FOR THE PROGRASSION BAR
-			if i < n:
-				j = (i + 1) / n
-				sys.stdout.write('\r')
-				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-				sys.stdout.flush()
-				i += 1
-			
-			if Max == Min:
-				break
-			strip_n_save(Min, Max, cuts, file_directory, saving_directory, extra_variables, particle)
-			temp = Max
-			if (Max+step > subjobs):
-				Max = subjobs
+		for element in folders_dict:
+			if int(element) > 41 and int(element) < 47:
+			   extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
+			   run = 1
+			   particle = "Lc"
 			else:
-				Max += step
-			Min = temp
-
-		clusters = os.listdir(saving_directory)
-	
-		print("\n\nTChaining the clusters")
-		final_chain = TChain("DecayTree")
-		n = len(clusters)
-		i = 0
-		for element in clusters:
-			if i < n:
-				j = (i + 1) / n
-				sys.stdout.write('\r')
-				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-				sys.stdout.flush()
-				i += 1
-			final_chain.Add(saving_directory + element)
-
-		
-		if not os.path.exists(PATH + name + "/bins"):
-		   os.makedirs(PATH + name + "/bins")
-		saving_dir = PATH + name + "/bins/"
-		print("\n\nCreating the final files")
-		split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
-
-		print ("\nProcess completed for " + name)
-		
-	#CREATION OF THE TOTAL YEAR DATA FILES (e.g. 2012_MagUp/Xic_Total.root)
-	print("\Creation of the Total Year data files")
-	mother_particle = ["Xic", "Lc"]
-	BASE_PATH = TUPLE_PATH
-	
-	n = len(os.listdir(BASE_PATH))
-	p = 0
-	for i in os.listdir(BASE_PATH):
-		if p < n:
-				j = (p + 1) / n
-				sys.stdout.write('\r')
-				sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-				sys.stdout.flush()
-				p += 1
-						
-		for part in mother_particle:
-			totfile = ROOT.TFile.Open(BASE_PATH + i + "/{}_total.root".format(part),"RECREATE")
-			totfile.cd()
-			tree = TChain("DecayTree")
-
-			for j in os.listdir(BASE_PATH + i +"/bins/ybins"):
-					if part in j:
-							tree.Add(BASE_PATH + i +"/bins/ybins/"+j)
-			tree.Write()
-			totfile.Close()
-			del totfile
+			   extra_variables = ["nSPDHits", "nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
+			   particle = folders_dict[element][2]
+			   run = 2
+			   
+			name = folders_dict[element][0]
+			subjobs = folders_dict[element][1]
+			saving_directory = PATH + name + "_clusters/"
 			
-	print("\nNTuple Preparation is done, happy analysis!")
+			cuts = wantedCuts(run, trig)
+			
+			if not os.path.exists(saving_directory):
+			   os.makedirs(saving_directory)
+			   
+			file_directory = RAW_TUPLE_PATH + element
+			
+			print ("\nStarting process for " + name)
+				
+			step = subjobs//20 #carry out the process in 20 clusters of datafiles to avoid memory overflow
+			Max = step
+			Min = 0
+
+		# Loop used to apply global cuts on the data
+			print("Creation of Clusters")
+			n = 20
+			i = 0
+			while (Max <= subjobs):
+				#FOR THE PROGRASSION BAR
+				if i < n:
+					j = (i + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					i += 1
+				
+				if Max == Min:
+					break
+				strip_n_save(Min, Max, cuts, file_directory, saving_directory, extra_variables, particle)
+				temp = Max
+				if (Max+step > subjobs):
+					Max = subjobs
+				else:
+					Max += step
+				Min = temp
+
+			clusters = os.listdir(saving_directory)
+		
+			print("\n\nTChaining the clusters")
+			final_chain = TChain("DecayTree")
+			n = len(clusters)
+			i = 0
+			for element in clusters:
+				if i < n:
+					j = (i + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					i += 1
+				final_chain.Add(saving_directory + element)
+
+			
+			if not os.path.exists(PATH + name + "/bins"):
+			   os.makedirs(PATH + name + "/bins")
+			saving_dir = PATH + name + "/bins/"
+			print("\n\nCreating the final files")
+			split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
+
+			print ("\nProcess completed for " + name)
+			
+		#CREATION OF THE TOTAL YEAR DATA FILES (e.g. 2012_MagUp/Xic_Total.root)
+		print("\Creation of the Total Year data files")
+		mother_particle = ["Xic", "Lc"]
+		BASE_PATH = TUPLE_PATH
+		
+		n = len(os.listdir(BASE_PATH))
+		p = 0
+		for i in os.listdir(BASE_PATH):
+			if p < n:
+					j = (p + 1) / n
+					sys.stdout.write('\r')
+					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
+					sys.stdout.flush()
+					p += 1
+							
+			for part in mother_particle:
+				totfile = ROOT.TFile.Open(BASE_PATH + i + "/{}_total.root".format(part),"RECREATE")
+				totfile.cd()
+				tree = TChain("DecayTree")
+
+				for j in os.listdir(BASE_PATH + i +"/bins/ybins"):
+						if part in j:
+								tree.Add(BASE_PATH + i +"/bins/ybins/"+j)
+				tree.Write()
+				totfile.Close()
+				del totfile
+				
+		print("\nNTuple Preparation is done, happy analysis!")
 
 
 
