@@ -5,33 +5,44 @@ from Imports import TUPLE_PATH, TUPLE_PATH_NOTRIG, RAW_TUPLE_PATH, DATA_jobs_Dic
 def wantedCuts(run, trig):
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0 && lcplus_L0HadronDecision_TOS == 1"
 	
-	if run == 1 and trig:
-		trigger_cuts = "lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
-	elif run == 1:
-		trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
-	elif run == 2 and trig:
-		trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
+	if run == 1:
+		if trig:
+			trigger_cuts = "lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
+		else:
+			trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
 	elif run == 2:
-		trigger_cuts = ""
-		
-	return cuts + " && " + trigger_cuts
+		if trig:
+			trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
+		else:
+			trigger_cuts = ""
+	
+	if trigger_cuts == "":	
+		return cuts
+	else:
+		return cuts + "&&" + trigger_cuts
 
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
 	folders_dict = DATA_jobs_Dict
 
-	PATH = [TUPLE_PATH,TUPLE_PATH_NOTRIG]
+	path = [TUPLE_PATH_NOTRIG,TUPLE_PATH]
 	
-	for path in PATH:
-		if path = TUPLE_PATH:
+	for PATH in path:
+		if PATH == TUPLE_PATH:
 			trig = True
 		else:
 			trig = False
 		
 		for element in folders_dict:
 			if int(element) > 41 and int(element) < 47:
-			   extra_variables = ["lcplus_Hlt1TrackAllL0Decision_TOS", "lcplus_Hlt2CharmHadD2HHHDecision_TOS"]
+			   extra_variables = [
+					"lcplus_Hlt1TrackAllL0Decision_TOS", 
+					"lcplus_Hlt2CharmHadD2HHHDecision_TOS",
+					"*L0*",
+					"*Hlt*",
+					"*HLT*"
+					]
 			   run = 1
 			   particle = "Lc"
 			else:
@@ -102,11 +113,11 @@ def main():
 			split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
 
 			print ("\nProcess completed for " + name)
-			
+	
 		#CREATION OF THE TOTAL YEAR DATA FILES (e.g. 2012_MagUp/Xic_Total.root)
 		print("\Creation of the Total Year data files")
 		mother_particle = ["Xic", "Lc"]
-		BASE_PATH = TUPLE_PATH
+		BASE_PATH = PATH
 		
 		n = len(os.listdir(BASE_PATH))
 		p = 0
@@ -117,7 +128,10 @@ def main():
 					sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
 					sys.stdout.flush()
 					p += 1
-							
+					
+			if "cluster" in i:
+				continue
+		
 			for part in mother_particle:
 				totfile = ROOT.TFile.Open(BASE_PATH + i + "/{}_total.root".format(part),"RECREATE")
 				totfile.cd()
@@ -129,10 +143,13 @@ def main():
 				tree.Write()
 				totfile.Close()
 				del totfile
-				
+		
+		print("\nDeleting Clusters")
+		os.system("rm -rf {}*_clusters".format(BASE_PATH))
+		
 		print("\nNTuple Preparation is done, happy analysis!")
 
-
+		
 
 #### This function takes a ROOT file as an input, keeps the variables in useful_vars in the tree and throws the other ones away. The pruned tree is then returned. ###
 def setBranch_funct (root_file, extra_variables):
