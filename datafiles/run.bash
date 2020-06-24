@@ -25,26 +25,26 @@
 
 # Mass submit real data over grid
 #magnets=( "MagUp" "MagDown" )
-magnets=( "MagDown" )
+#magnets=( "MagDown" )
 #years=( "2011" "2012" "2015" "2016" "2017" "2018" )
 #years=( "2016" "2017" "2018" )
-years=( "2012" "2017" )
+#years=( "2012" "2017" )
 #decays=( "Lc2pKpi" ) # takes both Lc and Xic from the stripping line
 #decays=( "Lc2pKpi" "Xic2pKpi" ) # only needed for run2 Turbo, as it splits Lc and Xic into different streams
 #decays=( "Xic2pKpi" ) 
-decays=( "Lb2LcMuX" "Xib2XicMuX" )
-for magnet in "${magnets[@]}"; do
-  for year in "${years[@]}"; do
-    for decay in "${decays[@]}"; do
-      sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
-      sed -i "3s/.*/decay = '${decay}'/" ./options/davinci_options.py
-      sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
-      sed -i "3s/.*/decay = '${decay}'/" ./options/ganga_options.py
-      sed -i "4s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
-      ganga ./options/ganga_options.py
-    done
-  done
-done
+#decays=( "Lb2LcMuX" "Xib2XicMuX" )
+#for magnet in "${magnets[@]}"; do
+#  for year in "${years[@]}"; do
+#    for decay in "${decays[@]}"; do
+#      sed -i "2s/.*/year = '${year}'/" ./options/davinci_options.py
+#      sed -i "3s/.*/decay = '${decay}'/" ./options/davinci_options.py
+#      sed -i "2s/.*/year = '${year}'/" ./options/ganga_options.py
+#      sed -i "3s/.*/decay = '${decay}'/" ./options/ganga_options.py
+#      sed -i "4s/.*/magnet = '${magnet}'/" ./options/ganga_options.py
+#      ganga ./options/ganga_options.py
+#    done
+#  done
+#done
 
 
 
@@ -55,27 +55,28 @@ done
 
 
 # Mass submit simulation over grid
-#magnets=( "MagUp" "MagDown" )
+magnets=( "MagUp" "MagDown" )
 #magnets=( "MagDown" )
 #years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-#years=( "2012" )
+years=( "2017" )
 #eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
 #eventtypes=( 25103006 25103029 ) #25103006 = old Lc, 25103029 = old Xic
 #eventtypes=( 25103006 )
 #eventtypes=( 25103029 )
-#for magnet in "${magnets[@]}"; do
-#  for year in "${years[@]}"; do
-#    for eventtype in "${eventtypes[@]}"; do
-#      for file in ./options/davinci_options_MC.py ./options/ganga_options_MC.py ; do
-#        sed -i "2s/.*/magnet = '${magnet}'/" $file
-#        sed -i "4s/.*/year = '${year}'/" $file
-#        sed -i "5s/.*/eventtype = $eventtype/" $file
-#      done
-#      ganga ./options/ganga_options_MC.py
-#    done
-#  done
-#done
+eventtypes=( 25103064 )
+for magnet in "${magnets[@]}"; do
+  for year in "${years[@]}"; do
+    for eventtype in "${eventtypes[@]}"; do
+      for file in ./options/davinci_options_MC.py ./options/ganga_options_MC.py ; do
+        sed -i "2s/.*/magnet = '${magnet}'/" $file
+        sed -i "4s/.*/year = '${year}'/" $file
+        sed -i "5s/.*/eventtype = $eventtype/" $file
+      done
+      ganga ./options/ganga_options_MC.py
+    done
+  done
+done
 
 
 

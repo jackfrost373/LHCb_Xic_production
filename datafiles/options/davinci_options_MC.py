@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2012'
-eventtype = 25103006
+year = '2017'
+eventtype = 25103064
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -23,9 +23,13 @@ restripversion = "" # empty = no restripping
 if(eventtype == 25103006 and year == '2012') :
   restripversion = 'stripping21'
 
+MDST = False
 Turbo = False # False means simply use stripping output
 if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) : 
   Turbo = True
+if(eventtype == 25103064) :
+  MDST = True
+  Turbo = True # to be tested..
 
 ############################################################
 
@@ -186,7 +190,6 @@ if (restripversion == "" and Turbo == False) :
 
 
 
-#DaVinci().RootInTES = "/Event/{0}".format(stream)
 DaVinci().InputType="DST"
 DaVinci().DataType = year
 DaVinci().Simulation = True
@@ -195,6 +198,11 @@ DaVinci().PrintFreq = 1000
 DaVinci().EvtMax = -1
 DaVinci().DDDBtag  = dddbtag 
 DaVinci().CondDBtag = conddbtag
+
+if(MDST) :
+  DaVinci().RootInTES = "/Event/{0}".format(stream)
+  DaVinci().InputType="MDST"
+  
 
 # output
 fName = "MC_Lc2pKpiTuple_{0}".format(eventtype) 

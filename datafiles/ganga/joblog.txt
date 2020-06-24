@@ -86,3 +86,7 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
 
      122 | completed |MC_Lc2pKpi |      17 |      GaudiExec |   Dirac |   None |   25103029_MagUp_Pythia8_2012 |       0/0/0/17 
      123 | completed |MC_Lc2pKpi |      15 |      GaudiExec |   Dirac |   None | 25103029_MagDown_Pythia8_2012 |       0/0/0/15
+
+     144 | submitted |MC_Lc2pKpi |     184 |      GaudiExec |   Dirac |   None |   25103064_MagUp_Pythia8_2017 |      0/1/0/182  # NEW Lc prod., Stripping.
+     145 | submitted |MC_Lc2pKpi |     182 |      GaudiExec |   Dirac |   None | 25103064_MagDown_Pythia8_2017 |      0/1/0/179  # NEW Lc prod., Stripping.
+
