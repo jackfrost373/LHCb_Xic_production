@@ -22,7 +22,7 @@ particles = ["pplus","kminus", "piplus"]
 
 pidcuts = {"pplus":["P","P_MC12TuneV2_ProbNNp > 0.5 && DLLp > 0"], "kminus":["K", "K_MC12TuneV2_ProbNNK > 0.4 && DLLK > 0"], "piplus":["Pi", "Pi_MC12TuneV2_ProbNNpi > 0.5"]}
 
-yeardict = { 
+yeardict = {
   "2011" : "Strip20r1",
   "2012" : "Strip20",
   "2015" : "Turbo15",
@@ -49,11 +49,11 @@ def getPIDcuts() :
 #Not entirely sure what this does and whether it is relevant
 def setParameterFromOptions(PARNAME, optionstring, default=0) :
   # parse parameter value from options: "PID17" --> gets 17
-  if(PARNAME in optionstring) : 
+  if(PARNAME in optionstring) :
     param = re.findall( r'(?:{0})([0-9]+)'.format(PARNAME), optionstring )[0]
     print("==> OPTIONS: setting {0} to {1}".format(PARNAME,param))
     return param
-  else : 
+  else :
     return default
 
 #var needs to be changed
@@ -79,13 +79,13 @@ def drawWeighedDistributions(tree, var="B_MKPi", weightlist=["1"], window=[5100,
 #I removed nTracks from the variables. Should I keep it?
 #nTracks was removed because it was not in the datadiles originally. If it is now there, this variable should be included.
 def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
-    pidbinvars = ["P","ETA"], b2hhbinvars = ["P","ETA"], optionstring="_MC",
+    pidbinvars = ["P","ETA","nTracks"], b2hhbinvars = ["P","ETA","nTracks"], optionstring="_MC",
     ignoreB2hhStatErr = False, correctKinematics = False, binningscheme="", extra_cuts="1==1", MC_tree="MC", mother_particle="Lc", ybin=[0,0], ptbin=[0,0]
     ) :
 
   assert(len(pidbinvars) == len(b2hhbinvars))
   assert(mag in ["Up","Down"])
-  
+
   #Not sure about the role of these 2 variables
   pidcut    = float( setParameterFromOptions("PID", optionstring, 5) )
   windowmin = float( setParameterFromOptions("XMIN", optionstring, 5100) )
@@ -93,12 +93,12 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
 
   simulation = False
   if ("_MC" in optionstring) : simulation = True
-  
+
   print("\n*************************************************")
   print("Calculating PID efficiency for {0} {1}, BDTbin {2}, PIDcut {3} ({4})".format(year,mag,bdtbin,pidcut,optionstring))
   print("  (binning vars: {0} --> {1})".format(pidbinvars, b2hhbinvars))
 
-  # get PIDCalib perfhists 
+  # get PIDCalib perfhists
   perfhistFiles = {}
   Total_perfhists = {}
   Passed_perfhists = {}
@@ -117,14 +117,14 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     if(Passed_perfhists[particle]) == None:
       print(" Error: Cannot find Passed histogram {0}_All__{1}_P_{2}_Eta_nTracks{3}".format(pidcuts[particle][1], pidcuts[particle][0], pidcuts[particle][0], extravar))
 
-  
+
   # Obtain binning used by PIDCalib
   ndims = len(pidbinvars) #should I add 1 here because there is also nTracks or should we ignore the 3rd dimension since data does not have this variable?
   axesbins = {}
   if(ndims>0) : axesbins[0] = Passed_perfhists["kminus"].GetXaxis().GetXbins() #Why is it K all the times?
   if(ndims>1) : axesbins[1] = Passed_perfhists["kminus"].GetYaxis().GetXbins()
   if(ndims>2) : axesbins[2] = Passed_perfhists["kminus"].GetZaxis().GetXbins()
- 
+
   n_Tracks_bins_array = Passed_perfhists["kminus"].GetZaxis().GetXbins()
   print("here is the nTracks binning")
   for element in n_Tracks_bins_array:
@@ -162,7 +162,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     print("treeload entries are -1")
   else:
     print("you're fine")
-    print("Total entries: " + str(treeload.GetEntries())) 
+    print("Total entries: " + str(treeload.GetEntries()))
 
  # define cuts: should be identical to sWeight production, in order to have same #entries
   if not simulation :
@@ -173,7 +173,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     Mc_cuts =getMCCuts(mother_particle)
     cuts_b2hh = Mc_cuts + " && " + extra_cuts
 
-  
+
   #dummyfile = R.TFile.Open("./dummy.root","RECREATE")
   #tree = treeload.CopyTree(cuts_b2hh)
   #dummyfile.cd()
@@ -192,7 +192,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
   if simulation :
     weight = "1."
 
-  if not simulation : 
+  if not simulation :
     # Draw weighed 1D distributions for given variables
     drawweights = ["1","swTree.sw_n_bd","swTree.sw_n_bs","swTree.sw_n_comb"]
     for i in drawvars :
@@ -200,12 +200,12 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
       [cDraw,cDrawHistos] = drawWeighedDistributions(tree, drawvar, drawweights, drawwindow)
 
 
-  # define decay-specific parameters 
+  # define decay-specific parameters
 # if(decay=="KPi") : b2hh_particlemap = { "muplus" : "K" , "muminus" : "Pi" }
 # if(decay=="PiK") : b2hh_particlemap = { "muplus" : "Pi", "muminus" : "K"  }
 #  if(decay=="KK")  : b2hh_particlemap = { "muplus" : "K",  "muminus" : "K"  }
 
-  
+
 # draw b2hh histogram in same binning as PIDCalib perfhists #this part is easy. It is simply drawing the data in the same binning as the perfhists
 #I am not entirely sure that this makes sense because I am trying to plot mass (lcplus_MM) as a function of P and ETA aren't I? To see what regions contain more data
 #No, you're not. You have to do this for the single daughter particles because you want to see where most of them are in those bins since it's the PID of those particles that you are interested in
@@ -220,33 +220,33 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     if(ndims>2 and ("nTracks" in b2hhbinvars[2] or "SPD" in b2hhbinvars[2])) : var2 = b2hhbinvars[2]
 
     if(ndims==1) :
-      print("entering the wrong ndims condition") 
+      print("entering the wrong ndims condition")
       b2hhHists[particle] = R.TH1F(histname,histname, axesbins[0].GetSize()-1, axesbins[0].GetArray())
-      treeload.Draw("{0}>>+{1}".format(var0,histname), 
+      treeload.Draw("{0}>>+{1}".format(var0,histname),
                 "{0}".format(weight))
     if(ndims==2) :
       print("entering the right ndims condition")
-      b2hhHists[particle] = R.TH2F(histname,histname, axesbins[0].GetSize()-1, axesbins[0].GetArray(), 
+      b2hhHists[particle] = R.TH2F(histname,histname, axesbins[0].GetSize()-1, axesbins[0].GetArray(),
                                                       axesbins[1].GetSize()-1, axesbins[1].GetArray())
-      treeload.Draw("{0}:{1}>>+{2}".format(var1,var0,histname), cuts_b2hh,"COLZ") 
+      treeload.Draw("{0}:{1}>>+{2}".format(var1,var0,histname), cuts_b2hh,"COLZ")
                 #"{0}*({1})".format(weight, cuts_b2hh),)
     if(ndims==3) :
       print("entering the 3D condition")
-      b2hhHists[particle] = R.TH3F(histname,histname, axesbins[0].GetSize()-1, axesbins[0].GetArray(), 
-                                                      axesbins[1].GetSize()-1, axesbins[1].GetArray(), 
+      b2hhHists[particle] = R.TH3F(histname,histname, axesbins[0].GetSize()-1, axesbins[0].GetArray(),
+                                                      axesbins[1].GetSize()-1, axesbins[1].GetArray(),
                                                       axesbins[2].GetSize()-1, axesbins[2].GetArray())
-      treeload.Draw("{0}:{1}:{2}>>+{3}".format(var2,var1,var0,histname), cuts_b2hh) 
+      treeload.Draw("{0}:{1}:{2}>>+{3}".format(var2,var1,var0,histname), cuts_b2hh)
                # "{0}".format(weight))
 
-    if(ndims>0) : b2hhHists[particle].GetXaxis().SetTitle( var0 ) 
-    if(ndims>1) : b2hhHists[particle].GetYaxis().SetTitle( var1 ) 
-    if(ndims>2) : b2hhHists[particle].GetZaxis().SetTitle( var2 ) 
+    if(ndims>0) : b2hhHists[particle].GetXaxis().SetTitle( var0 )
+    if(ndims>1) : b2hhHists[particle].GetYaxis().SetTitle( var1 )
+    if(ndims>2) : b2hhHists[particle].GetZaxis().SetTitle( var2 )
     c1.Update()
     c1.Draw()
     c1.SaveAs("./"+ mother_particle +  "_PID_efficiency_" + particle + ".pdf")
 
   if(ignoreB2hhStatErr) :
-    # ignore stat errors on the b2hh sample, since already counted in yield 
+    # ignore stat errors on the b2hh sample, since already counted in yield
     print("Setting b2hh stat errors to 0")
     for particle in particles :
       histo = b2hhHists[particle]
@@ -294,9 +294,9 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
       #weighthist.Draw("H")
       #cweight.Update()
       #cweight.SaveAs("weighthist{0}.pdf".format(particle))
-  
-  
-  
+
+
+
   if(False) :
     # do a naive bin-by-bin loop, to see if it matches the faster 'Integrate' result below
     print("Performing naive check:")
@@ -310,7 +310,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
         for biny in range(1,histo.GetNbinsY()+1) :
           for binz in range(1,histo.GetNbinsZ()+1) :
             ibin = histo.GetBin(binx,biny,binz)
-            #print(" ibin location XYZ: {0}, {1}, {2}".format( histo.GetXaxis().GetBinCenter(binx), 
+            #print(" ibin location XYZ: {0}, {1}, {2}".format( histo.GetXaxis().GetBinCenter(binx),
             #  histo.GetYaxis().GetBinCenter(biny), histo.GetZaxis().GetBinCenter(binz) ))
             b2hh_val = histo.GetBinContent(ibin)
             b2hh_err = histo.GetBinError(ibin)
@@ -323,7 +323,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
       result = efftotal / ntotal
       reserr = errtotal / ntotal
       print(" --> bin-looped result for {0}: {1} +- {2}".format(particle,result, reserr))
-    
+
 
 
 
@@ -343,7 +343,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     #compressed_Passed_perfhist = Passed_perfhists[particle]
     compressed_perfhist = compressed_Passed_perfhist.Divide(compressed_Total_perfhist)
     if compressed_perfhist == False:
-      print("Divide operation failed")    
+      print("Divide operation failed")
     b2hhHist.Multiply( compressed_Passed_perfhist ) #In this case it will need to be the perfhist only related to the particle, skipping this particlemap parame
     #b2hhHist.Multiply(compressed_Passed_perfhist.Divide(compressed_Total_perfhist))
     efftotal_error = R.Double(0)
@@ -389,7 +389,7 @@ for job in dictionary:
     Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
     directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
-        
+
   Lc_MC_filedir = directory + str(job)
     #Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
 
@@ -400,7 +400,7 @@ for job in dictionary:
 
   string = calcPIDefficiency(year=year, mag=mag, bdtbin=0, tupleloc=tupleloc, pidbinvars = ["P", "ETA"], b2hhbinvars = ["P", "ETA"], optionstring = "_MC", ignoreB2hhStatErr = False, correctKinematics = False, binningscheme = "", extra_cuts = turbo, MC_tree = Lc_MC_tree, mother_particle = particle)
   f_text.write(string)
-  
+
  # for ybin in ybins:
  #   for ptbin in ptbins:
  #     yptcut = "lcplus_PT >= {0} && lcplus_PT < {1} && lcplus_RAPIDITY >= {2} && lcplus_RAPIDITY < {3}".format(ptbin[0], ptbin[1], ybin[0], ybin[1])
@@ -410,4 +410,3 @@ for job in dictionary:
  #     f_text.write(string)
 
 f_text.close()
-
