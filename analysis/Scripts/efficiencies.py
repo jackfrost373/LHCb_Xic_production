@@ -98,14 +98,17 @@ def main(argv):
 				k = float(Lc_MC_tree.GetEntries(cuts))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
+
 				string = "Particle: " + particle + " year: " + str(year) + pol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
-				selecEffDict[particle + str(year) + pol] = {'val': eff, 'err': binom_error}
 				f_text.write(string)
+
+				selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
+
 
 			print("\nSelection efficiency calculations are done!")
 
 			prettyEffDict = pprint.pformat(selecEffDict)
-			dictF = open("singleFit_DictFile.py","w")
+			dictF = open("Selection_Eff_Dict.py","w")
 			dictF.write("effDict = " + str(prettyEffDict))
 			dictF.close()
 
@@ -114,6 +117,8 @@ def main(argv):
 		elif opt == "-t":
 
 			print("\nCreation of the trigger efficiency files")
+
+			trigEffDict = {}
 
 			f_text = open("Trigger_Eff_output.txt", "w+")
 
@@ -162,7 +167,15 @@ def main(argv):
 				string = "Particle: " + particle + " year: " +str(year) + pol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 
+				selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
+
 			print("\nTrigger efficiency calculations are done!")
+
+			prettyEffDict = pprint.pformat(selecEffDict)
+			dictF = open("Selection_Eff_Dict.py","w")
+			dictF.write("effDict = " + str(prettyEffDict))
+			dictF.close()
+
 			f_text.close()
 
 
