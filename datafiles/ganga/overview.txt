@@ -1,6 +1,7 @@
 
 
-   Lc MC : 25203000 (new), 25103006 (old).   Xic MC: 26103090 (new), 25103029 (old)
+   Lc MC : 25103064 (new own)  [25203000 (new), 25103006 (old)]
+   Xic MC: 26103091 (new own)  [26103090 (new), 25103029 (old)]
 
  job IDs: (MagUp/MagDown)
 year |    Lc MC       Xic MC         Lc Data     Xic Data
