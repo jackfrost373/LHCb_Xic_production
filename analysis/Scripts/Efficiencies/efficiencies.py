@@ -109,7 +109,7 @@ def main(argv):
 
 			prettyEffDict = pprint.pformat(selecEffDict)
 			dictF = open("Selection_Eff_Dict.py","w")
-			dictF.write("effDict = " + str(prettyEffDict))
+			dictF.write("selDict = " + str(prettyEffDict))
 			dictF.close()
 
 			f_text.close()
@@ -167,13 +167,13 @@ def main(argv):
 				string = "Particle: " + particle + " year: " +str(year) + pol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
 				f_text.write(string)
 
-				selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
+				trigEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
 
 			print("\nTrigger efficiency calculations are done!")
 
-			prettyEffDict = pprint.pformat(selecEffDict)
-			dictF = open("Selection_Eff_Dict.py","w")
-			dictF.write("effDict = " + str(prettyEffDict))
+			prettyEffDict = pprint.pformat(trigEffDict)
+			dictF = open("Trigger_Eff_Dict.py","w")
+			dictF.write("trigDict = " + str(prettyEffDict))
 			dictF.close()
 
 			f_text.close()
