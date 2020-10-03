@@ -1,5 +1,9 @@
 from ROOT import TChain, TCanvas, TH1, TFile
-import ROOT, os, Imports, sys, getopt
+import sys
+
+sys.path.append('../')
+
+import ROOT, os, Imports, getopt
 from Imports import TUPLE_PATH, RAW_TUPLE_PATH, MC_jobs_Dict
 import pprint
 
@@ -51,7 +55,8 @@ def main(argv):
 
 			print("\nCreation of the selection efficiency files")
 
-			f_text = open("Selection_Eff_output.txt", "w+")
+			f_text = open("Selection_Eff_output.csv", "w+")
+			f_text.write("Data,Efficiency,Error\n")
 
 			n = len(MC_jobs_Dict)
 			i = 0
@@ -99,7 +104,7 @@ def main(argv):
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
 
-				string = "Particle: " + particle + " year: " + str(year) + pol + " efficiency for the selection: " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+				string = particle + " " + str(year) + " " + pol + "," + "{:.3e}".format(eff) + "," + "{:.3e}".format(binom_error) + "\n"
 				f_text.write(string)
 
 				selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
@@ -120,7 +125,8 @@ def main(argv):
 
 			trigEffDict = {}
 
-			f_text = open("Trigger_Eff_output.txt", "w+")
+			f_text = open("Trigger_Eff_output.csv", "w+")
+			f_text.write("Data,Efficiency,Error\n")
 
 			n = len(MC_jobs_Dict)
 			i = 0
@@ -164,7 +170,7 @@ def main(argv):
 				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo ))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
-				string = "Particle: " + particle + " year: " +str(year) + pol +" efficiency for the selection " + cuts + " is: " + str(eff) + " +/- " + str(binom_error) + "\n"
+				string = particle + " " +str(year) + " " + pol + "," + "{:.3e}".format(eff) + "," + "{:.3e}".format(binom_error) + "\n"
 				f_text.write(string)
 
 				trigEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
