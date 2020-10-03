@@ -149,8 +149,6 @@ def main():
 		
 		print("\nNTuple Preparation is done, happy analysis!")
 
-		
-
 #### This function takes a ROOT file as an input, keeps the variables in useful_vars in the tree and throws the other ones away. The pruned tree is then returned. ###
 def setBranch_funct (root_file, extra_variables):
 

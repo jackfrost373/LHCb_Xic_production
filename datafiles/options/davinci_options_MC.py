@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2012'
-eventtype = 25103006
+year = '2017'
+eventtype = 25103064
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -19,13 +19,25 @@ eventtype = 25103006
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
+#eventtype = 25103064 # New created Lc
+#eventtype = 26103091 # New created Xic
+
+
 restripversion = "" # empty = no restripping
 if(eventtype == 25103006 and year == '2012') :
   restripversion = 'stripping21'
 
+MDST = False
 Turbo = False # False means simply use stripping output
+lines = ["LambdaCForPromptCharm"]
+
 if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) : 
   Turbo = True
+
+if(eventtype == 25103064 or eventtype == 26103091) : # new MC
+  MDST = True
+  #Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' 
+  #lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?
 
 ############################################################
 
@@ -55,9 +67,8 @@ from DecayTreeTuple.Configuration import *
  
 # (prompt) Lc -> p K pi 
 stream = "AllStreams"
-line1 = "LambdaCForPromptCharm"
 tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
-tuple_Lc2pKpi.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,line1)]
+tuple_Lc2pKpi.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,line) for line in lines]
 tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
 tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
                             'pplus'  : '[Lambda_c+ -> ^p+ K- pi+]CC',
@@ -144,7 +155,7 @@ for tup in tuples:
     tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
     striptool = tup.addTupleTool("TupleToolStripping")
-    striptool.TriggerList = ["Stripping{0}Decision".format(line1)]
+    striptool.TriggerList = ["Stripping{0}Decision".format(line) for line in lines]
 
     # add custom variables with functors
     hybridtool = tup.addTupleTool('LoKi::Hybrid::TupleTool')
@@ -177,16 +188,15 @@ DaVinci().UserAlgorithms += [mctuple]
 
 
 # Filter events for faster processing
-from PhysConf.Filters import LoKi_Filters
-if (restripversion == "" and Turbo == False) :
-  fltrs = LoKi_Filters (
-          STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(line1)
-          )
-  DaVinci().EventPreFilters = fltrs.filters('Filters')
+#from PhysConf.Filters import LoKi_Filters
+#if (restripversion == "" and Turbo == False) :
+#  fltrs = LoKi_Filters (
+#      STRIP_Code = "HLT_PASS_RE('Stripping{0}Decision')".format(lines[0]) # note: only for one line!
+#          )
+#  DaVinci().EventPreFilters = fltrs.filters('Filters')
 
 
 
-#DaVinci().RootInTES = "/Event/{0}".format(stream)
 DaVinci().InputType="DST"
 DaVinci().DataType = year
 DaVinci().Simulation = True
@@ -195,6 +205,11 @@ DaVinci().PrintFreq = 1000
 DaVinci().EvtMax = -1
 DaVinci().DDDBtag  = dddbtag 
 DaVinci().CondDBtag = conddbtag
+
+if(MDST) :
+  DaVinci().RootInTES = "/Event/{0}".format(stream)
+  DaVinci().InputType="MDST"
+  
 
 # output
 fName = "MC_Lc2pKpiTuple_{0}".format(eventtype) 
@@ -227,7 +242,7 @@ if not (restripversion == "") :
 
   # get our stripping line from archive
   MyStream = StrippingStream("MyStream")
-  MyLines = [ 'Stripping' + line1 ]
+  MyLines = [ 'Stripping' + lines[0] ]  # note: only for one line!
   for stream in streams: 
     for line in stream.lines:
       if line.name() in MyLines:

@@ -3,7 +3,6 @@
 # Requires sweights script and Imports.py
 #################
 
-
 import ROOT, sys, getopt, os
 import Imports
 

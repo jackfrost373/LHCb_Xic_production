@@ -20,14 +20,15 @@
 #sample_array=("21r1" "21" "24r1" "28r1" "29r2" "34") # these are signal versions (not pidcalib)
 #sample_array=("20r1" "20" "Turbo15" "Turbo16" "Turbo17" "Turbo18")
 #sample_array=("20r1" "20")
-sample_array=("Turbo15" "Turbo16" "Turbo17" "Turbo18")
+#sample_array=("Turbo15" "Turbo16" "Turbo17" "Turbo18")
+sample_array=("Turbo18")
 
 #magnet_array=("MagUp" "MagDown")
-#magnet_array=("MagUp")    
-magnet_array=("MagDown")    
+magnet_array=("MagUp")    
+#magnet_array=("MagDown")    
 
-particle_array=( "K" "Pi" "P" )
-#particle_array=( "P" )
+#particle_array=( "K" "Pi" "P" )
+particle_array=( "P" )
 
 precuts="1==1"
 

@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2012'
-eventtype = 25103029
+year = '2017'
+eventtype = 25103064
 
 # Before running on the grid, please ensure that:
 # - davinci options file has no input file specified
@@ -66,8 +66,9 @@ j.backend = Dirac() # run on grid
 #j.outputfiles = [LocalFile('*.root'), LocalFile('stdout')]
 j.outputfiles = [DiracFile('*.root')] # stores on SE. Can download to local with j.outputfiles.get().
 
-j.splitter = SplitByFiles(filesPerJob=3) # for old MC: only O(70) files
+#j.splitter = SplitByFiles(filesPerJob=3) # for old MC: only O(70) files
 #j.splitter = SplitByFiles(filesPerJob=10) # for run2 MC: O(700) files but only decprodcut
+j.splitter = SplitByFiles(filesPerJob=25) # newest MC, O(4K) files.
 #j.do_auto_resubmit = True  # resubmit failed subjobs. Only turn on if you're very sure.
 
 
