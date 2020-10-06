@@ -2,6 +2,10 @@ TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 TUPLE_PATH_NOTRIG = "/dcache/bfys/jtjepkem/binned_files_noTrig/"
 RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
+PLOT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/"
+TABLE_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Tables/"
+OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
+
 def getMCCuts (particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:

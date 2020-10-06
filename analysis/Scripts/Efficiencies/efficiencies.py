@@ -4,11 +4,29 @@ import sys
 sys.path.append('../')
 
 import ROOT, os, Imports, getopt
-from Imports import TUPLE_PATH, RAW_TUPLE_PATH, MC_jobs_Dict
+from Imports import TUPLE_PATH, RAW_TUPLE_PATH, TABLE_PATH, OUTPUT_DICT_PATH, MC_jobs_Dict
 import pprint
+
+dict_path = OUTPUT_DICT_PATH + "Efficiencies/"
+table_path = TABLE_PATH + "Efficiencies/"
 
 ybins = Imports.getYbins()
 ptbins = Imports.getPTbins()
+
+def latexTable(dict, years, type):
+	csvF = open(table_path + type + "_Eff_Values.tex","w")
+	csvF.write("\\begin{tabular}{ll|c|c|c|c|c|c|}\n")
+	csvF.write("\\cline{3-6}\n")
+	csvF.write("& & \\multicolumn{2}{c|}{$\Xi_c$} & \multicolumn{2}{c|}{$\\Lambda_c$} \\\\ \\cline{3-8}\n")
+	csvF.write("& & Efficiency & Err. & Efficiency & Err. & Ratio & Ratio Err. \\\\ \\cline{1-8}\n")
+
+	for year in years:
+		csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict["Lc_{}_MagDown".format(year)]["val"],dict["Lc_{}_MagDown".format(year)]["err"],dict["Xic_{}_MagDown".format(year)]["val"],dict["Xic_{}_MagDown".format(year)]["err"],dict["Xic_{}_MagDown".format(year)]["val"]/dict["Lc_{}_MagDown".format(year)]["val"],"Todo"))
+		csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {} \\\\ \\cline{{1-8}}\n".format("{MagUp}",dict["Lc_{}_MagUp".format(year)]["val"],dict["Lc_{}_MagUp".format(year)]["err"],dict["Xic_{}_MagUp".format(year)]["val"],dict["Xic_{}_MagUp".format(year)]["err"],dict["Xic_{}_MagUp".format(year)]["val"]/dict["Lc_{}_MagUp".format(year)]["val"],"Todo"))
+
+	csvF.write("\end{tabular}")
+	csvF.close()
+
 
 def main(argv):
 
@@ -52,11 +70,9 @@ def main(argv):
 		if opt == "-s":
 
 			selecEffDict = {}
+			years = []
 
 			print("\nCreation of the selection efficiency files")
-
-			f_text = open("Selection_Eff_output.csv", "w+")
-			f_text.write("Data,Efficiency,Error\n")
 
 			n = len(MC_jobs_Dict)
 			i = 0
@@ -78,6 +94,9 @@ def main(argv):
 				subjobs = MC_jobs_Dict[job][2]
 				identifier = MC_jobs_Dict[job][4]
 
+				if year not in years:
+					years.append(year)
+
 				filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
 
 				if int(year) <= 2012:
@@ -86,12 +105,6 @@ def main(argv):
 				else:
 					run = 2
 					cuts = Imports.getDataCuts(run)
-
-				# # APPARENTLY THAT THE ONLY CUTS THAT SIMON WAS LOOKING AT ---- !!!QUESTION!!!
-				# cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 &&  pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000"
-
-				# #turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
-				# turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 
 				Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
 
@@ -104,29 +117,24 @@ def main(argv):
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
 
-				string = particle + " " + str(year) + " " + pol + "," + "{:.3e}".format(eff) + "," + "{:.3e}".format(binom_error) + "\n"
-				f_text.write(string)
-
 				selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
 
 
 			print("\nSelection efficiency calculations are done!")
 
+			latexTable(selecEffDict,years,"Selection")
+
 			prettyEffDict = pprint.pformat(selecEffDict)
-			dictF = open("Selection_Eff_Dict.py","w")
+			dictF = open(dict_path + "Selection_Eff_Dict.py","w")
 			dictF.write("selDict = " + str(prettyEffDict))
 			dictF.close()
-
-			f_text.close()
 
 		elif opt == "-t":
 
 			print("\nCreation of the trigger efficiency files")
 
 			trigEffDict = {}
-
-			f_text = open("Trigger_Eff_output.csv", "w+")
-			f_text.write("Data,Efficiency,Error\n")
+			years = []
 
 			n = len(MC_jobs_Dict)
 			i = 0
@@ -147,6 +155,9 @@ def main(argv):
 				pol = MC_jobs_Dict[job][1]
 				subjobs = MC_jobs_Dict[job][2]
 				identifier = MC_jobs_Dict[job][4]
+
+				if year not in years:
+					years.append(year)
 
 				filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
 
@@ -170,19 +181,17 @@ def main(argv):
 				k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo ))
 				eff = float(k/N)
 				binom_error = (1/N)*((k*(1-k/N))**(0.5))
-				string = particle + " " +str(year) + " " + pol + "," + "{:.3e}".format(eff) + "," + "{:.3e}".format(binom_error) + "\n"
-				f_text.write(string)
 
 				trigEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
 
 			print("\nTrigger efficiency calculations are done!")
 
+			latexTable(trigEffDict,years,"Trigger")
+
 			prettyEffDict = pprint.pformat(trigEffDict)
-			dictF = open("Trigger_Eff_Dict.py","w")
+			dictF = open(dict_path + "Trigger_Eff_Dict.py","w")
 			dictF.write("trigDict = " + str(prettyEffDict))
 			dictF.close()
-
-			f_text.close()
 
 
 		elif opt == "-p":

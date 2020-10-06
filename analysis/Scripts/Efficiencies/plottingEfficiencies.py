@@ -1,6 +1,12 @@
 import sys, getopt, ROOT, math, textwrap
+
+sys.path.append("../")
+
 from array import array
 import Imports
+from Imports import PLOT_PATH, OUTPUT_DICT_PATH
+
+sys.path.append(PLOT_PATH + "Dict_output/Efficiencies/")
 
 years = [2012,2016,2017,2018]
 
@@ -90,7 +96,7 @@ def plotEff(Dict,title,range_yMin,range_yMax):
 	cE.Draw()
 	
 	what = title.split()
-	cE.SaveAs(what[0] + "_Eff_Graph.pdf")
+	cE.SaveAs(PLOT_PATH + "Efficiencies/" + what[0] + "_Eff_Graph.pdf")
 
 def main(argv):
 
