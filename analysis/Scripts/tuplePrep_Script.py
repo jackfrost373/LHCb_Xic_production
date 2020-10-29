@@ -3,16 +3,16 @@ from ROOT import TChain, TFile
 from Imports import TUPLE_PATH, TUPLE_PATH_NOTRIG, RAW_TUPLE_PATH, DATA_jobs_Dict
 
 def wantedCuts(run, trig):
-	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0 && lcplus_L0HadronDecision_TOS == 1"
+	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	
 	if run == 1:
 		if trig:
-			trigger_cuts = "lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
+			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 		else:
 			trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
 	elif run == 2:
 		if trig:
-			trigger_cuts = "lcplus_Hlt1TrackMVADecision_TOS == 1"
+			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
 		else:
 			trigger_cuts = ""
 	
@@ -26,14 +26,14 @@ def main():
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
 	folders_dict = DATA_jobs_Dict
 
-	path = [TUPLE_PATH_NOTRIG,TUPLE_PATH]
+	path = [TUPLE_PATH_NOTRIG] #[TUPLE_PATH_NOTRIG,TUPLE_PATH]
 	
 	for PATH in path:
 		if PATH == TUPLE_PATH:
 			trig = True
 		else:
 			trig = False
-		
+
 		for element in folders_dict:
 			if int(element) > 41 and int(element) < 47:
 			   extra_variables = [
@@ -44,17 +44,25 @@ def main():
 					"*HLT*"
 					]
 			   run = 1
+			   cutsV = 1
 			   particle = "Lc"
 			else:
-			   extra_variables = ["nSPDHits", "nTracks", "lcplus_Hlt1TrackMVADecision_TOS"]
-			   particle = folders_dict[element][2]
-			   run = 2
+			   extra_variables = [
+					"nSPDHits", 
+					"nTracks", 
+					"lcplus_Hlt1TrackMVADecision_TOS",
+					"lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS",
+					"lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS",
+					"*Hlt*"]
+			   particle = "Lc"
+			   run = 1
+			   cutsV = 2
 			   
 			name = folders_dict[element][0]
 			subjobs = folders_dict[element][1]
 			saving_directory = PATH + name + "_clusters/"
 			
-			cuts = wantedCuts(run, trig)
+			cuts = wantedCuts(cutsV, trig)
 			
 			if not os.path.exists(saving_directory):
 			   os.makedirs(saving_directory)
@@ -195,7 +203,7 @@ def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
 		if particle == "Xic":
 			mass_cuts = "lcplus_MM > 2375"
 			
-		
+		print("Particle: " + particle)
 		for ybin in ybins:
 			
 			ycuts = "lcplus_RAPIDITY >= {0} && lcplus_RAPIDITY < {1}".format(ybin[0], ybin[1])

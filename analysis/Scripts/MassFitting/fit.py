@@ -34,7 +34,7 @@ from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
 BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
-Dict_PATH = OUTPUT_DICT_PATH + "Maasfitting/"
+Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
