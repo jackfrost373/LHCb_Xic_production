@@ -2,67 +2,47 @@ import ROOT, os, Imports, sys
 from ROOT import TChain, TFile
 from Imports import TUPLE_PATH, TUPLE_PATH_NOTRIG, RAW_TUPLE_PATH, DATA_jobs_Dict
 
-def wantedCuts(run, trig):
-	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
-	
-	if run == 1:
-		if trig:
-			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
-		else:
-			trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
-	elif run == 2:
-		if trig:
-			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
-		else:
-			trigger_cuts = ""
-	
-	if trigger_cuts == "":	
-		return cuts
-	else:
-		return cuts + "&&" + trigger_cuts
-
 def main():
 	#a dictionary containing the details of the all the years' data according to joblog.txt
 	#Run 1 is automatically Lc, and Run 2 has particle specified.
 	folders_dict = DATA_jobs_Dict
 
-	path = [TUPLE_PATH_NOTRIG] #[TUPLE_PATH_NOTRIG,TUPLE_PATH]
+	path = [TUPLE_PATH_NOTRIG,TUPLE_PATH]
 	
 	for PATH in path:
 		if PATH == TUPLE_PATH:
 			trig = True
 		else:
 			trig = False
-
+		
+		#vestige of using turbo output for run 2 data. Still present in case we want to switch back to using Turbo line.
+		withTurbo = false
+		
 		for element in folders_dict:
 			if int(element) > 41 and int(element) < 47:
 			   extra_variables = [
 					"lcplus_Hlt1TrackAllL0Decision_TOS", 
 					"lcplus_Hlt2CharmHadD2HHHDecision_TOS",
-					"*L0*",
-					"*Hlt*",
-					"*HLT*"
+					"lcplus_L0HadronDecision_TOS",
 					]
-			   run = 1
-			   cutsV = 1
+			   cutsRun = 1
 			   particle = "Lc"
 			else:
 			   extra_variables = [
 					"nSPDHits", 
-					"nTracks", 
+					"nTracks",
+			   		"lcplus_L0HadronDecision_TOS"
 					"lcplus_Hlt1TrackMVADecision_TOS",
 					"lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS",
-					"lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS",
-					"*Hlt*"]
+					"lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS",]
 			   particle = "Lc"
-			   run = 1
-			   cutsV = 2
+			   cutsRun = 2
 			   
 			name = folders_dict[element][0]
 			subjobs = folders_dict[element][1]
 			saving_directory = PATH + name + "_clusters/"
 			
-			cuts = wantedCuts(cutsV, trig)
+			cuts = Imports.getDataCuts(cutsRun, trig)
 			
 			if not os.path.exists(saving_directory):
 			   os.makedirs(saving_directory)
@@ -118,7 +98,7 @@ def main():
 			   os.makedirs(PATH + name + "/bins")
 			saving_dir = PATH + name + "/bins/"
 			print("\n\nCreating the final files")
-			split_in_bins_n_save(final_chain, saving_dir, run, particle) # split the datafile into mass-y-pt bins
+			split_in_bins_n_save(final_chain, saving_dir, withTurbo, particle) # split the datafile into mass-y-pt bins
 
 			print ("\nProcess completed for " + name)
 	
@@ -176,13 +156,14 @@ def setBranch_funct (root_file, extra_variables):
 
 
 #### This function requires a .root file as an input that in its structure has DecayTree immediately there without any intermediate structure. The TTree is divided into bins and these are saved in the saving_dir (which is a string of the saving directory) ####
-def split_in_bins_n_save (root_file, saving_dir, run, mother_particle = "Lc"):
+def split_in_bins_n_save (root_file, saving_dir, withTurbo, mother_particle = "Lc"):
 
 	ybins = Imports.getYbins() #Rapidity bins
     
 	ptbins = Imports.getPTbins()
 
-	if run == 1:
+	#Also vestige of using turbo output: the variables would be preseparated, so no need to do it ourselves
+	if not withTurbo:
 		particles = ["Lc", "Xic"]
 	else:
 		particles = []
