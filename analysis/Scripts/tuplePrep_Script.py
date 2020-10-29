@@ -16,7 +16,7 @@ def main():
 			trig = False
 		
 		#vestige of using turbo output for run 2 data. Still present in case we want to switch back to using Turbo line.
-		withTurbo = false
+		withTurbo = False
 		
 		for element in folders_dict:
 			if int(element) > 41 and int(element) < 47:
@@ -31,7 +31,7 @@ def main():
 			   extra_variables = [
 					"nSPDHits", 
 					"nTracks",
-			   		"lcplus_L0HadronDecision_TOS"
+			   		"lcplus_L0HadronDecision_TOS",
 					"lcplus_Hlt1TrackMVADecision_TOS",
 					"lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS",
 					"lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS",]

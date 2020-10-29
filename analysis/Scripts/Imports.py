@@ -6,7 +6,7 @@ PLOT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/"
 TABLE_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Tables/"
 OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
 
-def getMCCuts (particle, run):
+def getMCCuts(particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:
 		IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS == 1".format(particle)
@@ -17,7 +17,7 @@ def getMCCuts (particle, run):
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 10 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
 
-def getDataCuts(run, trig = false):
+def getDataCuts(run, trig = False):
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	
 	if run == 1:
@@ -34,7 +34,7 @@ def getDataCuts(run, trig = false):
 	if trigger_cuts == "":	
 		return cuts
 	else:
-		return cuts + "&&" + trigger_cuts
+		return cuts + " && " + trigger_cuts
 
 def getBackgroundCuts(particle):
 	if particle == "Lc":
@@ -51,10 +51,10 @@ def getYbins():
 
 #the dictionnary values are to be uncommented once the jobs are gotten off the grid
 DATA_jobs_Dict = {
-	#"43":["2011_MagDown", 907],
-	#"45":["2011_MagUp", 817],
-	#"46":["2012_MagUp",1342],
-	#"42":["2012_MagDown",1155],
+	"43":["2011_MagDown", 907],
+	"45":["2011_MagUp", 817],
+	"46":["2012_MagUp",1342],
+	"42":["2012_MagDown",1155],
 	#"NA":["2016_MagDown",],
 	"163":["2017_MagDown",1875],
 	#"NA":["2018_MagDown",],
