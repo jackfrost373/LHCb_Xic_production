@@ -10,7 +10,7 @@ import sys, getopt
 #Creating python path for the importing of the Imports.py module(has to be one directory behind)
 # and the dictionnaries in Dict_output directory
 
-sys.path.append('./') #This one is to be able to access Imports.py, one folder up from this script
+sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
 sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
@@ -20,7 +20,7 @@ from yearTotalFit_Dict import fittingDict as yearFitDict
 import os.path
 import textwrap
 import Imports
-from Imports import TUPLE_PATH
+from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
 
 #folder structure : 
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
@@ -31,17 +31,15 @@ from Imports import TUPLE_PATH
 #filename structure : Lc_ybin_2.0-2.5_ptbin_3200-4000.root
 
 #This is the base path without the particle location (until binned_files in our case)
-#BASE_PATH = "/home/exultimathule/Code/HonoursProgramme/MassFitScript/testDirectories/"
-BASE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
+BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
-Dict_PATH = "./Dict_output/"
-#Dict_PATH = "/data/bfys/jdevries/LcAnalysis_plots/MassFitting/Dict_output/"
+Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
 #BASE_PDF_OUTPUT = "./"
-BASE_PDF_OUTPUT = "/data/bfys/jdevries/LcAnalysis_plots/MassFitting/"
+BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/"
 
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
