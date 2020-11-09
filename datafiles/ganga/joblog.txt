@@ -89,10 +89,8 @@ Registry Slice: jobs (27 objects) - 4 Jun 2019
 
 
      # NEW productions 2020
-     144 | submitted |MC_Lc2pKpi |     184 |      GaudiExec |   Dirac |   None |   25103064_MagUp_Pythia8_2017 |      0/1/0/182  # Lc, StrippingLambdaCForPromptCharm
-     145 | submitted |MC_Lc2pKpi |     182 |      GaudiExec |   Dirac |   None | 25103064_MagDown_Pythia8_2017 |      0/1/0/179  # Lc, StrippingLambdaCForPromptCharm
-     150  --> New Xic prod., StrippingLambdaCForPromptCharm.
-     151 --> rubbish.
-     152 --> attempt at Xic with OR of Lc and Xic Turbo as stripping line
-     153 --> ''
+     144 | submitted |MC_Lc2pKpi |     184 |      GaudiExec |   Dirac |   None |   25103064_MagUp_Pythia8_2017 |      0/1/0/182  # Lc,  StrippingLambdaCForPromptCharm
+     145 | submitted |MC_Lc2pKpi |     182 |      GaudiExec |   Dirac |   None | 25103064_MagDown_Pythia8_2017 |      0/1/0/179  # Lc,  StrippingLambdaCForPromptCharm
+     150 |    failed |MC_Lc2pKpi |     183 |      GaudiExec |   Dirac |   None |   26103091_MagUp_Pythia8_2017 |      0/2/0/181  # Xic, StrippingLambdaCForPromptCharm.
 
+     163 |completing |Lc2pKpi_20 |    1875 |      GaudiExec |   Dirac |   None |2017_MagDown_Reco17/Stripping2 |     0/0/2/1873  # real data, stripping output.
