@@ -45,6 +45,13 @@ PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
 PDF_PATH_Y = BASE_PDF_OUTPUT + "PDF_output/Year/"
 
+#Creates the paths in case they don't exist
+pathsArr = [Dict_PATH,PDF_PATH_S,PDF_PATH_C,PDF_PATH_Y]
+for path in pathsArr:
+	if not os.path.isdir(path):
+		os.makedirs(path)
+
+
 years = [2011,2012,2015,2016,2017,2018]
 magPol = ["MagUp", "MagDown"]
 
@@ -81,7 +88,7 @@ def main(argv):
 		print(textwrap.dedent("""\
 			
 			Welcome to the fit.py script.
-			Before running the script make sure you have two folders in the programme directory with the following structure:
+			If not already present, the programme will create directories with the following structure:
 				Dict_output/
 				PDF_output/Single
 				PDF_output/Combined
