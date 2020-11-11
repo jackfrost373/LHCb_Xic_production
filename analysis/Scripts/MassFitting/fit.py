@@ -11,6 +11,7 @@ import sys, getopt
 # and the dictionnaries in Dict_output directory
 
 sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
+sys.path.append('./')
 sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
