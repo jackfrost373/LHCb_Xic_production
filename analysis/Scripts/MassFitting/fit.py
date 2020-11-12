@@ -12,7 +12,6 @@ import sys, getopt
 
 sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
 sys.path.append('./')
-sys.path.append('./Dict_output')
 
 import ROOT, os, MassfitLib as mf 
 from fittingDict import fittingDict as singleFitDict
@@ -36,6 +35,7 @@ BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
 Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
+sys.path.append(Dict_PATH)
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
@@ -594,7 +594,7 @@ def main(argv):
 							combinedDict[year][i][filename] , objList = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C)
 								
 					dictF = open(Dict_PATH + "combinedFit_DictFile.py","w")
-					dictF.write("mainDict = " + str(singleDict))
+					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
 					
