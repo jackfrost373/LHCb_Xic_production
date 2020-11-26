@@ -99,6 +99,8 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			cb_alpha_range = fittingDict["GaussCB"][particle]["general"]["cb_alpha_range"]
 			cb_n_range = fittingDict["GaussCB"][particle]["general"]["cb_n_range"]
 
+        if shape=="bukin":
+                
 	c1 = ROOT.TCanvas("c1","c1",1200,700)
 	pullpad1 = ROOT.TPad("pullpad1", "",0.0,0.25,1.0,1.0)
 	pullpad2 = ROOT.TPad("pullpad2", "",0.0,0.0,1.0,0.25)
