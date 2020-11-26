@@ -89,7 +89,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
 			
 			normalisation_factor = fittingDict["GaussCB"][particle]["general"]["normalisation_factor"]
-			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
+ 			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
 			
 			exponential_range = fittingDict["GaussCB"][particle]["general"]["exponential_range"]
 			
@@ -132,6 +132,8 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			Bukin_rho2_range = fittingDict["Bukin"][particle]["general"]["Bukin_rho2_range"]
 
 	print(mass_range)
+
+
 	c1 = ROOT.TCanvas("c1","c1",1200,700)
 	pullpad1 = ROOT.TPad("pullpad1", "",0.0,0.25,1.0,1.0)
 	pullpad2 = ROOT.TPad("pullpad2", "",0.0,0.0,1.0,0.25)
