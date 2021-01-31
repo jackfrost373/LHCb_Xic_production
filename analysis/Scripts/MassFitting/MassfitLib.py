@@ -100,7 +100,26 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			cb_n_range = fittingDict["GaussCB"][particle]["general"]["cb_n_range"]
 
         if shape=="bukin":
-                
+                if fullname in fittingDict["Bukin"][particle]:
+                        mass_range = fittingDict["Bukin"][particle][fullname]["mass_range"]
+                        peak_range = fittingDict["Bukin"][particle][fullname]["peak_range"]
+
+                        normalisation_factor = fittingDict["Bukin"][particle][fullname]["normalisation_factor"]
+                        exponential_normalisation_factor = fittingDict["Bukin"][particle][fullname]["exponential_normalisation_factor"]
+
+                        exponential_range = fittingDict["Bukin"][particle][fullname]["exponential_range"]
+                        width_range = fittingDict["Bukin"][particle][fullname]["width_range"]
+
+                else:
+                        mass_range = fittingDict["Bukin"][particle]["general"]["mass_range"]
+                        peak_range = fittingDict["Bukin"][particle]["general"]["peak_range"]
+
+                        normalisation_factor = fittingDict["Bukin"][particle]["general"]["normalisation_factor"]
+                        exponential_normalisation_factor = fittingDict["Bukin"][particle]["general"]["exponential_normalisation_factor"]
+
+                        exponential_range = fittingDict["Bukin"][particle]["general"]["exponential_range"]
+                        width_range = fittingDict["Bukin"][particle]["general"]["width_range"]
+
 	c1 = ROOT.TCanvas("c1","c1",1200,700)
 	pullpad1 = ROOT.TPad("pullpad1", "",0.0,0.25,1.0,1.0)
 	pullpad2 = ROOT.TPad("pullpad2", "",0.0,0.0,1.0,0.25)
@@ -144,6 +163,25 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, 0, mctree.GetEntries() * 3)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
+
+
+        if shape == "Bukin":
+                Bukin_Xp = ROOT.RooRealVar("Bukin_Xp", "Peak position",2471,2450,2500)
+                Bukin_Sigp = ROOT.RooRealVar("Bukin_Sigp", "Peak width",13.01,0,15)
+                Bukin_xi = ROOT.RooRealVar("Bukin_xi", "Peak asymmetry parameter",-0.306,-1,1)
+                Bukin_rho1 = ROOT.RooRealVar("Bukin_rho1", "Parameter of the left tail",0.853,-1,1)
+                Bukin_rho2 = ROOT.RooRealVar("Bukin_rho2", "Parameter of the right tail", 0.8,-1,1)
+                
+                exponential = ROOT.RooRealVar("exponential","C",-0.0002,-2,2)
+                myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
+                exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, 0, mctree.GetEntries()*2)
+
+                Bukin_PDF = ROOT.RooBukinPdf("Bukin_PDF", "Bukin shape", mass, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_roh1, Bukin_rho2)
+
+                Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/nbins*3/normalisation_factor, 0, mctree.GetEntries()*3)
+                
+                fullshape = ROOT.RooAddPdf("signalshape", "Signal Shape", ROOT.RooArgList(Bukin_PDF, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
+                
 
 	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
 	
@@ -202,6 +240,12 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			# "CB_n_val" : cb_n.getValV(),
 			# "CB_n_err" : cb_n.getError()
 		}
+        if shape == "Bukin":
+                mainDict = {
+                        "yield_val" : signal_yield,
+                        "yield_err" : signal_error,
+                        "chi2ndf" : chi2ndf,
+                }
 	
 	pullpad2.cd()
 	framepull = mass.frame()
