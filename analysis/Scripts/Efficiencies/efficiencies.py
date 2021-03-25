@@ -201,7 +201,11 @@ def main(argv):
                 n_subjobs = MC_jobs_Dict[job][2]
                 ID = MC_jobs_Dict[job][4]
 
-                turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+                if int(year) <= 2012:
+                    turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+                else:
+                    turbo = "lcplus_Hlt1TrackMVADecision_TOS==1"
+                
                 Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
 
                 Lc_MC_filedir = directory + str(job)
@@ -575,10 +579,11 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
             return ("For particle {0} year: {1} Mag{2}, bin:y{3}-{4} pt {5}-{6} there are no entries".format(mother_particle, year, mag, ybin[0], ybin[1], ptbin[0], ptbin[1]))
         print("ntotal is " + str(ntotal))
     #Again, this part was done because there was no nTracks in the variables. Thus PID eff. histograms needed to be projected on 2 axes only.
-        compressed_Total_perfhist =Total_perfhists[particle].Project3D("yx")
-        compressed_Passed_perfhist =Passed_perfhists[particle].Project3D("yx")
-        #compressed_Total_perfhist = Total_perfhists[particle]
-        #compressed_Passed_perfhist = Passed_perfhists[particle]
+        # compressed_Total_perfhist =Total_perfhists[particle].Project3D("yx")
+        # compressed_Passed_perfhist =Passed_perfhists[particle].Project3D("yx")
+        compressed_Total_perfhist = Total_perfhists[particle]
+        compressed_Passed_perfhist = Passed_perfhists[particle]
+
         compressed_perfhist = compressed_Passed_perfhist.Divide(compressed_Total_perfhist)
         if compressed_perfhist == False:
             print("Divide operation failed")
