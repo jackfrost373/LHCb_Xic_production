@@ -11,7 +11,7 @@ import sys, getopt
 # and the dictionnaries in Dict_output directory
 
 sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
-sys.path.append('./Dict_output')
+sys.path.append('./')
 
 import ROOT, os, MassfitLib as mf 
 from fittingDict import fittingDict as singleFitDict
@@ -35,6 +35,7 @@ BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
 Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
+sys.path.append(Dict_PATH)
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
@@ -44,6 +45,13 @@ BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/"
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
 PDF_PATH_Y = BASE_PDF_OUTPUT + "PDF_output/Year/"
+
+#Creates the paths in case they don't exist
+pathsArr = [Dict_PATH,PDF_PATH_S,PDF_PATH_C,PDF_PATH_Y]
+for path in pathsArr:
+	if not os.path.isdir(path):
+		os.makedirs(path)
+
 
 years = [2011,2012,2015,2016,2017,2018]
 magPol = ["MagUp", "MagDown"]
@@ -81,7 +89,7 @@ def main(argv):
 		print(textwrap.dedent("""\
 			
 			Welcome to the fit.py script.
-			Before running the script make sure you have two folders in the programme directory with the following structure:
+			If not already present, the programme will create directories with the following structure:
 				Dict_output/
 				PDF_output/Single
 				PDF_output/Combined
@@ -586,7 +594,7 @@ def main(argv):
 							combinedDict[year][i][filename] , objList = mf.shapeFit("GaussCB", combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C)
 								
 					dictF = open(Dict_PATH + "combinedFit_DictFile.py","w")
-					dictF.write("mainDict = " + str(singleDict))
+					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
 					
