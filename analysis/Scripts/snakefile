@@ -8,17 +8,17 @@ rule all:
 
 rule mass_fitting_bins:
      input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
-     output:["Dict_output/singleFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Single/*.pdf")]
+     output:["/data/bfys/jdevries/LcAnalysis_plots/Dict_output/Massfitting/singleFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Single/*.pdf")]
      shell: "python  MassFitting/fit.py -m single"
 
 rule mass_fitting_years:
      input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
-     output: ["Dict_output/yearFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Year/*.pdf")]
+     output: ["/data/bfys/jdevries/LcAnalysis_plots/Dict_output/Massfitting/yearFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Year/*.pdf")]
      shell: "python  MassFitting/fit.py -m year"
 
 rule mass_fitting_comb_bins:
      input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/CombinedBinFit_Dict.py"] 
-     output: ["Dict_output/combinedFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Combined/*.pdf")]
+     output: ["/data/bfys/jdevries/LcAnalysis_plots/Dict_output/Massfitting/combinedFit_DictFile.py", glob.glob("/data/bfys/jdevries/LcAnalysis_plots/MassFitting/PDF_output/Combined/*.pdf")]
      shell: "python  MassFitting/fit.py -m combined"
 
 rule sWeights_all:
