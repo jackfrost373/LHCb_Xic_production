@@ -2,25 +2,13 @@ import sys, getopt, ROOT, math, textwrap
 from array import array
 import Imports
 
-Base_Path = "/data/bfys/jdevries/LcAnalysis_plots/"
-Import_Path = Base_Path + "Dict_output"
-sys.path.append(Import_Path)
-
 #TO CHANGE DEPENDING ON WHERE THE DICTS ARE LOCATED!
-#from Massfitting.GaussCBcombinedFit_DictFile import mainDict as GaussCB_combinedDict
-from Massfitting.GaussCByearFit_DictFile import mainDict as GaussCB_yearTotDict
-#from Massfitting.GaussCBsingleFit_DictFile import mainDict as GaussCB_singleDict
-
-#from Massfitting.BukincombinedFit_DictFile import mainDict as Bukin_combinedDict
-from Massfitting.BukinyearFit_DictFile import mainDict as Bukin_yearTotDict
-#from Massfitting.BukinsingleFit_DictFile import mainDict as Bukin_singleDict
-
-from Massfitting.combinedFit_DictFile import mainDict as combinedDict
-#from Massfitting.yearFit_DictFile import mainDict as yearTotDict
-from Massfitting.singleFit_DictFile import mainDict as singleDict
+from Dict_output.combinedFit_DictFile import mainDict as combinedDict
+from Dict_output.yearFit_DictFile import mainDict as yearTotDict
+from Dict_output.singleFit_DictFile import mainDict as singleDict
 
 #CAN BE CHANGED TO OUTPUT THE 
-GRAPH_PATH = Base_Path + "Yield_Ratios/Graphs/"
+GRAPH_PATH = "./Graphs/"
 years = [2011,2012,2016,2017,2018]
 
 color = 0
@@ -294,14 +282,10 @@ def main(argv):
 			cD.SaveAs(GRAPH_PATH + "ratioVyear.pdf")
 			
 		elif opt == "-e": #yield vs. year
-			Gauss_XicYield = []
-			Gauss_XicYieldEr = []
-			Gauss_LcYield = []
-			Gauss_LcYieldEr = []
-			Bukin_XicYield = []
-			Bukin_XicYieldEr = []
-			Bukin_LcYield = []
-			Bukin_LcYieldEr = []
+			XicYield = []
+			XicYieldEr = []
+			LcYield = []
+			LcYieldEr = []
 
 			cE = ROOT.TCanvas("cE", "Graph of Yield vs. year")
 			cE.SetLogy()
@@ -309,70 +293,39 @@ def main(argv):
 
 			for year in years:
 				if year == 2011 or year == 2012:
-					Gauss_XicYield.append(GaussCB_yearTotDict[year]["MagUp"]['Xic_total.root']["yield_val"]+GaussCB_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
-					Gauss_XicYieldEr.append(math.sqrt((GaussCB_yearTotDict[year]["MagUp"]['Xic_total.root']["yield_err"])**2+(GaussCB_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])**2))
-					Gauss_LcYield.append(GaussCB_yearTotDict[year]["MagUp"]['Lc_total.root']["yield_val"]+GaussCB_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
-					Gauss_LcYieldEr.append(math.sqrt(GaussCB_yearTotDict[year]["MagUp"]['Lc_total.root']["yield_err"]**2+GaussCB_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"]**2))
-
-					Bukin_XicYield.append(Bukin_yearTotDict[year]["MagUp"]['Xic_total.root']["yield_val"]+Bukin_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
-					Bukin_XicYieldEr.append(math.sqrt((Bukin_yearTotDict[year]["MagUp"]['Xic_total.root']["yield_err"])**2+(Bukin_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])**2))
-					Bukin_LcYield.append(Bukin_yearTotDict[year]["MagUp"]['Lc_total.root']["yield_val"]+Bukin_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
-					Bukin_LcYieldEr.append(math.sqrt(Bukin_yearTotDict[year]["MagUp"]['Lc_total.root']["yield_err"]**2+Bukin_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"]**2))
-				
+					XicYield.append(yearTotDict[year]["MagUp"]['Xic_total.root']["yield_val"]+yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
+					XicYieldEr.append(math.sqrt((yearTotDict[year]["MagUp"]['Xic_total.root']["yield_err"])**2+(yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])**2))
+					LcYield.append(yearTotDict[year]["MagUp"]['Lc_total.root']["yield_val"]+yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
+					LcYieldEr.append(math.sqrt(yearTotDict[year]["MagUp"]['Lc_total.root']["yield_err"]**2+yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"]**2))
 				else:
-					Gauss_XicYield.append(GaussCB_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
-					Gauss_XicYieldEr.append(GaussCB_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])
-					Gauss_LcYield.append(GaussCB_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
-					Gauss_LcYieldEr.append(GaussCB_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"])
-
-					Bukin_XicYield.append(Bukin_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
-					Bukin_XicYieldEr.append(Bukin_yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])
-					Bukin_LcYield.append(Bukin_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
-					Bukin_LcYieldEr.append(Bukin_yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"])
+					XicYield.append(yearTotDict[year]["MagDown"]['Xic_total.root']["yield_val"])
+					XicYieldEr.append(yearTotDict[year]["MagDown"]['Xic_total.root']["yield_err"])
+					LcYield.append(yearTotDict[year]["MagDown"]['Lc_total.root']["yield_val"])
+					LcYieldEr.append(yearTotDict[year]["MagDown"]['Lc_total.root']["yield_err"])
 					
 			nPoints = len(years)
 			x = array('f', years)
 			ex = array('f', [0,0,0,0,0,0,0])
-			G_yXi = array('f', Gauss_XicYield)
-			G_eyXi = array('f', Gauss_XicYieldEr)
-			G_yL = array('f', Gauss_LcYield)
-			G_eyL = array('f', Gauss_LcYieldEr)
-			B_yXi = array('f', Bukin_XicYield)
-			B_eyXi = array('f', Bukin_XicYieldEr)
-			B_yL = array('f', Bukin_LcYield)
-			B_eyL = array('f', Bukin_LcYieldEr)
+			yXi = array('f', XicYield)
+			eyXi = array('f', XicYieldEr)
+			yL = array('f', LcYield)
+			eyL = array('f', LcYieldEr)
 
-			grE1 = ROOT.TGraphErrors(nPoints,x,G_yXi,ex,G_eyXi)
-			grE1.SetTitle("Gauss_Xic")
+			grE1 = ROOT.TGraphErrors(nPoints,x,yXi,ex,eyXi)
+			grE1.SetTitle("Xic")
 			grE1.SetLineColor(40)
 			grE1.SetLineWidth( 1 )
 			grE1.SetMarkerColor(40)
 			grE1.SetMarkerStyle( 21 )
 			mgE.Add(grE1)
 
-			grE2 = ROOT.TGraphErrors(nPoints,x,G_yL,ex,G_eyL)
-			grE2.SetTitle("Gauss_Lc")
+			grE2 = ROOT.TGraphErrors(nPoints,x,yL,ex,eyL)
+			grE2.SetTitle("Lc")
 			grE2.SetLineColor(46)
 			grE2.SetLineWidth( 1 )
 			grE2.SetMarkerColor(46)
 			grE2.SetMarkerStyle( 21 )
 			mgE.Add(grE2)
-
-			grE3 = ROOT.TGraphErrors(nPoints,x,B_yXi,ex,B_eyXi)
-			grE3.SetTitle("Bukin_Xic")
-			grE3.SetLineColor(45)
-			grE3.SetLineWidth( 1 )
-			grE3.SetMarkerColor(45)
-			grE3.SetMarkerStyle( 21 )
-			mgE.Add(grE3)
-			
-			grE4 = ROOT.TGraphErrors(nPoints,x,B_yL,ex,B_eyL)
-			grE4.SetTitle("Bukin_Lc")
-			grE4.SetLineColor(39)
-			grE4.SetLineWidth( 1 )
-			grE4.SetMarkerColor(39)
-			grE4.SetMarkerStyle( 21 )
-			mgE.Add(grE4)
 
 			mgE.SetTitle("Xic and Lc Yield vs. Year")
 			mgE.GetXaxis().SetTitle( 'Year' )
