@@ -188,7 +188,9 @@ def main(argv):
 
             cuts = "lcplus_L0HadronDecision_TOS"
 
-            f_text = open("PID_eff_nobins.txt", "w+")
+            f_text = open(dict_path + "PID_eff_Dict.py", "w")
+            f_text.write("PIDDict = {\n")
+
             directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
             for job in MC_jobs_Dict:
@@ -205,7 +207,7 @@ def main(argv):
                     turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
                 else:
                     turbo = "lcplus_Hlt1TrackMVADecision_TOS==1"
-                
+
                 Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
 
                 Lc_MC_filedir = directory + str(job)
@@ -227,6 +229,7 @@ def main(argv):
                 #                  ignoreB2hhStatErr = False, correctKinematics = False, binningscheme="", extra_cuts=(yptcut + " && " + turbo), MC_tree = Lc_MC_tree, mother_particle = particle, ybin=ybin, ptbin=pt$
                 #      f_text.write(string)
 
+            f_text.write("}")
             f_text.close()
 
         else:
@@ -331,7 +334,11 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     print("Calculating PID efficiency for {0} {1}, BDTbin {2}, PIDcut {3} ({4}), particle: {5}".format(year,mag,bdtbin,pidcut,optionstring,mother_particle))
     print("  (binning vars: {0} --> {1})".format(pidbinvars, b2hhbinvars))
 
-    mag = "MagDown" #USE MAGDOWN AS PROXY FOR MAGUP
+    if mag == "MagUp":
+        magProx = "MagUp"
+        mag = "MagDown" #USE MAGDOWN AS PROXY FOR MAGUP
+    else:
+        magProx = mag
 
 # get PIDCalib perfhists
     perfhistFiles = {}
@@ -600,7 +607,8 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     # compute total eff, assuming full correlation for the error
     totaleff = effs["pplus"][0] * effs["kminus"][0]*effs["piplus"][0]
     totaleff_error = (effs["pplus"][1] / effs["pplus"][0] + effs["kminus"][1] / effs["kminus"][0] + effs["piplus"][1] / effs["piplus"][0]) * totaleff
-    return ("For particle {2} year: {3} Mag{4}, bin: y{5}-{6} pt{7}-{8} the total eff for pKpi:  \t= {0:.8f} +- {1:.8f}".format(totaleff, totaleff_error, mother_particle, year, mag, ybin[0], ybin[1], ptbin[0], ptbin[1]))
+    return ("'{2}_{3}_{4}': {{'err': {1:.8f}, 'val': {0:.8f}}},\n".format(totaleff, totaleff_error, mother_particle, year, magProx, ybin[0], ybin[1], ptbin[0], ptbin[1]))
+    #return ("For particle {2} year: {3} Mag{4}, bin: y{5}-{6} pt{7}-{8} the total eff for pKpi:  \t= {0:.8f} +- {1:.8f}".format(totaleff, totaleff_error, mother_particle, year, mag, ybin[0], ybin[1], ptbin[0], ptbin[1]))
     #return [totaleff, totaleff_error]
 
 #################################################
