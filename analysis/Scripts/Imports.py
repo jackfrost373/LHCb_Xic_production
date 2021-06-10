@@ -11,8 +11,8 @@ OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
 def getMCCuts(particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:
-		#IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS==1 ".format(particle)
-		IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+		IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS==1 ".format(particle)
+		#IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 	if particle == "Lc":
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
@@ -30,8 +30,8 @@ def getDataCuts(run, trig = False):
 			trigger_cuts = ""
 	elif run == 2:
 		if trig:
-			#trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
-			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
+			#trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 		else:
 			trigger_cuts = ""
 	
