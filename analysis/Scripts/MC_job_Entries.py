@@ -48,9 +48,9 @@ for job in parsJob:
             LcTree = LcTree.CopyTree(LcDataCuts)
 
             print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")		
-        if(GRAPHS == True):
-            XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
-            LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
+            if(GRAPHS == True):
+                XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
+                LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
 
             LcTree.Draw("lcplus_MM>>LcMasshist")
             c1.SaveAs(job + "_Lc_MC.pdf")
@@ -59,16 +59,15 @@ for job in parsJob:
 
         del XicMasshist
         del LcMasshist
-       
-        elif(run == 1):
+
+        if(run == 1):
             XicTree = tree.CopyTree(XicDataCuts)
             LcTree = tree.CopyTree(LcDataCuts)
-		
-        print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")
+            print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")
 
-        if(GRAPHS == True):
-            XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
-            LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
+            if(GRAPHS == True):
+                XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
+                LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
 
             LcTree.Draw("lcplus_MM>>LcMasshist")
             c1.SaveAs(job + "_Lc_MC.pdf")
