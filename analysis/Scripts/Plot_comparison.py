@@ -12,7 +12,7 @@ def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1=
 
     ROOT.gStyle.SetOptStat(0)
 
-    fileloc="/data/bfys/cpawley/sWeights/2017_MagDown/Xic_total_sWeight_swTree.root"
+    fileloc="/data/bfys/cpawley/sWeights/2018_MagDown/Xic_total_sWeight_swTree.root"
     f=ROOT.TFile.Open(fileloc,"READONLY")
     tree3 = f.Get("dataNew")
 
@@ -24,10 +24,10 @@ def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1=
             xmin = tree2.GetMinimum(varname)
         if tree2.GetMaximum(varname) > xmax:
             xmax = tree2.GetMaximum(varname)
-    tree1.AddFriend("dataNew","/data/bfys/cpawley/sWeights/2017_MagDown/Xic_total_sWeight_swTree.root")
-    tree1.Draw(varname+">>histogram1("+str(bins)+","+str(xmin)+","+str(xmax)+")", cuts1, "dataNew.sw_sig")
-    print("Sanity check, friend tree contains{0} entries, and the data file contains {1} entries".format(tree3.GetEntries(), tree1.GetEntries(cuts1)))
-    #tree1.Draw(varname+">>histogram1("+str(bins)+","+str(xmin)+","+str(xmax)+")", cuts1)
+    #tree1.AddFriend("dataNew","/data/bfys/cpawley/sWeights/2018_MagDown/Xic_total_sWeight_swTree.root")
+    #tree1.Draw(varname+">>histogram1("+str(bins)+","+str(xmin)+","+str(xmax)+")", cuts1, "dataNew.sw_sig")
+    #print("Sanity check, friend tree contains{0} entries, and the data file contains {1} entries".format(tree3.GetEntries(), tree1.GetEntries(cuts1)))
+    tree1.Draw(varname+">>histogram1("+str(bins)+","+str(xmin)+","+str(xmax)+")", cuts1)
     tree2.Draw(varname+">>histogram2("+str(bins)+","+str(xmin)+","+str(xmax)+")", cuts2)
     histogram1 = ROOT.gDirectory.Get("histogram1")
     histogram2 = ROOT.gDirectory.Get("histogram2")
