@@ -9,4 +9,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: psf/black@stable
         with: 
-          options: --verbose --diff --color --exclude '/(/\pidcalib/\ | \datafiles/ | \analysis\examples/| /analysis/Scripts/Archive/ | \analysis\Scripts\.snakemake/ | \analysis\Scripts\Dict_output/)/'
+          options: --verbose --diff --color --exclude '/(/\pidcalib/\ | \datafiles/ | \analysis\examples/| analysis/Scripts/Archive/ | \analysis\Scripts\.snakemake/ | \analysis\Scripts\Dict_output/)/'
