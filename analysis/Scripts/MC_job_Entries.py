@@ -60,9 +60,9 @@ for job in parsJob:
         del XicMasshist
         del LcMasshist
        
-    elif(run == 1):
-        XicTree = tree.CopyTree(XicDataCuts)
-        LcTree = tree.CopyTree(LcDataCuts)
+        elif(run == 1):
+            XicTree = tree.CopyTree(XicDataCuts)
+            LcTree = tree.CopyTree(LcDataCuts)
 		
         print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")
 
