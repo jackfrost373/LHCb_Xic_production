@@ -20,17 +20,17 @@ for job in parsJob:
         if (int(job) >= 95 and int(job) <= 108):
             run = 2
 			
-			XicMCCuts = "{0} && {1}".format(getMCCuts("Xic",run), "lcplus_MM > 2375")
-			XicDataCuts = getDataCuts(run)
+            XicMCCuts = "{0} && {1}".format(getMCCuts("Xic",run), "lcplus_MM > 2375")
+            XicDataCuts = getDataCuts(run)
 
-			LcMCCuts = "{0} && {1}".format(getMCCuts("Lc",run), "lcplus_MM < 2375")
-			LcDataCuts = getDataCuts(run)
+            LcMCCuts = "{0} && {1}".format(getMCCuts("Lc",run), "lcplus_MM < 2375")
+            LcDataCuts = getDataCuts(run)
 
         else:
-			run = 1
+            run = 1
 		
-			XicDataCuts = "{0} && {1}".format(getDataCuts(run), "lcplus_MM > 2375")
-			LcDataCuts = "{0} && {1}".format(getDataCuts(run), "lcplus_MM < 2375")
+            XicDataCuts = "{0} && {1}".format(getDataCuts(run), "lcplus_MM > 2375")
+            LcDataCuts = "{0} && {1}".format(getDataCuts(run), "lcplus_MM < 2375")
 
         tree = TChain("tuple_Lc2pKpi/DecayTree")
         PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/" + job
@@ -41,39 +41,39 @@ for job in parsJob:
                                 tree.Add(os.path.join(subdir,file))
 
         if(run == 2):
-			XicTree = tree.CopyTree(XicMCCuts)
-			XicTree = XicTree.CopyTree(XicDataCuts)
+            XicTree = tree.CopyTree(XicMCCuts)
+            XicTree = XicTree.CopyTree(XicDataCuts)
 
-			LcTree = tree.CopyTree(LcMCCuts)
-			LcTree = LcTree.CopyTree(LcDataCuts)
+            LcTree = tree.CopyTree(LcMCCuts)
+            LcTree = LcTree.CopyTree(LcDataCuts)
 
-			print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")		
+            print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")		
         if(GRAPHS == True):
-			XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
-			LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
+            XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
+            LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
 
-			LcTree.Draw("lcplus_MM>>LcMasshist")
-			c1.SaveAs(job + "_Lc_MC.pdf")
-			XicTree.Draw("lcplus_MM>>XicMasshist")
-			c1.SaveAs(job + "_Xic_MC.pdf")
+            LcTree.Draw("lcplus_MM>>LcMasshist")
+            c1.SaveAs(job + "_Lc_MC.pdf")
+            XicTree.Draw("lcplus_MM>>XicMasshist")
+            c1.SaveAs(job + "_Xic_MC.pdf")
 
         del XicMasshist
         del LcMasshist
        
 	elif(run == 1):
-		XicTree = tree.CopyTree(XicDataCuts)
-		LcTree = tree.CopyTree(LcDataCuts)
+        XicTree = tree.CopyTree(XicDataCuts)
+        LcTree = tree.CopyTree(LcDataCuts)
 		
-		print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")
+        print("The nb of entries for job " + job + " is (Xic: " + str(XicTree.GetEntries()) + ";Lc: " + str(LcTree.GetEntries())+ ")")
 
-		if(GRAPHS == True):
-			XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
-			LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
+        if(GRAPHS == True):
+            XicMasshist = ROOT.TH1F("XicMasshist","Histogram of Xic mass, job: "+ job ,nbin,XicMassRange[0],XicMassRange[1])
+            LcMasshist = ROOT.TH1F("LcMasshist","Histogram of Lc mass, job: "+ job ,nbin,LcMassRange[0],LcMassRange[1])
 
-			LcTree.Draw("lcplus_MM>>LcMasshist")
-			c1.SaveAs(job + "_Lc_MC.pdf")
-			XicTree.Draw("lcplus_MM>>XicMasshist")
-			c1.SaveAs(job + "_Xic_MC.pdf")
+            LcTree.Draw("lcplus_MM>>LcMasshist")
+            c1.SaveAs(job + "_Lc_MC.pdf")
+            XicTree.Draw("lcplus_MM>>XicMasshist")
+            c1.SaveAs(job + "_Xic_MC.pdf")
 
-		del XicMasshist
-		del LcMasshist
+        del XicMasshist
+        del LcMasshist
