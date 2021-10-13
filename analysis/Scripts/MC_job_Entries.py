@@ -19,7 +19,7 @@ for job in parsJob:
 
         if (int(job) >= 95 and int(job) <= 108):
             run = 2
-			
+
             XicMCCuts = "{0} && {1}".format(getMCCuts("Xic",run), "lcplus_MM > 2375")
             XicDataCuts = getDataCuts(run)
 
@@ -60,7 +60,7 @@ for job in parsJob:
         del XicMasshist
         del LcMasshist
        
-	elif(run == 1):
+    elif(run == 1):
         XicTree = tree.CopyTree(XicDataCuts)
         LcTree = tree.CopyTree(LcDataCuts)
 		
