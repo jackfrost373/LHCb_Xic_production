@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2017'
-eventtype = 26103091
+year = '2018'
+eventtype = 26103092
 
 # Before running on the grid, please ensure that:
 # - davinci options file has no input file specified
@@ -47,6 +47,7 @@ app = "DaVinci"
 version  = "v44r5"
 platform = "x86_64-slc6-gcc62-opt" # default grid
 projectpath = "/project/bfys/jdevries/cmtuser"
+#projectpath = "/project/bfys/cpawley/cmtuser"
 if(restripversion == "stripping21") : 
   version  = "v36r1p5"
   platform = "x86_64-slc6-gcc48-opt"

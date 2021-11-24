@@ -165,8 +165,7 @@ db[25103064] = [
 ('/MC/2015/Beam6500GeV-2015-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-mu100', 1268, 3113322, 130111),
 ]
 
-# Our new Xic request --> to be updated to new number.
-db[26103091] = [
-('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09i/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103091/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4120, 10009885, 109979),
-('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09i/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103091/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4123, 10018168, 109981),
+# Our new Xic request (2nd version)
+db[26103092] = [
+('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 8271, 19981546, 136389),
 ]
