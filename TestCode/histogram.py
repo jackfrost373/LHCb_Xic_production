@@ -1,7 +1,7 @@
 import ROOT
 from array import array
 
-MCfile_loc  = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/29/1/output/MC_Lc2pKpiTuple_25103006.root"   #From reweighing.py in examples
+MCfile_loc  = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/30/1/output/MC_Lc2pKpiTuple_25103029.root"
 MCtreename = "tuple_Lc2pKpi/DecayTree"
 
 variables = ["lcplus_P", "lcplus_ETA"]
@@ -14,7 +14,7 @@ cuts = { "MC" : "1==1" }  # sim should include MCTruth
 weights = { "MC" : "1==1"  # data should contain sweight (but add friendTree then!)
               }
 
-## outputdir = "./output/"
+outputdir = "./output/"
 
 makeplots = True
 nbins = 100 # bins for regular drawing
@@ -112,4 +112,4 @@ if(makeplots) :
     histdict[ datatype+"_2D" ].Draw("colz")
     for line in binedgelines : line.Draw("same")
     canvasdict[ cname ].Update()
-    ## canvasdict[ cname ].SaveAs(outputdir+"kWeights_2D_"+datatype+".pdf")
+    canvasdict[ cname ].SaveAs(outputdir+"kWeights_2D_"+datatype+".pdf")
