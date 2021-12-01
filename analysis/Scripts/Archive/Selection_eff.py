@@ -28,20 +28,20 @@ for job in dictionary:
     if (job == 30):
         particle = "Xic"
         #ID = "26103090"
-		ID = "25103029"
+        ID = "25103029"
 		#turbo = "lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS==1"
         turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
         directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
-		Lc_MC_filename = "output/MC_Lc2pKpiTuple_" + ID + ".root"
+        Lc_MC_filename = "output/MC_Lc2pKpiTuple_" + ID + ".root"
 	
     else:
         particle = "Lc"
         #ID = "25203000"
-		ID = "25103006"
+        ID = "25103006"
 		#turbo = "lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS==1"
-		turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
-		directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
-		Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
+        turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
+        directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+        Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
 	
     #cuts+= " && " + turbo    
     Lc_MC_filedir = directory + str(job)
