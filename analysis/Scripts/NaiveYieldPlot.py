@@ -1,10 +1,8 @@
 import sys, getopt, ROOT, math, textwrap
 from array import array
-import Imports
+from Imports import OUTPUT_DICT_PATH, PLOT_PATH
 
-Base_Path = "/data/bfys/jdevries/LcAnalysis_plots/"
-Import_Path = Base_Path + "Dict_output"
-sys.path.append(Import_Path)
+sys.path.append(OUTPUT_DICT_PATH)
 
 #TO CHANGE DEPENDING ON WHERE THE DICTS ARE LOCATED!
 #from Massfitting.GaussCBcombinedFit_DictFile import mainDict as GaussCB_combinedDict
@@ -20,7 +18,7 @@ from Massfitting.combinedFit_DictFile import mainDict as combinedDict
 from Massfitting.singleFit_DictFile import mainDict as singleDict
 
 #CAN BE CHANGED TO OUTPUT THE 
-GRAPH_PATH = Base_Path + "Yield_Ratios/Graphs/"
+GRAPH_PATH = PLOT_PATH + "Yield_Ratios/Graphs/"
 years = [2011,2012,2016,2017,2018]
 
 color = 0

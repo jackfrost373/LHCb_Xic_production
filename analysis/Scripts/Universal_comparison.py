@@ -2,6 +2,7 @@
 
 import ROOT, os, Plot_comparison, Imports
 from ROOT import TChain, TCanvas, TH1
+from Imports import PLOT_PATH, TUPLE_PATH, RAW_TUPLE_PATH
 
 #change the following string variable to select which particle you want to study
 particle = "Xic"
@@ -23,23 +24,23 @@ variables_to_plot = ["pplus_P","pplus_ETA","pplus_PT"]
 #this dictionary should contain all of the variables that want to be plotted with a line. The key should be a string of the variable and its value should be the x value at which the line should be plotted
 variables_to_plot_with_line = {}
 
-fileloc=Imports.TUPLE_PATH+"/{0}_{1}/{2}_total.root".format(year,MagPol,particle)
+fileloc=TUPLE_PATH+"/{0}_{1}/{2}_total.root".format(year,MagPol,particle)
 f=ROOT.TFile.Open(fileloc,"READONLY")
 tree1 = f.Get("DecayTree") # tree that will be plotted in red
 
 #tree1 =  ROOT.TChain("tuple_Lc2pKpi/DecayTree")
-#filedir="/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/91"
+#filedir=RAW_TUPLE_PATH + "/91"
 #filename="Lc2pKpiTuple.root"
 #for job in range (529):
 #    tree1.Add("{0}/{1}/{2}".format(filedir, job, filename))
 
 
-#fileloc="/dcache/bfys/jtjepkem/binned_files/2017_MagDown/Lc_total.root"
+#fileloc=TUPLE_PATH + "/2017_MagDown/Lc_total.root"
 #f=ROOT.TFile.Open(fileloc,"READONLY")
 #tree1 = f.Get("DecayTree") # tree that will be plotted in blue 
 
 #tree2 =  ROOT.TChain("tuple_Lc2pKpi/DecayTree")
-#filedir="/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/145"
+#filedir=RAW_TUPLE_PATH+"/145"
 #filename="MC_Lc2pKpiTuple_25103064.root"
 #for job in range (181):
 #    tree2.Add("{0}/{1}/{2}".format(filedir, job, filename))
@@ -57,7 +58,7 @@ for entry in Imports.MC_jobs_Dict:
                     tree2.Add("{0}/{1}/{2}".format(filedir, job, filename))
                 
 entry=saveEntry
-directory = "/data/bfys/jdevries/LcAnalysis_plots/MCDataComp/{0}/{1}/".format(year, MagPol)
+directory = PLOT_PATH+"/MCDataComp/{0}/{1}/".format(year, MagPol)
 print("Tree1 contains {0} and Tree2 contains {1}". format(tree1.GetEntries(), tree2.GetEntries()))
 c1 = ROOT.TCanvas("c1")
 
