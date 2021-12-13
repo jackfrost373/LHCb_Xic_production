@@ -2,8 +2,7 @@ import sys, getopt, ROOT, math, textwrap
 from array import array
 import Imports
 
-Base_Path = "/data/bfys/jdevries/LcAnalysis_plots/"
-Import_Path = Base_Path + "Dict_output"
+Import_Path = OUTPUT_DICT_PATH
 sys.path.append(Import_Path)
 
 #TO CHANGE DEPENDING ON WHERE THE DICTS ARE LOCATED!
@@ -16,8 +15,7 @@ from Massfitting.BukinyearFit_DictFile import mainDict as Bukin_yearTotDict
 from Massfitting.BukinsingleFit_DictFile import mainDict as Bukin_singleDict
 
 
-#CAN BE CHANGED TO OUTPUT THE 
-GRAPH_PATH = Base_Path + "Yield_Ratios/Graphs/"
+GRAPH_PATH = PLOT_PATH + "Yield_Ratios/Graphs/"
 years = [2011,2012,2016,2017,2018]
 
 color = 0
@@ -205,11 +203,12 @@ def main(argv):
 	if "-h" in options:
 		print(textwrap.dedent("""\
 			
-			Welcome to the plot.py script.
+			Welcome to the NaiveYieldPlot.py script.
 			
-			You need to have a directory/folder called "./Graphs/" in the same directory as you run the script, as the PDF files will be saved there.
+			You need to have a directory/folder called "Yield_Ratios/Graphs" in the LcAnalysis Plots directory, as the PDF files will be saved there.
 			You can always change the script variable GRAPH_PATH to change this.
 			Be sure to also have the dictionnary files in "./Dict_output/", as well as the Imports.py library in the same directory as script.
+                        A future version will - ensure to create this folder if not done so already
 			
 			The parameters are
 				-h : help
