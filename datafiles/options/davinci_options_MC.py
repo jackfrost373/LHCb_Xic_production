@@ -1,8 +1,8 @@
 
 magnet = 'MagDown'
 pythia = "Pythia8"
-year = '2017'
-eventtype = 25103064
+year = '2018'
+eventtype = 26103092
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -20,7 +20,8 @@ eventtype = 25103064
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
 #eventtype = 25103064 # New created Lc
-#eventtype = 26103091 # New created Xic
+#eventtype = 26103091 # New created Xic - no longer used
+#eventtype = 26103092 # New created Xic with new lifetime
 
 
 restripversion = "" # empty = no restripping
@@ -34,7 +35,7 @@ lines = ["LambdaCForPromptCharm"]
 if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) : 
   Turbo = True
 
-if(eventtype == 25103064 or eventtype == 26103091) : # new MC
+if(eventtype == 25103064 or eventtype == 26103091 or eventtype == 26103092) : # new MC
   MDST = True
   #Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' 
   #lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?

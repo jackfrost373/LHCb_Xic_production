@@ -1,9 +1,10 @@
 import sys, getopt, ROOT, math, textwrap
 from array import array
-import Imports
+from Imports import OUTPUT_DICT_PATH, PLOT_PATH
 
 Import_Path = OUTPUT_DICT_PATH
 sys.path.append(Import_Path)
+
 
 #TO CHANGE DEPENDING ON WHERE THE DICTS ARE LOCATED!
 from Massfitting.GaussCBcombinedFit_DictFile import mainDict as GaussCB_combinedDict

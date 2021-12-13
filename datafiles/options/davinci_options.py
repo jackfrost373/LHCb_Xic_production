@@ -1,6 +1,6 @@
 
 year = '2017'
-decay = 'Xib2XicMuX'
+decay = 'Lc2pKpi'
 
 # when running ganga, make sure year matches the dst year
 
@@ -29,6 +29,7 @@ if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
   decaystring = '${lcplus}[Lambda_c+ -> ${pplus}p+ ${kminus}K- ${piplus}pi+]CC'
   inputtype   = "MDST"
 
+  '''
   if year in ["2016","2017","2018"] :
     Turbo = True
     if (decay == "Lc2pKpi") : 
@@ -39,6 +40,7 @@ if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
     if (decay ==  "Xic2pKpi") :
       striplines = ["Hlt2CharmHadXicpToPpKmPipTurbo"]
       stream = "Charmmultibody"
+  '''
 
 if (decay == "Lb2LcMuX" or decay == "Xib2XicMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
