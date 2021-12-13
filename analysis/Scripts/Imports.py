@@ -2,9 +2,9 @@ TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 TUPLE_PATH_NOTRIG = "/dcache/bfys/jtjepkem/binned_files_noTrig/"
 RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
-PLOT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/"
-TABLE_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Tables/"
-OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
+PLOT_PATH = "/data/bfys/cpawley/LcAnalysis_plots/"
+TABLE_PATH = PLOT_PATH + "Tables/"
+OUTPUT_DICT_PATH = PLOT_PATH + "Dict_output/"
 
 #Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
 
