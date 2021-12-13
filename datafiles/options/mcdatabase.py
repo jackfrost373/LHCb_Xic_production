@@ -1,6 +1,7 @@
 
 # db of MC production files.
-# Find MC production files with a certain eventtype using ./scripts/get_bookkeeping_info 25103036
+# Find MC production files with a certain eventtype using 
+#  lb-dirac dirac-bookkeeping-decays-path 25103064
 
 db = {}
 
@@ -150,12 +151,21 @@ db[26103090] = [
 
 # Our new Lc request with tightcutsv2
 db[25103064] = [
-('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4056, 10003317, 106119),
-('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4042, 9978084, 108253),
+('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-mu100', 4056, 10003317, 106119),
+('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-md100', 4059, 10007458, 108253),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-md100', 2902, 7121612, 128812),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-mu100', 2857, 7006362, 128814),
+('/MC/2011/Beam3500GeV-2011-MagDown-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-md100', 1094, 3036549, 128816),
+('/MC/2011/Beam3500GeV-2011-MagUp-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-mu100', 1079, 3000757, 128818),
+('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 4068, 10011069, 130101),
+('/MC/2018/Beam6500GeV-2018-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4080, 10060619, 130103),
+('/MC/2016/Beam6500GeV-2016-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4410, 10869713, 130105),
+('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 3415, 8398608, 130107),
+('/MC/2015/Beam6500GeV-2015-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-md100', 907, 2232039, 130109),
+('/MC/2015/Beam6500GeV-2015-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-mu100', 1268, 3113322, 130111),
 ]
 
-# Our new Xic request
-db[26103091] = [
-('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09i/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103091/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4120, 10009885, 109979),
-('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09i/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103091/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4123, 10018168, 109981),
+# Our new Xic request (2nd version)
+db[26103092] = [
+('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 8271, 19981546, 136389),
 ]

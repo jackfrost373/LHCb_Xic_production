@@ -193,3 +193,29 @@ for trType in GetRICHPIDPartTypes() :
     AddBinBoundary(trType, 'nTracks_Brunel', 'DLLKpi', 300)
 '''
 
+# BINNING SCHEME FOR LC XIC
+for trType in GetRICHPIDPartTypes() :
+    # momentum
+    AddBinScheme(trType,   'P', 'Xic_Binning', 0, 500000)
+    AddUniformBins(trType, 'P', 'Xic_Binning', 6,      0, 10000 )
+    AddUniformBins(trType, 'P', 'Xic_Binning', 45, 10000, 100000)
+    AddUniformBins(trType, 'P', 'Xic_Binning', 20,100000, 150000)
+    AddUniformBins(trType, 'P', 'Xic_Binning',  4,150000, 500000)
+
+    # eta
+    AddBinScheme(trType, 'ETA', 'Xic_Binning', 1., 6)
+    AddUniformBins(trType, 'ETA', 'Xic_Binning', 10, 1., 6)
+
+    # nTracks
+    AddBinScheme(trType, 'nTracks', 'Xic_Binning', 0, 600)
+    AddBinBoundary(trType, 'nTracks', 'Xic_Binning', 100)
+    AddBinBoundary(trType, 'nTracks', 'Xic_Binning', 200)
+    AddBinBoundary(trType, 'nTracks', 'Xic_Binning', 300)
+    AddBinBoundary(trType, 'nTracks', 'Xic_Binning', 400)
+    
+    AddBinScheme(trType, 'nTracks_Brunel', 'Xic_Binning', 0, 600)
+    AddBinBoundary(trType, 'nTracks_Brunel', 'Xic_Binning', 100)
+    AddBinBoundary(trType, 'nTracks_Brunel', 'Xic_Binning', 200)
+    AddBinBoundary(trType, 'nTracks_Brunel', 'Xic_Binning', 300)
+    AddBinBoundary(trType, 'nTracks_Brunel', 'Xic_Binning', 400)
+

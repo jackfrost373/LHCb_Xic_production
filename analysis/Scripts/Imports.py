@@ -6,10 +6,13 @@ PLOT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/"
 TABLE_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Tables/"
 OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
 
+#Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
+
 def getMCCuts(particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:
-		IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS == 1".format(particle)
+		#IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS==1 ".format(particle)
+		IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 	if particle == "Lc":
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
@@ -17,17 +20,18 @@ def getMCCuts(particle, run):
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 10 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
 
-def getDataCuts(run, trig = False):
+def getDataCuts(run, trig = True):
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	
 	if run == 1:
 		if trig:
 			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 		else:
-			trigger_cuts = "lcplus_Hlt2CharmHadD2HHHDecision_TOS ==1"
+			trigger_cuts = ""
 	elif run == 2:
 		if trig:
-			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
+			#trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
+			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 		else:
 			trigger_cuts = ""
 	
@@ -41,6 +45,13 @@ def getBackgroundCuts(particle):
 		cuts = "(lcplus_MM > 2320 && lcplus_MM < 2350) || (lcplus_MM > 2220 && lcplus_MM < 2260)"
 	elif particle == "Xic":
 		cuts = "lcplus_MM > 2400 && lcplus_MM < 2450 || lcplus_MM > 2490"
+	return cuts
+
+def getSWeightsCuts(particle):
+	if particle == "Lc":
+		cuts = "lcplus_MM>=2240 && lcplus_MM<=2340"
+	elif particle == "Xic":
+		cuts = "lcplus_MM>=2420 && lcplus_MM<=2520"
 	return cuts
 
 def getPTbins():
@@ -77,12 +88,14 @@ MC_jobs_Dict = {
 	"106":["2016","MagUp", 286,"Xic","26103090"],
 
 	"145":["2017","MagDown", 285,"Lc","25103064"],
-	"102":["2017","MagDown", 281,"Xic","26103090"],
+	"150":["2017","MagDown", 181,"Xic","26103091"], 
 	"144":["2017","MagUp", 284,"Lc","25103064"],
-	"96":["2017","MagUp", 284,"Xic","26103090"],
+	"NA":["2017","MagUp", 181,"Xic","26103091"],
 
 	"103":["2018","MagDown", 279,"Lc","25203000"],
 	"104":["2018","MagDown", 277,"Xic","26103090"],
 	"97":["2018","MagUp", 283,"Lc","25203000"],
 	"98":["2018","MagUp", 278,"Xic","26103090"],
 }
+
+#this needs changing - job 150 is MagDown only (used as a proxy for MagUp)
