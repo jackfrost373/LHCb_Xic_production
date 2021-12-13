@@ -4,4 +4,5 @@
 *.png
 *.gif
 *.root
+*.vscode*
 

@@ -9,17 +9,17 @@ particle = "Xic"
 #particle  = input("please indicate the particle (Lc or Xic): ")
 
 #This string is a general name used for the canvas name
-name = "{0}_signal_vs_MC".format(particle)
-#name = input("please indicate the name that you would like your graphs to be saved with: ")
+#name = "{0}_signal_vs_MC".format(particle)
+name = input("please indicate the name that you would like your graphs to be saved with: ")
 
-year = "2017"
+year = "2018"
 MagPol="MagDown"
 saveEntry="1"
 
 #Here is a list of all the variables whose distribution needs to be compared
-#variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_ProbNNk", "piplus_ProbNNpi", "pplus_ETA","pplus_PT","pplus_P", "kminus_ETA","kminus_PT","kminus_P", "piplus_ETA", "piplus_PT" ,"piplus_P", "kminus_PIDK", "pplus_PIDp", "lcplus_IPCHI2_OWNPV", "lcplus_ETA", "lcplus_PT", "lcplus_TAU"]
+variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_ProbNNk", "piplus_ProbNNpi", "pplus_ETA","pplus_PT","pplus_P", "kminus_ETA","kminus_PT","kminus_P", "piplus_ETA", "piplus_PT" ,"piplus_P", "kminus_PIDK", "pplus_PIDp", "lcplus_IPCHI2_OWNPV", "lcplus_ETA", "lcplus_PT", "lcplus_TAU"]
 
-variables_to_plot = ["pplus_P","pplus_ETA","pplus_PT"]
+#variables_to_plot = ["pplus_P","pplus_ETA","pplus_PT"]
 
 #this dictionary should contain all of the variables that want to be plotted with a line. The key should be a string of the variable and its value should be the x value at which the line should be plotted
 variables_to_plot_with_line = {}
@@ -58,7 +58,9 @@ for entry in Imports.MC_jobs_Dict:
                     tree2.Add("{0}/{1}/{2}".format(filedir, job, filename))
                 
 entry=saveEntry
-directory = PLOT_PATH+"/MCDataComp/{0}/{1}/".format(year, MagPol)
+#directory = "/data/bfys/jdevries/LcAnalysis_plots/MCDataComp/{0}/{1}/".format(year, MagPol)
+directory = "~/MCComp/"
+
 print("Tree1 contains {0} and Tree2 contains {1}". format(tree1.GetEntries(), tree2.GetEntries()))
 c1 = ROOT.TCanvas("c1")
 
@@ -67,9 +69,9 @@ masshist.GetXaxis().SetTitle("M(L_{c}^{+}) [MeV/c^{2}]")
 masshist.GetYaxis().SetTitle("Number of events")
 
 #define the cuts that you want to apply based on the specific comparison you want to make
-cuts1 = Imports.getDataCuts(2, trig=True )+ "&&" + Imports.getSWeightsCuts(particle)
-cuts2 = Imports.getMCCuts(particle, 2) + "&&" + Imports.getDataCuts(2,trig=True) + "&&" + Imports.getSWeightsCuts(particle)
-#+ 
+#cuts1 = Imports.getDataCuts(2, trig=True )+ " && " + Imports.getSWeightsCuts(particle)
+cuts2 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2,trig=True) + " && " + Imports.getSWeightsCuts(particle)
+cuts1 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2, trig=True)+ " && " + Imports.getSWeightsCuts(particle)
 #dummy histograms used for the legend. Ideally, they should be removed
 histogram1 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
 histogram2 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
@@ -79,7 +81,8 @@ histogram1.SetLineWidth(1)
 
 histogram2.SetLineColor(9) # blue for tree2
 histogram2.SetLineWidth(1)
-extralabel1=" "+particle+"Data "+year+" " +MagPol #label for tree1 in the Legend
+#extralabel1=" "+particle+"Data "+year+" " +MagPol #label for tree1 in the Legend
+extralabel1=" XiC MC (26103091) 2017 MagUp)"
 extralabel2=" {0} MC ({1}) {2} {3})".format(particle, Imports.MC_jobs_Dict[entry][4],year,MagPol) #label for tree2 in the legend
 leg = ROOT.TLegend(0.7, 0.77, 0.89, 0.89)
 leg.SetHeader("Legend")
