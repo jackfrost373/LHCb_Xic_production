@@ -5,7 +5,7 @@ import ROOT as R
 from math import sqrt
 import re
 
-perfhists_loc = "/project/bfys/jdevries/cmtuser/LcAnalysis_Simon/pidcalib/UraniaDev_v7r0/"
+perfhists_loc = "/project/bfys/jdevries/cmtuser/LHCb_Xic_production/pidcalib/UraniaDev_v7r0/"
 tupleloc = ""
 
 #mother_particle = "Xic"
@@ -20,7 +20,7 @@ drawvars = []
 
 particles = ["pplus","kminus", "piplus"]
 
-pidcuts = {"pplus":["P","P_MC12TuneV2_ProbNNp > 0.5 && DLLp > 0"], "kminus":["K", "K_MC12TuneV2_ProbNNK > 0.4 && DLLK > 0"], "piplus":["Pi", "Pi_MC12TuneV2_ProbNNpi > 0.5"]}
+pidcuts = {"pplus":["P","P_MC12TuneV2_ProbNNp > 0.5 && DLLp > 0"], "kminus":["K", "K_MC12TuneV2_ProbNNK > 0.4"], "piplus":["Pi", "Pi_MC12TuneV2_ProbNNpi > 0.5"]}
 
 yeardict = { 
   "2011" : "Strip20r1",
@@ -106,7 +106,7 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     extravar = ""
     if ("Turbo" in yeardict[year]):
       extravar = "_Brunel"
-    perfhistfilename = perfhists_loc + "PerfHists_{0}_{1}_Mag{2}_BHH_Binning_P_ETA_nTracks{3}.root".format(pidcuts[particle][0], yeardict[year], mag, extravar)#removed BHH_Binning
+    perfhistfilename = perfhists_loc + "PerfHists_{0}_{1}_Mag{2}_P_ETA_nTracks{3}.root".format(pidcuts[particle][0], yeardict[year], mag, extravar)#removed BHH_Binning
     print("Opening {0}".format(perfhistfilename))
     perfhistFiles[particle] = R.TFile.Open(perfhistfilename) #__{1}_P_{2}_Eta_nTracks{3}.format(pidcuts[particle][1], pidcuts[particle][0], pidcuts[particle][0], extravar)
     Total_perfhists[particle] = perfhistFiles[particle].Get("TotalHist_{0}_All__{1}_P_{2}_Eta_nTracks{3}".format(pidcuts[particle][1], pidcuts[particle][0], pidcuts[particle][0], extravar)) ##It seems that there is no pidcuts array defined anywhere. What is their use, what are they supposed to be?
@@ -368,10 +368,11 @@ cuts = "lcplus_L0HadronDecision_TOS"
 #dictionary = {95:[284, 2017, "Up"], 96:[284, 2017, "Up"], 97:[283, 2018, "Up"], 98:[278, 2018, "Up"], 101:[285, 2017, "Down"], 102:[281, 2017, "Down"], 103:[279, 2018, "Down"], 104:[277, 2018, "Down"], 105:[281, 2016, "Up"], 106:[286, 2016, "Up"], 107:[290, 2016, "Down"], 108:[282, 2016, "Down"]}
 dictionary = {30: [27, 2012, "Down"], 88: [25, 2012, "Down"]}
 
-f_text = open("/dcache/bfys/scalo/run1_PID_eff_nobins_output_v2.txt", "w+")
-#directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+f_text = open("run1_PID_eff_nobins_output_v2.txt", "w+")
+directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
 for job in dictionary:
+  print(job)
   year = str(dictionary[job][1])
   n_subjobs = dictionary[job][0]
   mag = dictionary[job][2]
@@ -380,14 +381,14 @@ for job in dictionary:
     ID = "25103029"
     turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
     Lc_MC_filename = "output/MC_Lc2pKpiTuple_" + ID + ".root"
-    directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
+    #directory = "/data/bfys/jdevries/gangadir/workspace/jdevries/LocalXML/"
   else:
     particle = "Lc"
     ID = "25103006"
   #  turbo = "lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1"
     turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
     Lc_MC_filename = "MC_Lc2pKpiTuple_" + ID + ".root"
-    directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+    #directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
         
   Lc_MC_filedir = directory + str(job)
