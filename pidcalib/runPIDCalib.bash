@@ -3,10 +3,12 @@
 
 
 # First install Urania. Then, execute this first:
-#cd UraniaDev_v7r0
-#LbLogin -c x86_64-centos7-gcc62-opt
+#cd UraniaDev_v10r1
+#lb-set-platform x86_64_v2-centos7-gcc11-opt
 #lhcb-proxy-init
 #./run bash --norc 
+#cd /project/bfys/jdevries/cmtuser/LHCb_Xic_production/pidcalib/UraniaDev_v10r1
+#. ../runPIDCalib.bash
 
 
 
@@ -21,14 +23,14 @@
 #sample_array=("20r1" "20" "Turbo15" "Turbo16" "Turbo17" "Turbo18")
 #sample_array=("20r1" "20")
 #sample_array=("Turbo15" "Turbo16" "Turbo17" "Turbo18")
-sample_array=("Turbo18")
+sample_array=("Turbo17")
 
 #magnet_array=("MagUp" "MagDown")
-magnet_array=("MagUp")    
-#magnet_array=("MagDown")    
+#magnet_array=("MagUp")    
+magnet_array=("MagDown")    
 
-#particle_array=( "K" "Pi" "P" )
-particle_array=( "P" )
+particle_array=( "K" "Pi" "P" )
+#particle_array=( "P" )
 
 precuts="1==1"
 
@@ -63,7 +65,7 @@ do :
         if [ $sample == "20r1" ] ; then varz2="nTracks" ; fi
         if [ $sample == "20" ]   ; then varz2="nTracks" ; fi
       fi
-      python PIDCalib/PIDPerfScripts/scripts/python/MultiTrack/MakePerfHistsRunRange.py "${sample}" "${magnet}" "${particle}"  "${pidcuts[$particle]}" "${varx}" "${vary}" "${varz2}" -c "${precuts}" --binSchemeFile="oldBinning.py" --schemeName="BHH_Binning" --allow-missing
+      python PIDCalib/PIDPerfScripts/scripts/python/MultiTrack/MakePerfHistsRunRange.py "${sample}" "${magnet}" "${particle}"  "${pidcuts[$particle]}" "${varx}" "${vary}" "${varz2}" -c "${precuts}" --binSchemeFile="oldBinning.py" --schemeName="Xic_Binning" --allow-missing
     done
   done
 done

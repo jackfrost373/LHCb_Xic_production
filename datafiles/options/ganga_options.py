@@ -1,6 +1,6 @@
 
 year = '2017'
-decay = 'Xib2XicMuX'
+decay = 'Lc2pKpi'
 magnet = 'MagDown'
 
 # Before running on the grid, please ensure in the davinci options that:
@@ -21,6 +21,7 @@ magnet = 'MagDown'
 Turbo = False
 streamsuffix = "CHARM.MDST"
 
+'''
 if (decay=="Lc2pKpi" or decay=="Xic2pKpi") :
   if (year in ["2016","2017","2018"]) :
     Turbo = True
@@ -30,6 +31,7 @@ if (decay=="Lc2pKpi" or decay=="Xic2pKpi") :
         streamsuffix = "CHARMSPECPRESCALED.MDST"
     if (decay ==  "Xic2pKpi") :
       streamsuffix = "CHARMMULTIBODY.MDST"
+'''
 
 if (decay=="Lb2LcMuX" or decay=="Xib2XicMuX") :
   streamsuffix = "SEMILEPTONIC.DST"
@@ -59,12 +61,14 @@ j.comment = "{0}_{1}_{2}".format(year,magnet,recsel)
 # Set up the required application to run
 app = "DaVinci"
 version = "v44r5"
+platform = "x86_64-slc6-gcc62-opt"
 projectpath = "/project/bfys/jdevries/cmtuser"
 from os import path
 if not path.isdir("{0}/{1}Dev_{2}".format(projectpath,app,version)) :
   prepareGaudiExec('DaVinci','v44r5', myPath=projectpath)
 j.application = GaudiExec()
 j.application.directory = "{0}/{1}Dev_{2}".format(projectpath,app,version) 
+j.application.platform = platform
 j.application.options = ['./options/davinci_options.py']
   
 #j.backend = Local()

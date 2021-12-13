@@ -20,7 +20,7 @@ def getMCCuts(particle, run):
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 10 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
 
-def getDataCuts(run, trig = False):
+def getDataCuts(run, trig = True):
 	cuts = "lcplus_P < 300000 && lcplus_OWNPV_CHI2 < 80 && pplus_ProbNNp > 0.5 && kminus_ProbNNk > 0.4 && piplus_ProbNNpi > 0.5 && pplus_P < 120000 && kminus_P < 115000 && piplus_P < 80000 && pplus_PIDp > 0 && kminus_PIDK > 0"
 	
 	if run == 1:
