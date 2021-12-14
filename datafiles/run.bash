@@ -64,14 +64,14 @@ lb-set-platform x86_64-slc6-gcc62-opt
 magnets=( "MagDown" )
 #years=( "2016" "2017" "2018" )
 #years=( "2016" "2017" )
-years=( "2018" )
+years=( "2017" )
 #eventtypes=( 25203000 26103090 ) #25203000 = new Lc, 26103090 = new Xic
 #eventtypes=( 25103006 25103029 ) #25103006 = old Lc, 25103029 = old Xic
 #eventtypes=( 25103006 )
 #eventtypes=( 25103029 ) 
-#eventtypes=( 25103064 ) # new Lc 2020
+eventtypes=( 25103064 ) # new Lc 2020
 #eventtypes=( 26103091 ) # new Xic 2020
-eventtypes=( 26103092 ) # new Xic 2021
+#eventtypes=( 26103092 ) # new Xic 2021
 for magnet in "${magnets[@]}"; do
   for year in "${years[@]}"; do
     for eventtype in "${eventtypes[@]}"; do
