@@ -147,8 +147,10 @@ def main(argv):
 			if arguments[m] == "single":
 				print("single")
 				
-				if os.path.isfile(Dict_PATH + shape + "/singleFit_DictFile.py"):
-					from singleFit_DictFile import mainDict as singleDict
+				if os.path.isfile(Dict_PATH + shape + "singleFit_DictFile.py"):
+					if shape == "GaussCB":
+						from GaussCBsingleFit_DictFile import mainDict as singleDict
+					else: from BukinsingleFit_DictFile import mainDict as singleDict
 					
 				
 				del arguments[m]
@@ -573,7 +575,9 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR COMBINED BIN FILES
 				
 				if os.path.isfile(Dict_PATH + shape + "combinedFit_DictFile.py"):
-					from combinedFit_DictFile import mainDict as combinedDict
+					if shape == "GaussCB":
+						from GaussCBcombinedFit_DictFile import mainDict as combinedDict
+					else: from BukincombinedFit_DictFile import mainDict as combinedDict
 					
 				
 				del arguments[m]
@@ -918,7 +922,9 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR TOTAL YEAR FILES
 				
 				if os.path.isfile(Dict_PATH + shape + "yearFit_DictFile.py"):
-					from yearFit_DictFile import mainDict as yearDict
+					if shape == "GausCB":
+						from GaussCByearFit_DictFile import mainDict as yearDict
+					else: from BukinyearFit_DictFile import mainDict as yearDict
 					
 				
 				
