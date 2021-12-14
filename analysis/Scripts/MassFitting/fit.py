@@ -922,7 +922,7 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR TOTAL YEAR FILES
 				
 				if os.path.isfile(Dict_PATH + shape + "yearFit_DictFile.py"):
-					if shape == "GausCB":
+					if shape == "GaussCB":
 						from GaussCByearFit_DictFile import mainDict as yearDict
 					else: from BukinyearFit_DictFile import mainDict as yearDict
 					
