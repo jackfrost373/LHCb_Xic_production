@@ -2,17 +2,17 @@ TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 TUPLE_PATH_NOTRIG = "/dcache/bfys/jtjepkem/binned_files_noTrig/"
 RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
-PLOT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/"
-TABLE_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Tables/"
-OUTPUT_DICT_PATH = "/data/bfys/jdevries/LcAnalysis_plots/Dict_output/"
+PLOT_PATH = "/data/bfys/cpawley/LcAnalysis_plots/"
+TABLE_PATH = PLOT_PATH + "Tables/"
+OUTPUT_DICT_PATH = PLOT_PATH + "Dict_output/"
 
 #Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
 
 def getMCCuts(particle, run):
 	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
 	if run == 2:
-		#IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS==1 ".format(particle)
-		IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+		IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS == 1 ".format(particle)
+		#IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 	if particle == "Lc":
 		#BKGCAT = "(lcplus_BKGCAT == 0 || lcplus_BKGCAT == 50)"
 		return IDcuts #+ "&&" + BKGCAT
@@ -30,8 +30,8 @@ def getDataCuts(run, trig = True):
 			trigger_cuts = ""
 	elif run == 2:
 		if trig:
-			#trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1)"
-			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
+			trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackMVADecision_TOS == 1 && (lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS == 1 || lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS == 1) "
+			#trigger_cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1 && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
 		else:
 			trigger_cuts = ""
 	
@@ -93,7 +93,7 @@ MC_jobs_Dict = {
 	"NA":["2017","MagUp", 181,"Xic","26103091"],
 
 	"103":["2018","MagDown", 279,"Lc","25203000"],
-	"104":["2018","MagDown", 277,"Xic","26103090"],
+	"16":["2018","MagDown", 357,"Xic","26103092"],
 	"97":["2018","MagUp", 283,"Lc","25203000"],
 	"98":["2018","MagUp", 278,"Xic","26103090"],
 }
