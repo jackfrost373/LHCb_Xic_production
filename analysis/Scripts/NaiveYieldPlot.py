@@ -1,5 +1,6 @@
 import sys, getopt, ROOT, math, textwrap
 from array import array
+import Imports
 from Imports import OUTPUT_DICT_PATH, PLOT_PATH
 
 sys.path.append(OUTPUT_DICT_PATH)
