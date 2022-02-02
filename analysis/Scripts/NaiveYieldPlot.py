@@ -480,6 +480,7 @@ def main(argv):
 			mgG.SetTitle("ratio vs years vs fit shape")
 			mgG.GetXaxis().SetTitle( "Year" )
 			mgG.GetYaxis().SetTitle( "Xic/Lc Ratios" )
+			mgG.GetYaxis().SetRangeUser(0.,0.35)
 			mgG.GetXaxis().SetRangeUser(2009, 2019)
 			mgG.Draw("AL*")
 			cD.BuildLegend(.15,.2,.25,.3, "fit shapes")
