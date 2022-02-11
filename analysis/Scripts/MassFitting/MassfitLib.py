@@ -35,7 +35,7 @@ def pathFinder(basePath, year, magPol, filename, mode):
 #You just need to give the full path of the data file, the function will parse the important 
 #information from it it is important that the data file is arranged in a structure like this:
 #   .../year_MagPol/bins/file.root 
-def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False):
+def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False,strategy = 2):
 	
 	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
@@ -56,12 +56,11 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 	mctree = mcfile.Get("DecayTree")
 	mctree.SetName("MCtree")
 	
-	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp)
+	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp,strategy)
 	
 
 #fitComp is a boolean that can add graphically the components of the fitted shape
-def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False):
-	
+def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False,strategy = 2):
 	splitfullname = fullname.split('.root')
 	shortfullname = splitfullname[0]
 	# return lists for persistency in memory
@@ -175,8 +174,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, 0, mctree.GetEntries() * 3)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
-
-
+		
 	if shape == "Bukin":
 		Bukin_Xp = ROOT.RooRealVar("Bukin_Xp", "Peak position",Bukin_Xp_range[0],Bukin_Xp_range[1],Bukin_Xp_range[2])
 		Bukin_Sigp = ROOT.RooRealVar("Bukin_Sigp", "Peak width",Bukin_Sigp_range[0],Bukin_Sigp_range[1],Bukin_Sigp_range[2])
@@ -198,7 +196,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
 	
 	#Fit the data using the desired shape
-	fullshape.fitTo(masshist_RooFit)
+	fullshape.fitTo(masshist_RooFit,ROOT.RooFit.Strategy(strategy))
 	frame = mass.frame()
 	masshist_RooFit.plotOn(frame)
 	fullshape.plotOn(frame)
