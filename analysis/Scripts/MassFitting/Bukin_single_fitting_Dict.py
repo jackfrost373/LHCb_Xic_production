@@ -1,5 +1,5 @@
 fittingDict = {
-	Bukin" : {
+	"Bukin" : {
                 "Xic" : {
                         "general" : {
                                 "mass_range" : [2420, 2520],
