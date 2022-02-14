@@ -7,35 +7,38 @@ configfile: 'cfg.yaml'
 rule all:
      input:[ ]
 
-rule mass_fitting_bins_GaussCB:
-     input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
-     output:"/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Single/GaussCB{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}.root.pdf"
-     run:shell ("python  MassFitting/fit.py -s "GaussCB" -m single" -y [wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -t {wildcards.momentum}")
+rule mass_fitting_all:
+	rule GaussCB_fits:
+		rule mass_fitting_bins_GaussCB:
+     			input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
+     			output:PLOT_PATH+"MassFitting/Single/GaussCB{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}.root.pdf"
+     			run:shell ("python  MassFitting/fit.py -s "GaussCB" -m single" -y [wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -t {wildcards.momentum}")
 
-rule mass_fitting_years_GaussCB:
-     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
-     output: "/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Year/GaussCB{year}_Mag{magpol}_{particle}_total.root.pdf"
-     shell: "python  MassFitting/fit.py -s "GaussCB" -m "year" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle}"
+		rule mass_fitting_years_GaussCB:
+     			input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
+     			output: PLOT_PATH+"MassFitting/Year/GaussCB{year}_Mag{magpol}_{particle}_total.root.pdf"
+     			shell: "python  MassFitting/fit.py -s "GaussCB" -m "year" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle}"
 
-rule mass_fitting_comb_bins_GaussCB:
-     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/CombinedBinFit_Dict.py"] 
-     output: ("/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Combined/GaussCB{year}_Mag{magpol}_{particle}_ybin_{rapidity}.root.pdf","/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Combined/GaussCB{year}_Mag{magpol}_{particle}_ptbin_{momentum}")
-     shell: "python  MassFitting/fit.py -s "GaussCB" -m "combined" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidty} -t {wildcards.momentum}"
+		rule mass_fitting_comb_bins_GaussCB:
+     			input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/CombinedBinFit_Dict.py"] 
+     			output: (PLOT_PATH+"MassFitting/Combined/GaussCB{year}_Mag{magpol}_{particle}_ybin_{rapidity}.root.pdf",PLOT_PATH+"MassFitting/Combined/GaussCB{year}_Mag{magpol}_{particle}_ptbin_{momentum}")
+     			shell: "python  MassFitting/fit.py -s "GaussCB" -m "combined" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidty} -t {wildcards.momentum}"
 
-rule mass_fitting_bins_Bukin:
-     input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
-     output:"/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Single/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}.root$
-     run:shell ("python  MassFitting/fit.py -s "Bukin" -m single" -y [wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wild$
+	rule Bukin_fits:
+		rule mass_fitting_bins_Bukin:
+     			input: ["Imports.py", "MassFitting/fit.py","MassFitting/MassfitLib.py","MassFitting/fittingDict.py"]
+     			output:PLOT_PATH+"MassFitting/Single/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}.root$
+     			run:shell ("python  MassFitting/fit.py -s "Bukin" -m single" -y [wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wild$
 
-rule mass_fitting_years_Bukin:
-     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
-     output: "/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Year/GaussCB{year}_Mag{magpol}_{particle}_total.root.pdf"
-     shell: "python  MassFitting/fit.py -s "Bukin" -m "year" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle}"
+		rule mass_fitting_years_Bukin:
+     			input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/yearTotalFit_Dict.py"]
+     			output: PLOT_PATH+"MassFitting/Year/GaussCB{year}_Mag{magpol}_{particle}_total.root.pdf"
+     			shell: "python  MassFitting/fit.py -s "Bukin" -m "year" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle}"
 
-rule mass_fitting_comb_bins_Bukin:
-     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/CombinedBinFit_Dict.py"]
-     output: ("/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Combined/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}.root.pdf","/data/bfys/cpawley/LcAnalysis_plots/MassFitting/Combined/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}")
-     shell: "python  MassFitting/fit.py -s "Bukin" -m "combined" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -t {wildcards.momentum}"
+		rule mass_fitting_comb_bins_Bukin:
+     			input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/CombinedBinFit_Dict.py"]
+     			output: (PLOT_PATH+"MassFitting/Combined/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}.root.pdf",PLOT_PATH+"MassFitting/Combined/Bukin{year}_Mag{magpol}_{particle}_ybin_{rapidity}_ptbin_{momentum}")
+     			shell: "python  MassFitting/fit.py -s "Bukin" -m "combined" -y {wildcards.year} -o {wildcards.magpol} -p {wildcards.particle} -r {wildcards.rapidity} -t {wildcards.momentum}"
 
 rule sWeights_all:
      input: [expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], momentum=config["pt_bins"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"], rapidity=config["y_bins"],momentum=config["pt_bins"])]
