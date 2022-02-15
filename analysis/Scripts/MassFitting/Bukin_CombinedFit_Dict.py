@@ -1,4 +1,4 @@
-fiitingDict = {
+fittingDict = {
 	"Bukin" : {
                 "Xic" : {
                     "general" : {
