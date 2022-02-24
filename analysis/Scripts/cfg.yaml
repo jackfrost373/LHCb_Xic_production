@@ -1,3 +1,7 @@
+shapes:
+    - 'GaussCB'
+    - 'Bukin'
+
 years:
     - '2011'
     - '2012'
@@ -10,8 +14,8 @@ particle_types:
     - 'Lc'
 
 mag_pols:
-  #  - 'Up'
-    - 'Down'
+  #  - 'MagUp'
+    - 'MagDown'
 
 y_bins:
     - '2.0-2.5'
