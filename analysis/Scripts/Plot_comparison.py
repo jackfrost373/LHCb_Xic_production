@@ -32,6 +32,9 @@ def plot_comparison(varname, tree1, tree2, bins=100, cuts1 = "1==1", cuts2 = "1=
     histogram1 = ROOT.gDirectory.Get("histogram1")
     histogram2 = ROOT.gDirectory.Get("histogram2")
 
+    print("After cuts entries1 = "+str(histogram1.GetEntries()))
+    print("After cuts entries2 = "+str(histogram2.GetEntries()))
+
     histogram1.SetTitle(varname)
     histogram1.GetXaxis().SetTitle(varname)
     histogram1.SetLineColor(2) # red
