@@ -17,7 +17,7 @@ testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
 inputdir = "/dcache/bfys/jtjepkem/binned_files/"
-outputdir = "/data/bfys/cpawley/sWeights/"
+outputdir = PLOT_PATH+"sWeights/"
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
