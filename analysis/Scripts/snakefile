@@ -65,23 +65,23 @@ rule YieldPlots:
 	shell: "python NaiveYieldPlot.py"
 
 rule sWeights_ybins:
-     input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/CombinedBinFit_Dict.py", expand(TUPLE_PATH+"/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], rapidity=config["y_bins"])]
-     output: expand(PLOT_PATH+"sWeights/{year}_Mag{magpol}/bins/ybins/{particle}_ybin_{rapidity}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],rapidity=config["y_bins"])
+     input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/GaussCB_CombinedFit_Dict.py" , "MassFitting/Bukin_CombinedFit_Dict.py", "MassFitting/Bukin_CombinedFit_Dict.py", expand(TUPLE_PATH+"{year}_{magpol}/bins/ybins/{particle}_ybin_{rapidity}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], rapidity=config["y_bins"])]
+     output: expand(PLOT_PATH+"sWeights/{year}_{magpol}/bins/ybins/{particle}_ybin_{rapidity}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],rapidity=config["y_bins"])
      shell: "python sWeights.py -m combined -y {year} -o {magpol} -p {particle} -r {rapidity}"
 
 rule sWeights_ptbins:
-     input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/CombinedBinFit_Dict.py", "sWeights.py", expand(TUPLE_PATH+"/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"])]
-     output: expand(PLOT_PATH+"sWeights/{year}_Mag{magpol}/bins/ptbins/{particle}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],momentum=config["pt_bins"])
+     input: ["Imports.py", "MassFitting/fit.py", "MassFitting/MassfitLib.py","MassFitting/GaussCB_CombinedFit_Dict.py"  ,"MassFitting/Bukin_CombinedFit_Dict.py", "sWeights.py", expand(TUPLE_PATH+"{year}_{magpol}/bins/ptbins/{particle}_ptbin_{momentum}.root",year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"])]
+     output: expand(PLOT_PATH+"sWeights/{year}_{magpol}/bins/ptbins/{particle}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],momentum=config["pt_bins"])
      shell: "python sWeights.py -m combined -y {year} -o {magpol} -p {particle} -t {momentum}"
 
 rule sWeights_years:
-     input: ["Imports.py","MassFitting/fit.py","MassFitting/MassfitLib.py", "MassFitting/yearTotalFit_Dict.py", "sWeights.py", expand(TUPLE_PATH+"/{year}_Mag{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
-     output: expand(PLOT_PATH+"sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
+     input: ["Imports.py","MassFitting/fit.py","MassFitting/MassfitLib.py", "MassFitting/GaussCB_year_TotalFit_Dict.py","MassFitting/Bukin_year_TotalFit_Dict.py" , "sWeights.py", expand(TUPLE_PATH+"{year}_{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
+     output: expand(PLOT_PATH+"sWeights/{year}_{magpol}/{particle}_total_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
      shell: "python sWeights.py -m year -y {year} -o {magpol} -p {particle}"
 
 rule sWeights_comb_bins:
-     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/fittingDict.py", "sWeights.py", expand(TUPLE_PATH+"/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}.root", year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"], rapidity=config["y_bins"])]
-     output: expand(PLOT_PATH+"sWeights/{year}_Mag{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],rapidity=config["y_bins"],momentum=config["pt_bins"])
+     input: ["Imports.py","MassFitting/fit.py", "MassFitting/MassfitLib.py", "MassFitting/GaussCB_single_fitting_Dict.py","MassFitting/Bukin_single_fitting_Dict.py" ,"sWeights.py", expand(TUPLE_PATH+"{year}_{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}.root", year=config["years"], magpol=config["mag_pols"], particle=config["particle_types"], momentum=config["pt_bins"], rapidity=config["y_bins"])]
+     output: expand(PLOT_PATH+"sWeights/{year}_{magpol}/bins/y_ptbins/{particle}_ybin_{rapidity}_ptbin_{momentum}_sWeight_swTree.root",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"],rapidity=config["y_bins"],momentum=config["pt_bins"])
      shell: "python sWeights.py -m single -y {year} -o {magpol} -p {particle} -r {rapidity} -t {momentum}"
 
 rule sWeights_all:
@@ -89,8 +89,8 @@ rule sWeights_all:
 	output: "sWeights all"
 
 rule dalitz_plots_years:
-     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"/{year}_Mag{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
-     output: expand(PLOT_PATH+"dalitz/{year}_Mag{magpol}/{particle}_total_Dalitz.pdf",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
+     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"{year}_Mag{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
+     output: expand(PLOT_PATH+"dalitz/{year}_{magpol}/{particle}_total_Dalitz.pdf",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
      shell: "python dalitzPlane.py -m year -y {year} -o {magpol} -p {particle}"
 
 rule dalitz_plots_all:
