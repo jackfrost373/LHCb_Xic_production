@@ -240,7 +240,7 @@ def main(argv):
           # (i.e. we never expect to run plot without first getData) - thus it is commended out.
 
           fileFriendTree = ROOT.TFile.Open("{0}/{1}_sWeight_swTree.root".format(outputdir,outputname),("READONLY"))
-          Friendtree = fileFriendTree.Get("RooTreeDataStore_dataNew_dataNew")
+          Friendtree = fileFriendTree.Get("dataNew")
           #cuts = "1==1"
 
           Actual_signalshape_Norm_sw=ROOT.RooRealVar("Actual_signalshape_Norm_sw","signal",-5,5)
