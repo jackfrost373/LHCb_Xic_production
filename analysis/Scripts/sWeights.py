@@ -9,8 +9,8 @@ from Imports import *
 
 
 #Which steps of the sWeights do we want to do?
-getData        = True  # Load data.
-makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
+getData        = True # Load data.
+makesWeights   = True # Generate sWeights, write to workspace. Requires getData.
 makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
 plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspace.
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
@@ -223,6 +223,7 @@ def main(argv):
           newData = sData.GetSDataSet()
           dataNew = ROOT.RooDataSet("dataNew","dataNew",newData,newData.get())
           friendTree = dataNew.GetClonedTree()
+          friendTree.SetName("dataNew")
           friendTree.Write()
           fileFriendTree.Close()
           print (".....TTree created with sWeights...")
