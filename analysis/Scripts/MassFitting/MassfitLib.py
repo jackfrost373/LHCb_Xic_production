@@ -164,14 +164,14 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		myCB	    = ROOT.RooCBShape("myCB","Crystal Ball", mass, gauss_mean, cb_width, cb_alpha, cb_n)
 		shapelist+=[myCB]
 		exponential = ROOT.RooRealVar("exponential","C", exponential_range[0], exponential_range[1], exponential_range[2])
-		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", mctree.GetEntries()/nbins * 3/exponential_normalisation_factor, 0, mctree.GetEntries() * 2)
+		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", mctree.GetEntries()/nbins * 3/exponential_normalisation_factor, mctree.GetEntries()/500, mctree.GetEntries() * 2)
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
 		shapelist+=[myexponential]
 		combined_Norm = ROOT.RooRealVar("combined_Norm","Normalization for gaussCB", 0.5,0,1)
 
 		Actual_signalshape = ROOT.RooAddPdf ("Actual_signalshape", "Shape of the interesting events", myGauss, myCB, combined_Norm)
 		shapelist+=[Actual_signalshape]
-		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, 0, mctree.GetEntries() * 3)
+		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/nbins * 3/normalisation_factor, mctree.GetEntries()/500, mctree.GetEntries() * 2)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
 		
@@ -184,19 +184,19 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		
 		exponential = ROOT.RooRealVar("exponential","C",exponential_range[0],exponential_range[1],exponential_range[2])
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
-		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, 0, mctree.GetEntries()*2)
+		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, mctree.GetEntries()/500, mctree.GetEntries()*2)
 
 		Bukin_PDF = ROOT.RooBukinPdf("Bukin_PDF", "Bukin shape", mass, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
 
-		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/nbins*3/normalisation_factor, 0, mctree.GetEntries()*3)
+		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/nbins*3/normalisation_factor, mctree.GetEntries()/500, mctree.GetEntries()*3)
 		
 		fullshape = ROOT.RooAddPdf("signalshape", "Signal Shape", ROOT.RooArgList(Bukin_PDF, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
-		
+			
 
 	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
 	
 	#Fit the data using the desired shape
-	fullshape.fitTo(masshist_RooFit,ROOT.RooFit.Strategy(strategy))
+	fullshape.fitTo(masshist_RooFit,ROOT.RooFit.Strategy(strategy),ROOT.RooFit.PrintLevel(3))
 	frame = mass.frame()
 	masshist_RooFit.plotOn(frame)
 	fullshape.plotOn(frame)
