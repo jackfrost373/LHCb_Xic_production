@@ -1,30 +1,32 @@
 #This script is used to plot series of comparison plots over multiple variables using the plot_comparison function as defined in the Imports script. The script generated may include some lines used as indications as to whether a possible cut could be applied and the canvasses are automatically saved in a desired location
+#This is a test
 
+#This section imports everything 
 import ROOT, os, Plot_comparison, Imports
 from ROOT import TChain, TCanvas, TH1
 from Imports import PLOT_PATH, TUPLE_PATH, RAW_TUPLE_PATH
 
 #change the following string variable to select which particle you want to study
-particle = "Xic"
+particle = "Lc"
 #particle  = input("please indicate the particle (Lc or Xic): ")
 
 #This string is a general name used for the canvas name
 #name = "{0}_signal_vs_MC".format(particle)
 name = input("please indicate the name that you would like your graphs to be saved with: ")
 
-year = "2018"
+#Selection of year, magnet and ???
+year = "2017"
 MagPol="MagDown"
 saveEntry="1"
 
 #Here is a list of all the variables whose distribution needs to be compared
-variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_ProbNNk", "piplus_ProbNNpi", "pplus_ETA","pplus_PT","pplus_P", "kminus_ETA","kminus_PT","kminus_P", "piplus_ETA", "piplus_PT" ,"piplus_P", "kminus_PIDK", "pplus_PIDp", "lcplus_IPCHI2_OWNPV", "lcplus_ETA", "lcplus_PT", "lcplus_TAU"]
-
-#variables_to_plot = ["pplus_P","pplus_ETA","pplus_PT"]
+variables_to_plot = ["lcplus_P", "lcplus_PT", "lcplus_ETA", "nTracks"]
 
 #this dictionary should contain all of the variables that want to be plotted with a line. The key should be a string of the variable and its value should be the x value at which the line should be plotted
 variables_to_plot_with_line = {}
 
-fileloc=TUPLE_PATH+"/{0}_{1}/{2}_total.root".format(year,MagPol,particle)
+fileloc=TUPLE_PATH+"{0}_{1}/{2}_total.root".format(year,MagPol,particle)
+print(fileloc)
 f=ROOT.TFile.Open(fileloc,"READONLY")
 tree1 = f.Get("DecayTree") # tree that will be plotted in red
 
@@ -37,7 +39,7 @@ tree1 = f.Get("DecayTree") # tree that will be plotted in red
 
 #fileloc=TUPLE_PATH + "/2017_MagDown/Lc_total.root"
 #f=ROOT.TFile.Open(fileloc,"READONLY")
-#tree1 = f.Get("DecayTree") # tree that will be plotted in blue 
+#tree1 = f.Get("DecayTree") # tree that will be plotted in blue
 
 #tree2 =  ROOT.TChain("tuple_Lc2pKpi/DecayTree")
 #filedir=RAW_TUPLE_PATH+"/145"
@@ -56,7 +58,8 @@ for entry in Imports.MC_jobs_Dict:
                 filename="MC_Lc2pKpiTuple_{0}.root".format(Imports.MC_jobs_Dict[entry][4])
                 for job in range (Imports.MC_jobs_Dict[entry][2]):
                     tree2.Add("{0}/{1}/{2}".format(filedir, job, filename))
-                
+
+
 entry=saveEntry
 #directory = "/data/bfys/jdevries/LcAnalysis_plots/MCDataComp/{0}/{1}/".format(year, MagPol)
 directory = "~/MCComp/"
@@ -71,7 +74,7 @@ masshist.GetYaxis().SetTitle("Number of events")
 #define the cuts that you want to apply based on the specific comparison you want to make
 #cuts1 = Imports.getDataCuts(2, trig=True )+ " && " + Imports.getSWeightsCuts(particle)
 cuts2 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2,trig=True) + " && " + Imports.getSWeightsCuts(particle)
-cuts1 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2, trig=True)+ " && " + Imports.getSWeightsCuts(particle)
+cuts1 = Imports.getDataCuts(2, trig=True)+ " && " + Imports.getSWeightsCuts(particle)
 #dummy histograms used for the legend. Ideally, they should be removed
 histogram1 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
 histogram2 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
