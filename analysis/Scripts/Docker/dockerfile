@@ -1,0 +1,63 @@
+# Loading Cern CentOS7 Base Image
+FROM cern/cc7-base
+
+LABEL maintainer.name="Charming People"
+LABEL maintainer.email="fritter@student.maastrichtuniversity.nl"
+
+ADD . /tmp/repo
+WORKDIR /tmp/repo
+
+COPY packages packages
+
+RUN yum update -q -y && \
+    yum install -y epel-release && \
+    yum install -y $(cat packages) && \
+    localedef -i en_US -f UTF-8 en_US.UTF-8 && \
+    rm -f /packages
+
+#CMD ["root", "-b"]
+
+
+#FROM ubuntu:latest
+
+# copy the dependencies file to the working directory
+COPY requirements.txt .
+
+# install dependencies
+RUN pip3 install -r requirements.txt
+
+# Update the underlying Ubuntu OS, and install snakemake
+#RUN apk update  \
+ #&& apk add --no-cache nginx
+
+#RUN apt-get install -y snakemake
+
+RUN yum -y groupinstall "Development Tools"
+
+# Install MiniConda 
+RUN /bin/bash -c "curl -L https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > miniconda.sh && \
+    bash miniconda.sh -b -p ./conda && \
+    rm miniconda.sh"
+
+RUN /bin/bash -c "conda/bin/conda init bash && \
+    source ~/.bashrc"
+
+RUN /bin/bash -c "conda/bin/conda update -n base -c defaults conda"
+
+# Install Conda and snakemake
+RUN /bin/bash -c "conda/bin/conda install -y -c conda-forge mamba"
+
+RUN /bin/bash -c "conda/bin/mamba create -q -y -c conda-forge -c bioconda -n snakemake snakemake snakemake-minimal  && \
+    #/conda/bin/mamba/bioconda && \
+    conda/bin/mamba install -q -y -c conda-forge singularity && \
+    conda/bin/conda clean --all -y"
+    # && \
+    #which python && \
+    #pip3 install .[reports,messaging,google-cloud]"
+
+# Activate Conda Environment
+RUN echo "source activate snakemake" > ~/.bashrc
+
+# Set up Environment
+ENV PATH /opt/conda/envs/snakemake/bin:${PATH}
+
