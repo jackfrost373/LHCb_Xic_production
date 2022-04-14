@@ -6,7 +6,7 @@ PLOT_PATH = "/data/bfys/cpawley/LcAnalysis_plots/"
 TABLE_PATH = PLOT_PATH + "Tables/"
 OUTPUT_DICT_PATH = PLOT_PATH + "Dict_output/"
 
-CHI2THRESH = 10
+CHI2THRESH = 13
 
 #Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
 
