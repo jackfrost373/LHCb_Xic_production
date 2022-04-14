@@ -21,7 +21,7 @@ import os.path
 import textwrap
 import Imports
 from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
-
+from Imports import CHI2THRESH as chi2thresh
 #folder structure : 
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/ybins
@@ -34,13 +34,13 @@ from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
 BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
-Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
+Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/" + "test/"
 sys.path.append(Dict_PATH)
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
 #BASE_PDF_OUTPUT = "./"
-BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/"
+BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/" + "test/"
 
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
@@ -107,7 +107,6 @@ def main(argv):
 				-r : rapidity (e.g. 2.5-3.0)
 				-t : transverse momentum (e.g. 8000-10000)
 				-s : shape of MassFit (Bukin or	 GaussCB) (default: gaussCB)
-		
 
 			Important: the -o and -p are always used together, there is no option for using only one of the two (you can consider them as a single parameter...
 
@@ -124,7 +123,7 @@ def main(argv):
 #look everywhere and replace gaussCB with shape (find & replace)
 #define dict file depending on shape
 #replace everyhwere where its coded to the right dict
-
+	
 
 	for m in range(len(options)):
 
@@ -151,7 +150,7 @@ def main(argv):
 					if shape == "GaussCB":
 						from GaussCBsingleFit_DictFile import mainDict as singleDict
 					else: from BukinsingleFit_DictFile import mainDict as singleDict
-					
+			
 				
 				del arguments[m]
 				del options[m]
@@ -174,7 +173,7 @@ def main(argv):
 								continue
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
-								mainDict[i][j][filename], objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+								mainDict[i][j][filename], objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh=1)
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
@@ -197,14 +196,13 @@ def main(argv):
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
 							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/y_ptbins/"):
-							singleDict[year][i][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"single"),True,PDF_PATH_S)
+							singleDict[year][i][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 							
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape, year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
-					
-					
+	
 #####
 				elif set(options) == set(["-o","-p"]):
 					# CHOOSE SPECIFIC MAGPOL AND PARTICLE AND DOES EVERYTHING
@@ -232,9 +230,9 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both":
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 								elif parseName[0] == particle:
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -274,9 +272,9 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both":
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 							elif parseName[0] == particle:
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 				
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -318,9 +316,9 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[2] == rapidity :
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 								elif parseName[0] == particle and parseName[2] == rapidity:
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -361,9 +359,9 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt :
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 								elif parseName[0] == particle and parseName[-1][:-5] == pt:
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -409,9 +407,9 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/y_ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt and parseName[2] == rapidity:
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 								elif parseName[0] == particle and parseName[-1][:-5] == pt and parseName[2] == rapidity:
-									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S)
+									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -456,9 +454,9 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[2] == rapidity :
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 							elif parseName[0] == particle and parseName[2] == rapidity:
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 				
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -504,9 +502,9 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt :
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 							elif parseName[0] == particle and parseName[-1][:-5] == pt:
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -557,9 +555,9 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/y_ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt and parseName[2] == rapidity:
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 							elif parseName[0] == particle and parseName[-1][:-5] == pt and parseName[2] == rapidity:
-								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S)
+								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True,chi2thresh)
 					
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
@@ -598,10 +596,10 @@ def main(argv):
 							mainDict[i][j] = {}
 							
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
-								mainDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
+								mainDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 							
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ybins/"):
-								mainDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename, "y_combined"),True,PDF_PATH_C)
+								mainDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename, "y_combined"),True,PDF_PATH_C,True,chi2thresh)
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
@@ -623,9 +621,9 @@ def main(argv):
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
 							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ptbins/"):
-							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"pt_combined"),True,PDF_PATH_C)
+							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ybins/"):
-							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C)
+							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 								
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
@@ -660,16 +658,16 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both":
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 								elif parseName[0] == particle:
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 									
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ybins/"):
 								parseName = filename.split('_')
 								if particle == "both":
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 								elif parseName[0] == particle:
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 					
 					
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
@@ -710,16 +708,16 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both":
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 							elif parseName[0] == particle:
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 								
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ybins/"):
 							parseName = filename.split('_')
 							if particle == "both":
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 							elif parseName[0] == particle:
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 				
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
@@ -762,9 +760,9 @@ def main(argv):
 								parseName = filename.split('_')
 								
 								if particle == "both" and parseName[-1][:-5] == rapidity :
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 								elif parseName[0] == particle and parseName[-1][:-5] == rapidity:
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 									
 					
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
@@ -806,9 +804,9 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ptbins/"):
 								parseName = filename.split('_')
 								if particle == "both" and parseName[-1][:-5] == pt :
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 								elif parseName[0] == particle and parseName[-1][:-5] == pt:
-									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C)
+									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 							
 					
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
@@ -855,9 +853,9 @@ def main(argv):
 							parseName = filename.split('_')
 							
 							if particle == "both" and parseName[-1][:-5] == rapidity :
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 							elif parseName[0] == particle and parseName[-1][:-5] == rapidity:
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"y_combined"),True,PDF_PATH_C,True,chi2thresh)
 							
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
@@ -903,9 +901,9 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ptbins/"):
 							parseName = filename.split('_')
 							if particle == "both" and parseName[-1][:-5] == pt :
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 							elif parseName[0] == particle and parseName[-1][:-5] == pt:
-								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C)
+								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True,chi2thresh)
 						
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
@@ -947,7 +945,7 @@ def main(argv):
 							mainDict[i][j] = {}
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/"):
 								if filename != "bins":
-									mainDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y)
+									mainDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 								
 					
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
@@ -970,7 +968,7 @@ def main(argv):
 							continue
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/"):
 							if filename != "bins":
-								yearDict[year][i][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"year"),True,PDF_PATH_Y)
+								yearDict[year][i][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 								
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
@@ -1006,9 +1004,9 @@ def main(argv):
 								if filename != "bins":
 									parseName = filename.split('_')
 									if particle == "both":
-										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y)
+										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 									elif parseName[0] == particle:
-										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y)
+										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 								
 					
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
@@ -1050,9 +1048,9 @@ def main(argv):
 							if filename != "bins":
 								parseName = filename.split('_')
 								if particle == "both":
-									yearDict[year][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"year"),True,PDF_PATH_Y)
+									yearDict[year][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 								elif parseName[0] == particle:
-									yearDict[year][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"year"),True,PDF_PATH_Y)
+									yearDict[year][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"year"),True,PDF_PATH_Y,True,chi2thresh)
 								
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
