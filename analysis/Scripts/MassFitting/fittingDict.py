@@ -6,9 +6,9 @@ fittingDict = {
 				"peak_range" : [2469, 2450, 2485],
 				
 				"normalisation_factor" : 0.1,
-				"exponential_normalisation_factor" : 0.05,
+				"exponential_normalisation_factor" : 0.1,
 				
-				"exponential_range" : [-0.02, -2, 0],
+				"exponential_range" : [-0.02, -8, 0],
 				
 				"width_range" : [6, 0, 25],
 				
@@ -21,7 +21,7 @@ fittingDict = {
 				"peak_range" : [2469, 2450, 2485],
 				
 				"normalisation_factor" : 0.1,
-				"exponential_normalisation_factor" : 0.05,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.02, -2, 0],
 				
@@ -38,10 +38,10 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.0001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
-				"exponential_range" : [-0.001, -0.5, 0.1],
+				"exponential_range" : [-0.001, -8, 0.1],
 				
 				"width_range" : [6,4,20],
 				
@@ -53,8 +53,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.0001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.2, -0.5, 0.1],
 				
@@ -68,8 +68,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -83,8 +83,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -98,8 +98,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -113,8 +113,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -128,8 +128,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -143,8 +143,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -158,8 +158,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -173,8 +173,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -188,8 +188,8 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290,2260,2320],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.00001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 0.1],
 				
@@ -209,15 +209,15 @@ fittingDict = {
 				"peak_range" : [2469, 2455, 2485],
 				
 				"normalisation_factor" : 0.1,
-				"exponential_normalisation_factor" : 0.05,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.0002, -2, 2],
 
 				"Bukin_Xp_range" : [2471, 2450, 2500],
 				"Bukin_Sigp_range" : [13.01, 0, 15],
 				"Bukin_xi_range" : [-0.306, -1, 1],
-				"Bukin_rho1_range" : [0.853, -1, 1],
-				"Bukin_rho2_range" : [0.8, -1, 1],
+				"Bukin_rho1_range" : [-0.853, -1, 0],
+				"Bukin_rho2_range" : [0.8, 0, 1],
 			}
 		},
 
@@ -226,16 +226,16 @@ fittingDict = {
 				"mass_range" : [2240, 2340],
 				"peak_range" : [2290, 2275, 2305],
 				
-				"normalisation_factor" : 0.005,
-				"exponential_normalisation_factor" : 0.0001,
+				"normalisation_factor" : 0.1,
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.001, -0.5, 1],
 
 				"Bukin_Xp_range" : [2290, 2270, 2310],
 				"Bukin_Sigp_range" : [13.01, 5, 15],
 				"Bukin_xi_range" : [-0.306, -1, 1],
-				"Bukin_rho1_range" : [0.853, -1, 1],
-				"Bukin_rho2_range" : [0.8, -1, 1],
+				"Bukin_rho1_range" : [-0.853, -1, 0],
+				"Bukin_rho2_range" : [0.8, 0, 1],
 		}
 	}
 	}
