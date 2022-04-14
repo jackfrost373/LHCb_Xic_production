@@ -55,7 +55,7 @@ def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", 
 	mcfile = ROOT.TFile(fullPath, "READONLY")
 	mctree = mcfile.Get("DecayTree")
 	mctree.SetName("MCtree")
-	output1,output2 = fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp,strategy,chi2thresh)
+	output1,output2 = fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp,strategy)
 	if output1["chi2ndf"]>chi2thresh and output1["strategy"]==1:
 		return fit(mctree,shape,fittingDict,fullname,particle,PDF,PDFpath,fitComp,strategy=2)
 	return output1, output2
