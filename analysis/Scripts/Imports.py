@@ -9,7 +9,7 @@ OUTPUT_DICT_PATH = PLOT_PATH + "Dict_output/"
 #Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
 
 def getMCCuts(particle, run):
-	IDcuts = "abs(piplus_ID)==211 && abs(kminus_ID)==321 && abs(pplus_ID)==2212 && abs(lcplus_ID)==4122"
+	IDcuts = "abs(piplus_TRUEID)==211 && abs(kminus_TRUEID)==321 && abs(pplus_TRUEID)==2212"# && abs(lcplus_TRUEID)==4122" 
 	if run == 2:
 		IDcuts += " && lcplus_Hlt2CharmHad{0}pToPpKmPipTurboDecision_TOS == 1 ".format(particle)
 		#IDcuts += " && lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"

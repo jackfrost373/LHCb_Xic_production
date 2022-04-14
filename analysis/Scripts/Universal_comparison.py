@@ -25,6 +25,7 @@ variables_to_plot = ["lcplus_P", "lcplus_OWNPV_CHI2", "pplus_ProbNNp", "kminus_P
 variables_to_plot_with_line = {}
 
 fileloc=TUPLE_PATH+"/{0}_{1}/{2}_total.root".format(year,MagPol,particle)
+print("Data file:" + fileloc)
 f=ROOT.TFile.Open(fileloc,"READONLY")
 tree1 = f.Get("DecayTree") # tree that will be plotted in red
 
@@ -71,10 +72,17 @@ masshist.GetYaxis().SetTitle("Number of events")
 #define the cuts that you want to apply based on the specific comparison you want to make
 #cuts1 = Imports.getDataCuts(2, trig=True )+ " && " + Imports.getSWeightsCuts(particle)
 cuts2 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2,trig=True) + " && " + Imports.getSWeightsCuts(particle)
-cuts1 = Imports.getMCCuts(particle, 2) + " && " + Imports.getDataCuts(2, trig=True)+ " && " + Imports.getSWeightsCuts(particle)
+cuts1 = Imports.getDataCuts(2, trig=True)+ " && " + Imports.getSWeightsCuts(particle)
 #dummy histograms used for the legend. Ideally, they should be removed
 histogram1 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
 histogram2 = ROOT.TH1F("masshist", "Histogram of L_{c} mass", 300, 2200, 2600)
+
+# TODO temporary workaround as Hlt2 variable is not in the data files somehow (wrong tupleprep?)
+cuts1 = cuts1.replace("lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS","1")
+cuts2 = cuts2.replace("lcplus_Hlt2CharmHadXicpToPpKmPipTurboDecision_TOS","1")
+cuts1 = cuts1.replace("lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS","1")
+cuts2 = cuts2.replace("lcplus_Hlt2CharmHadLcpToPpKmPipTurboDecision_TOS","1")
+
 
 histogram1.SetLineColor(2) # red for tree1
 histogram1.SetLineWidth(1)
