@@ -2,7 +2,7 @@
 FROM cern/cc7-base
 
 LABEL maintainer.name="Charming People"
-LABEL maintainer.email="fritter@student.maastrichtuniversity.nl"
+LABEL maintainer.email="f.ritter@student.maastrichtuniversity.nl"
 
 ADD . /tmp/repo
 WORKDIR /tmp/repo
