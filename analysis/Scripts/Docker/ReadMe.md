@@ -4,10 +4,9 @@ A Docker environment contains the compressed environment of this analysis.
 This Environment can be pulled directly from [Docker.hub](https://hub.docker.com/) or created by executing the Dockerfile.
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install docker.
-
 ```bash
-pip install docker
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
 ## Usage
@@ -18,6 +17,7 @@ docker pull XXX
 ```
 
 Or create image and run container from local dockerfile:
+
 (These commands have to be run in the "Docker" Folder under the Path: "LHCb_Xic_production/analysis/Scripts")
 
 ```bash
