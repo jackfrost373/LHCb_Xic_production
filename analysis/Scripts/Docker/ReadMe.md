@@ -21,9 +21,9 @@ Or create image and run container from local dockerfile:
 (These commands have to be run in the "Docker" Folder under the Path: "LHCb_Xic_production/analysis/Scripts")
 
 ```bash
-docker build [ImageName] .
+docker build -t [UserName]/[ImageName]:1.0 .
 
-docker start [ImageName]
+docker run [ImageName]
 ```
 
 ## Adding packages
