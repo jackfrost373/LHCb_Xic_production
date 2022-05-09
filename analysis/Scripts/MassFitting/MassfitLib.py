@@ -33,7 +33,7 @@ def pathFinder(basePath, year, magPol, filename, mode):
 	return fullPath
 
 #You just need to give the full path of the data file, the function will parse the important 
-#information from it it is important that the data file is arranged in a structure like this:
+#information from it it is important that the data file is arranged in a structure like this :
 #   .../year_MagPol/bins/file.root 
 def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False):
 	
