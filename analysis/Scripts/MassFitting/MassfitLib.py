@@ -89,7 +89,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			peak_range = fittingDict["GaussCB"][particle]["general"]["peak_range"]
 			
 			normalisation_factor = fittingDict["GaussCB"][particle]["general"]["normalisation_factor"]
- 			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
+			exponential_normalisation_factor = fittingDict["GaussCB"][particle]["general"]["exponential_normalisation_factor"]
 			
 			exponential_range = fittingDict["GaussCB"][particle]["general"]["exponential_range"]
 			
