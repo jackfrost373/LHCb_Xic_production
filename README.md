@@ -1,6 +1,6 @@
-https://img.shields.io/badge/Topic-High Energy Physics-green
-https://img.shields.io/badge/Associations-LHCb & Maastricht University-blueviolet
-https://img.shields.io/badge/License-CC--BY--4.0-blue
+https://img.shields.io/badge/Topic-High&20Energy%20Physics-green.svg
+https://img.shields.io/badge/Associations-LHCb%20&%20Maastricht%20University-blueviolet.svg
+https://img.shields.io/badge/License-CC--BY--4.0-blue.svg
 
 
 # LHCb_Xic_production
