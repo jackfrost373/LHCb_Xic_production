@@ -3,10 +3,14 @@ https://img.shields.io/badge/<License>-<CC-BY-4.0>-<blue>
 # LHCb_Xic_production
 Repository for the LHCb analysis of the production ratio of Xic over Lc baryons, using the pKpi decay modes.
 
+# Description
+
+
 ## Support
 For general inquiries open a question on issue tracker.
 
 ## Roadmap
+This project is ongoing with new PR created on a regular basis. Future outlook focusses on finalising MassFits and sWeights.
 
 ## Contributing
 Pull requests are not yet welcome. For major changes and ideas, please open an issue first to discuss what you would like to change.
