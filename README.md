@@ -1,9 +1,8 @@
+# LHCb_Xic_production
 !\[my badge\](https://badgen.net/badge/License/CC-BY-4.0/blue)
 !\[my badge\](https://badgen.net/badge/Collaboration/LHCb%20&%20Maastricht%20University/purple)
 !\[my badge\](https://badgen.net/badge/Status/Ongoing/green)
 
-
-# LHCb_Xic_production
 Repository for the LHCb analysis of the production ratio of Xic over Lc baryons, using the pKpi decay modes.
 
 # Description
