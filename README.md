@@ -1,6 +1,6 @@
-!\[my badge1\](https://img.shields.io/badge/Topic-High&20Energy%20Physics-green)
-!\[my badge2\](https://img.shields.io/badge/Associations-LHCb%20&%20Maastricht%20University-blueviolet)
-!\[my badge3\](https://img.shields.io/badge/License-CC--BY--4.0-blue)
+!\[my badge\](https://badgen.net/badge/License/CC-BY-4.0/blue)
+!\[my badge\](https://badgen.net/badge/Collaboration/LHCb%20&%20Maastricht%20University/purple)
+!\[my badge\](https://badgen.net/badge/Status/Ongoing/green)
 
 
 # LHCb_Xic_production
