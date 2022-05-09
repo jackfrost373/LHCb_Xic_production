@@ -1,10 +1,14 @@
-https://img.shields.io/badge/<License>-<CC-BY-4.0>-<blue>
+https://img.shields.io/badge/Topic-High Energy Physics-green
+https://img.shields.io/badge/Associations-LHCb & Maastricht University-blueviolet
+https://img.shields.io/badge/License-CC--BY--4.0-blue
+
 
 # LHCb_Xic_production
 Repository for the LHCb analysis of the production ratio of Xic over Lc baryons, using the pKpi decay modes.
 
 # Description
-
+This repository is focussing on analysing a common decay mode of  two baryons pK- and pi+ over the full dataset provided by LHCb.
+This project aims to measure the ratio of production between these two baryons to provide insight into the tendency of a charm-quark to group together with a down-quark rather than a strange-quark.
 
 ## Support
 For general inquiries open a question on issue tracker.
