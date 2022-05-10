@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-	uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Black/Stable
-	uses: psf/black@stable
+        uses: psf/black@stable
         with: 
           options: --verbose --diff --color --extend-exclude /(\pidcalib|\datafiles|\analysis/\examples|\analysis/\Scripts/\Archive|\analysis/\Scripts/\.snakemake|\analysis/\Scripts/\Dict_output)/
 
@@ -29,9 +29,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
-	  push: true
+          push: true
           tag_with_ref: true
           tag_with_sha: true
           tags: ${{ secrets.DOCKER_HUB_USEERNAME }}/xic.lc_production_ratio_analysis:latest
-	  context:
-	    file: ../../analysis/Scripts/Docker/dockerfile
+          context:
+            file: ../../analysis/Scripts/Docker/dockerfile
