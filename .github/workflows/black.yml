@@ -6,11 +6,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - 
-	name: Checkout
+      - name: Checkout
 	uses: actions/checkout@v2
-      - 
-	uses: psf/black@stable
+      - uses: psf/black@stable
         with: 
           options: --verbose --diff --color --extend-exclude /(\pidcalib|\datafiles|\analysis/\examples|\analysis/\Scripts/\Archive|\analysis/\Scripts/\.snakemake|\analysis/\Scripts/\Dict_output)/
 
