@@ -13,7 +13,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 Either pull image directly from docker:
 ```bash
-docker pull XXX
+docker pull fritter3110/xic.lc_production_ratio_analysis:latest
 ```
 
 Or create image and run container from local dockerfile:
@@ -35,7 +35,7 @@ If additional packages have been added the the Docker Images MUST be created loc
 
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are not welcome. For major ideas for change, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 

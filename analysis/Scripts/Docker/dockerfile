@@ -2,7 +2,7 @@
 FROM cern/cc7-base
 
 LABEL maintainer.name="Charming People"
-LABEL maintainer.email="f.ritter@student.maastrichtuniversity.nl"
+LABEL maintainer.email="fritter@student.maastrichtuniversity.nl"
 
 ADD . /tmp/repo
 WORKDIR /tmp/repo
@@ -14,8 +14,6 @@ RUN yum update -q -y && \
     yum install -y $(cat packages) && \
     localedef -i en_US -f UTF-8 en_US.UTF-8 && \
     rm -f /packages
-
-#CMD ["root", "-b"]
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
@@ -38,12 +36,17 @@ RUN /bin/bash -c "conda/bin/conda update -n base -c defaults conda"
 RUN /bin/bash -c "conda/bin/conda install -y -c conda-forge mamba"
 
 RUN /bin/bash -c "conda/bin/mamba create -q -y -c conda-forge -c bioconda -n snakemake snakemake snakemake-minimal  && \
+    #/conda/bin/mamba/bioconda && \
     conda/bin/mamba install -q -y -c conda-forge singularity && \
     conda/bin/conda clean --all -y"
-    
+
 # Activate Conda Environment
 RUN echo "source activate snakemake" > ~/.bashrc
 
 # Set up Environment
 ENV PATH /opt/conda/envs/snakemake/bin:${PATH}
+
+CMD /bin/bash
+
+
 
