@@ -1,8 +1,8 @@
 # Loading Cern CentOS7 Base Image
 FROM cern/cc7-base
 
-LABEL maintainer.name="Charming People"
-LABEL maintainer.email="fritter@student.maastrichtuniversity.nl"
+LABEL maintainer.name="Felix Ritter"
+LABEL maintainer.email="f.ritter@student.maastrichtuniversity.nl"
 
 ADD . /tmp/repo
 WORKDIR /tmp/repo
