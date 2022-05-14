@@ -89,7 +89,7 @@ rule sWeights_all:
 	output: "sWeights all"
 
 rule dalitz_plots_years:
-     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"{year}_Mag{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_Mag{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
+     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"{year}_{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
      output: expand(PLOT_PATH+"dalitz/{year}_{magpol}/{particle}_total_Dalitz.pdf",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
      shell: "python dalitzPlane.py -m year -y {year} -o {magpol} -p {particle}"
 
