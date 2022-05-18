@@ -104,23 +104,24 @@ def main(argv):
 			These are for the output of the script and are necessary for a functionning run.
 
 			The parameters are
+				-s : shape (GaussCB or Bukin) (default: GaussCB)
 				-m : mode (single, combined or year)
 				-y : year (e.g. 2011) 
 				-o : magnet polarity (up, down or both)
 				-p : particle name (Xic, Lc or both)
 				-r : rapidity (e.g. 2.5-3.0)
 				-t : transverse momentum (e.g. 8000-10000)
-				-s : shape of MassFit (Bukin or	 GaussCB) (default: gaussCB)
-		
+
+			Important: If desired the -s argument always has to be specifed after the -m argument and before any other arguments. 
 
 			Important: the -o and -p are always used together, there is no option for using only one of the two (you can consider them as a single parameter...
 
 			For modes -m:
-				-"single" you can use any combination of -y -o -p -r -t 
-				-"combined" you can use any combination of -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
-				-"year"you can use any combination of -y -o -p
+				-"single" you can use any combination of -s -y -o -p -r -t 
+				-"combined" you can use any combination of -s -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
+				-"year"you can use any combination of -s -y -o -p
 
-			Running with no other parameter than -m makes the full fitting process. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
+			Running with no other parameter than -m makes the full fitting process and uses default GaussCB fit shape. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
 			"""))
 
 		sys.exit()

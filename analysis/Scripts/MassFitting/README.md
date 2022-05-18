@@ -14,6 +14,7 @@ Before running the script make sure you have two folders in the programme direct
 These are for the output of the script and are necessary for a functionning run.
 
 The parameters are
+-	s : shape (GaussCB or Bukin)
 -	m : mode (single, combined or year)
 -	y : year (e.g. 2011) 
 -	o : magnet polarity (up, down or both)
@@ -21,27 +22,29 @@ The parameters are
 -	r : rapidity (e.g. 2.5-3.0)
 -	t : transverse momentum (e.g. 8000-10000)
 
+Important: the -s argument always has to be specified first after the -m argument. No -s argument is given will result in default fit shape GaussCB.
+
 Important: the -o and -p are always used together, there is no option for using only one of the two (you can consider them as a single parameter...
 
 For modes -m:
--	"single" you can use any combination of -y -o -p -r -t 
--	"combined" you can use any combination of -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
--	"year"you can use any combination of -y -o -p
+-	"single" you can use any combination of -s -y -o -p -r -t 
+-	"combined" you can use any combination of -s -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
+-	"year"you can use any combination of -s -y -o -p
 
-Running with no other parameter than -m makes the full fitting process. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
+Running with no other parameter than -m makes the full fitting process with default GaussCB fit shape. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
 
 The main function of this script returns an list of two lists, one containing the fitting variables and the other containing all of the fitting shapes as they were for the final plotting. This means you can use the main function inside other programs.To use this program like this, outside of the normal terminal setting you will have to give the main function a list with the command line arguments, like you can see in the example below: 
 
 ```
 import fit
-objList = fit.main(["-m", "single", "-y", "2012", "-o", "up", "-p", "Xic", "-r", "2.5-3.0", "-t", "8000-10000"])
+objList = fit.main(["-m", "single", "-s", "Bukin",  "-y", "2012", "-o", "up", "-p", "Xic", "-r", "2.5-3.0", "-t", "8000-10000"])
 ```
 
 ## MassfitLib.py
 **Requires the fittingDict.py file in the same directory to function correctly**
 **shapefit(shape,fittingDict,fullPath) function**
 
-This function takes as parameters the shape (for the moment only "GaussCB" is available), the fitting dictionary that is found in the fittingDict.py file and the full path for the root file that contains the data to fit. It requires a foder called PDF_output in the area where the function is used as a .pdf file of the drawn fit will be created into a folder called like this. 
+This function takes as parameters the shape, the fitting dictionary that is found in the fittingDict.py file and the full path for the root file that contains the data to fit. It requires a foder called PDF_output in the area where the function is used as a .pdf file of the drawn fit will be created into a folder called like this. 
 
 The functions also return a dictionnary containing the important information from the fitting process. The keys are: 
 
