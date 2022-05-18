@@ -32,6 +32,6 @@ jobs:
           push: true
           tag_with_ref: true
           tag_with_sha: true
-          tags: ${{ secrets.DOCKER_HUB_USEERNAME }}/xic.lc_production_ratio_analysis:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xic.lc_production_ratio_analysis:latest
           context:
             file: ../../analysis/Scripts/Docker/dockerfile
