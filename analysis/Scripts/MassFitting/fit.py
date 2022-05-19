@@ -33,13 +33,13 @@ from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
 BASE_PATH = TUPLE_PATH
 
 #Path for the outputting of the Dictionnaries. Need to make the second folder
-Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/" + "test/"
+Dict_PATH = OUTPUT_DICT_PATH + "Massfitting/"
 sys.path.append(Dict_PATH)
 
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
 #BASE_PDF_OUTPUT = "./"
-BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/" + "test/"
+BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/"
 
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
