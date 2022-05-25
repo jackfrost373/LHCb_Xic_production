@@ -9,15 +9,15 @@ from Imports import *
 
 
 #Which steps of the sWeights do we want to do?
-getData        = True  # Load data.
-makesWeights   = True  # Generate sWeights, write to workspace. Requires getData.
+getData        = True # Load data.
+makesWeights   = True # Generate sWeights, write to workspace. Requires getData.
 makeFriendTree = True  # create friend tree for simple future sweight plotting. Requires makesWeights.
 plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspace.
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
 inputdir = "/dcache/bfys/jtjepkem/binned_files/"
-outputdir = "/data/bfys/cpawley/sWeights/"
+outputdir = PLOT_PATH+"sWeights/"
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]
@@ -223,6 +223,7 @@ def main(argv):
           newData = sData.GetSDataSet()
           dataNew = ROOT.RooDataSet("dataNew","dataNew",newData,newData.get())
           friendTree = dataNew.GetClonedTree()
+          friendTree.SetName("dataNew")
           friendTree.Write()
           fileFriendTree.Close()
           print (".....TTree created with sWeights...")

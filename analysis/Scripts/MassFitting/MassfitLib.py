@@ -33,7 +33,7 @@ def pathFinder(basePath, year, magPol, filename, mode):
 	return fullPath
 
 #You just need to give the full path of the data file, the function will parse the important 
-#information from it it is important that the data file is arranged in a structure like this:
+#information from it it is important that the data file is arranged in a structure like this :
 #   .../year_MagPol/bins/file.root 
 def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False,strategy = 1):
 	
@@ -130,6 +130,8 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			Bukin_rho2_range = fittingDict["Bukin"][particle]["general"]["Bukin_rho2_range"]
 
 	print(mass_range)
+
+
 	c1 = ROOT.TCanvas("c1","c1",1200,700)
 	pullpad1 = ROOT.TPad("pullpad1", "",0.0,0.25,1.0,1.0)
 	pullpad2 = ROOT.TPad("pullpad2", "",0.0,0.0,1.0,0.25)

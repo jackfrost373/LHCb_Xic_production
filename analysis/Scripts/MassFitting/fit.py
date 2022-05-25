@@ -14,9 +14,13 @@ sys.path.append('../') #This one is to be able to access Imports.py, one folder 
 sys.path.append('./')
 
 import ROOT, os, MassfitLib as mf 
-from fittingDict import fittingDict as singleFitDict
-from CombinedBinFit_Dict import fittingDict as combinedFitDict
-from yearTotalFit_Dict import fittingDict as yearFitDict
+from GaussCB_single_fitting_Dict import fittingDict as GaussCB_singleFitDict
+from GaussCB_CombinedFit_Dict import fittingDict as GaussCB_combinedFitDict
+from GaussCB_year_TotalFit_Dict import fittingDict as GaussCB_yearFitDict
+from Bukin_single_fitting_Dict import fittingDict as Bukin_singleFitDict
+from Bukin_CombinedFit_Dict import fittingDict as Bukin_combinedFitDict
+from Bukin_year_TotalFit_Dict import fittingDict as Bukin_yearFitDict
+
 import os.path
 import textwrap
 import Imports
@@ -99,22 +103,24 @@ def main(argv):
 			These are for the output of the script and are necessary for a functionning run.
 
 			The parameters are
+				-s : shape (GaussCB or Bukin) (default: GaussCB)
 				-m : mode (single, combined or year)
 				-y : year (e.g. 2011) 
 				-o : magnet polarity (up, down or both)
 				-p : particle name (Xic, Lc or both)
 				-r : rapidity (e.g. 2.5-3.0)
 				-t : transverse momentum (e.g. 8000-10000)
-				-s : shape of MassFit (Bukin or	 GaussCB) (default: gaussCB)
+
+			Important: If desired the -s argument always has to be specifed after the -m argument and before any other arguments. 
 
 			Important: the -o and -p are always used together, there is no option for using only one of the two (you can consider them as a single parameter...
 
 			For modes -m:
-				-"single" you can use any combination of -y -o -p -r -t 
-				-"combined" you can use any combination of -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
-				-"year"you can use any combination of -y -o -p
+				-"single" you can use any combination of -s -y -o -p -r -t 
+				-"combined" you can use any combination of -s -y -o -p -r -t but you can never use both -r and -t together, which yould defeat the point of having combined bins
+				-"year"you can use any combination of -s -y -o -p
 
-			Running with no other parameter than -m makes the full fitting process. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
+			Running with no other parameter than -m makes the full fitting process and uses default GaussCB fit shape. It also initializes the ditionnary file if you have not yet run the programme (important, the first time using this script requires initializing the dictionnaries by running with no parameter, e.g. "python fit.py -m single").
 			"""))
 
 		sys.exit()
@@ -157,13 +163,17 @@ def main(argv):
 				
 				# THE CODE THAT MAKES IT WORK FOR SINGLE BIN FILES
 
-#####				
+#####
+				singleFitDict = GaussCB_singleFitDict
+				if shape == "Bukin":
+					singleFitDict = Bukin_singleFitDict
+				
 
 				if set(options) == set([]):
 					# EVERYTHING HAS TO BE DONE
 					print("Options are empty. Everything has to be done")
 					mainDict = {}
-	
+
 					for i in years:
 						print(years)
 						mainDict[i] = {}
@@ -190,7 +200,7 @@ def main(argv):
 					if year not in years:
 						print("The year you entered is incorrect, please check again.")
 						sys.exit()
-						
+
 					for i in magPol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
 							continue
@@ -232,7 +242,7 @@ def main(argv):
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
 								elif parseName[0] == particle:
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
-					
+                  
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape, year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -264,7 +274,7 @@ def main(argv):
 					if(particle != "Xic" and particle != "Lc" and particle != "both"):
 						print("You entered a wrong input as particle name, please check again.")
 						sys.exit()
-					
+
 					for j in magpol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
 							continue
@@ -318,7 +328,7 @@ def main(argv):
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
 								elif parseName[0] == particle and parseName[2] == rapidity:
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
-					
+
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -350,7 +360,7 @@ def main(argv):
 					if pt not in pt_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for i in years:
 						for j in magpol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
@@ -361,7 +371,7 @@ def main(argv):
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
 								elif parseName[0] == particle and parseName[-1][:-5] == pt:
 									singleDict[i][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"single"),True,PDF_PATH_S,True)
-					
+
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -446,7 +456,7 @@ def main(argv):
 					if rapidity not in y_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for j in magpol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
 							continue
@@ -456,12 +466,12 @@ def main(argv):
 								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True)
 							elif parseName[0] == particle and parseName[2] == rapidity:
 								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True)
-				
+
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 					dictF.close()
-				
+			
 				
 				
 #####
@@ -494,7 +504,7 @@ def main(argv):
 					if pt not in pt_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for j in magpol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
 							continue
@@ -557,7 +567,7 @@ def main(argv):
 								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True)
 							elif parseName[0] == particle and parseName[-1][:-5] == pt and parseName[2] == rapidity:
 								singleDict[year][j][filename] , objList = mf.shapeFit(shape, singleFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"single"),True,PDF_PATH_S,True)
-					
+
 					dictF = open(Dict_PATH + shape + "singleFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(singleDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -583,6 +593,12 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR SINGLE BIN FILES
 
 #####				
+				combinedFitDict = GaussCB_combinedFitDict
+				if shape == "Bukin":
+					combinedFitDict = Bukin_combinedFitDict
+
+#####
+
 				if set(options) == set([]):
 					# EVERYTHING HAS TO BE DONE
 					mainDict = {}
@@ -599,8 +615,7 @@ def main(argv):
 							
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/bins/ybins/"):
 								mainDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename, "y_combined"),True,PDF_PATH_C,True)
-								
-					
+
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(mainDict))
@@ -615,7 +630,7 @@ def main(argv):
 					if year not in years:
 						print("The year you entered is incorrect, please check again.")
 						sys.exit()
-						
+
 					for i in magPol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + i):
 							continue
@@ -623,7 +638,7 @@ def main(argv):
 							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"pt_combined"),True,PDF_PATH_C,True)
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/bins/ybins/"):
 							combinedDict[year][i][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"y_combined"),True,PDF_PATH_C,True)
-								
+
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -649,7 +664,7 @@ def main(argv):
 					if(particle != "Xic" and particle != "Lc" and particle != "both"):
 						print("You entered a wrong input as particle name, please check again.")
 						sys.exit()
-					
+
 					for i in years:
 						for j in magpol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
@@ -700,7 +715,7 @@ def main(argv):
 					if(particle != "Xic" and particle != "Lc" and particle != "both"):
 						print("You entered a wrong input as particle name, please check again.")
 						sys.exit()
-					
+
 					for j in magpol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
 							continue
@@ -710,7 +725,7 @@ def main(argv):
 								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True)
 							elif parseName[0] == particle:
 								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True)
-								
+
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + j + "/bins/ybins/"):
 							parseName = filename.split('_')
 							if particle == "both":
@@ -750,7 +765,7 @@ def main(argv):
 					if rapidity not in y_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for i in years:
 						for j in magpol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
@@ -763,7 +778,6 @@ def main(argv):
 								elif parseName[0] == particle and parseName[-1][:-5] == rapidity:
 									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"y_combined"),True,PDF_PATH_C,True)
 									
-					
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -795,7 +809,7 @@ def main(argv):
 					if pt not in pt_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for i in years:
 						for j in magpol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
@@ -806,8 +820,7 @@ def main(argv):
 									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True)
 								elif parseName[0] == particle and parseName[-1][:-5] == pt:
 									combinedDict[i][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"pt_combined"),True,PDF_PATH_C,True)
-							
-					
+
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -893,7 +906,7 @@ def main(argv):
 					if pt not in pt_bin:
 						print("You entered a wrong input as rapidity bin, please check again.")
 						sys.exit()
-					
+
 					for j in magpol:
 						if not os.path.isdir(BASE_PATH + "/" + str(year) + "_" + j):
 							continue
@@ -903,7 +916,7 @@ def main(argv):
 								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True)
 							elif parseName[0] == particle and parseName[-1][:-5] == pt:
 								combinedDict[year][j][filename] , objList = mf.shapeFit(shape, combinedFitDict, mf.pathFinder(BASE_PATH,year,j,filename,"pt_combined"),True,PDF_PATH_C,True)
-						
+
 					dictF = open(Dict_PATH + shape + "combinedFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(combinedDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -931,11 +944,15 @@ def main(argv):
 				# THE CODE THAT MAKES IT WORK FOR SINGLE BIN FILES
 
 #####				
+				yearFitDict = GaussCB_yearFitDict
+				if shape == "Bukin":
+					yearFitDict = Bukin_yearFitDict
+#####
+
 				if set(options) == set([]):
 					# EVERYTHING HAS TO BE DONE
 					mainDict = {}
-	
-	
+
 					for i in years:
 						mainDict[i] = {}
 						for j in magPol:
@@ -945,8 +962,7 @@ def main(argv):
 							for filename in os.listdir(BASE_PATH + str(i) + "_" + j + "/"):
 								if filename != "bins":
 									mainDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True)
-								
-					
+
 					# WRITES THE .py FILE WITH DICT AND dictSearch FUNCTION
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(mainDict))
@@ -968,7 +984,7 @@ def main(argv):
 						for filename in os.listdir(BASE_PATH + str(year) + "_" + i + "/"):
 							if filename != "bins":
 								yearDict[year][i][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,year,i,filename,"year"),True,PDF_PATH_Y,True)
-								
+
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -995,6 +1011,7 @@ def main(argv):
 						print("You entered a wrong input as particle name, please check again.")
 						sys.exit()
 					
+					
 					for i in years:
 						for j in magpol:
 							if not os.path.isdir(BASE_PATH + "/" + str(i) + "_" + j):
@@ -1006,8 +1023,7 @@ def main(argv):
 										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True)
 									elif parseName[0] == particle:
 										yearDict[i][j][filename] , objList = mf.shapeFit(shape, yearFitDict, mf.pathFinder(BASE_PATH,i,j,filename,"year"),True,PDF_PATH_Y,True)
-								
-					
+
 					dictF = open(Dict_PATH + shape + "yearFit_DictFile.py","w")
 					dictF.write("mainDict = " + str(yearDict))
 					dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")

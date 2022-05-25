@@ -1,5 +1,6 @@
 import sys, getopt, ROOT, math, textwrap
 from array import array
+import Imports
 from Imports import OUTPUT_DICT_PATH, PLOT_PATH
 
 Import_Path = OUTPUT_DICT_PATH
@@ -479,6 +480,7 @@ def main(argv):
 			mgG.SetTitle("ratio vs years vs fit shape")
 			mgG.GetXaxis().SetTitle( "Year" )
 			mgG.GetYaxis().SetTitle( "Xic/Lc Ratios" )
+			mgG.GetYaxis().SetRangeUser(0.,0.35)
 			mgG.GetXaxis().SetRangeUser(2009, 2019)
 			mgG.Draw("AL*")
 			cD.BuildLegend(.15,.2,.25,.3, "fit shapes")
