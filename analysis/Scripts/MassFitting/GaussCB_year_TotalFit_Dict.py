@@ -12,9 +12,9 @@ fittingDict = {
 				
 				"width_range" : [6, 3, 25],
 				
-				"cb_width_range" : [6, 1, 25],
-				"cb_alpha_range" : [24,0,25.0],
-				"cb_n_range" : [9.0,0.0,10.0]
+				"cb_width_range" : [6, 3, 25],
+				"cb_alpha_range" : [24,0,25],
+				"cb_n_range" : [9.0,0.0, 10]
 			}
 		},
 			
@@ -30,9 +30,9 @@ fittingDict = {
 				
 				"width_range" : [6,3,25],
 				
-				"cb_width_range" : [20,1,15],
-				"cb_alpha_range" : [1.0,0,5.0],
-				"cb_n_range" : [9.0,0.0,10.0],
+				"cb_width_range" : [20,3,25],
+				"cb_alpha_range" : [1.0,0,25],
+				"cb_n_range" : [9.0,0.0,10],
 			}
 		}
 	}

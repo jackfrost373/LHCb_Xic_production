@@ -11,10 +11,10 @@ fittingDict = {
 				"exponential_range" : [-0.0002, -2, 2],
 
 				"Bukin_Xp_range" : [2471, 2450, 2500],
-				"Bukin_Sigp_range" : [13.01, 2, 15],
-				"Bukin_xi_range" : [-0.306, -0.5, 0.5],
-				"Bukin_rho1_range" : [-0.853, -0.1, 0],
-				"Bukin_rho2_range" : [0.8, 0, 0.1],
+				"Bukin_Sigp_range" : [5, 0, 10],
+				"Bukin_xi_range" : [0, -.05, .05],
+				"Bukin_rho1_range" : [-0.00001, -.3, 0],
+				"Bukin_rho2_range" : [0.00001, 0, .3],
 			}
 		},
 		"Lc" : {
@@ -27,11 +27,11 @@ fittingDict = {
 				
 				"exponential_range" : [-0.001, -3, 0],
 
-				"Bukin_Xp_range" : [2290, 2280, 2395],
-				"Bukin_Sigp_range" : [13.01, 2, 15],
-				"Bukin_xi_range" : [-0.306, -0.5, 0.5],
-				"Bukin_rho1_range" : [-0.0001, -0.1, 0],
-				"Bukin_rho2_range" : [0.0001, 0, 0.1],
+				"Bukin_Xp_range" : [2288, 2280, 2395],
+				"Bukin_Sigp_range" : [5, 0, 10],
+				"Bukin_xi_range" : [0, -0.05, .05],
+				"Bukin_rho1_range" : [-.00001, -.3, 0],
+				"Bukin_rho2_range" : [0.00001, 0, .3],
 		}
 		}
 	}
