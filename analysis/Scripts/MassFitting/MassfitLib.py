@@ -253,6 +253,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
+			"nEvents" : mctree.GetEntries(),
 			# "gauss_mean_val" : gauss_mean.getValV(),
 			# "gauss_mean_err" : gauss_mean.getError(),
 			# "gauss_width_val" : gauss_width.getValV(),
@@ -270,6 +271,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
+			"nEvents" : mctree.GetEntries(),
 		}
 	
 	pullpad2.cd()
