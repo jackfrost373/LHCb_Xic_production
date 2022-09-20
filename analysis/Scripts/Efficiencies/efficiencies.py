@@ -6,6 +6,7 @@ sys.path.append('../')
 import ROOT, os, Imports, getopt
 from Imports import TUPLE_PATH, RAW_TUPLE_PATH, TABLE_PATH, OUTPUT_DICT_PATH, MC_jobs_Dict
 import pprint
+from math import sqrt
 
 dict_path = OUTPUT_DICT_PATH + "Efficiencies/"
 table_path = TABLE_PATH + "Efficiencies/"
@@ -95,6 +96,9 @@ def main(argv):
                 Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
 
                 for subjob in os.listdir(RAW_TUPLE_PATH + job):
+                    if job == "150":
+                        if not os.path.exists(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename): #temp fix
+                            continue
                     Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
 
                 N= float(Lc_MC_tree.GetEntries()) #WHY DID SIMON USE A HARDCODED NUMBER OF ENTRIES??
@@ -103,12 +107,34 @@ def main(argv):
                 eff = float(k/N)
                 binom_error = (1/N)*((k*(1-k/N))**(0.5))
 
-                selecEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
+                
+                if not year in selecEffDict:
+                    selecEffDict[year] = {}
+                if not pol in selecEffDict[year]:
+                    selecEffDict[year][pol]={}
+                if not particle in selecEffDict[year][pol]:
+                    selecEffDict[year][pol][particle]={}
+                if not "ratio" in selecEffDict[year][pol]:
+                    selecEffDict[year][pol]["ratio"]={}
+
+                selecEffDict[year][pol][particle]["val"]=eff
+                selecEffDict[year][pol][particle]["err"]=binom_error
+                if not ("Xic" in selecEffDict[year][pol] and "Lc" in selecEffDict[year][pol]):
+                    continue
+
+                selecEffDict[year][pol]["ratio"]["val"]= selecEffDict[year][pol]["Xic"]["val"]/selecEffDict[year][pol]["Lc"]["val"]
+                selecEffDict[year][pol]["ratio"]["err"] = (
+                    sqrt(
+                        (selecEffDict[year][pol]["Xic"]["err"]/selecEffDict[year][pol]["Xic"]["val"])**2
+                        + (selecEffDict[year][pol]["Lc"]["err"]/selecEffDict[year][pol]["Lc"]["val"])**2
+                    )
+                    * selecEffDict[year][pol]["ratio"]["val"]
+                )
 
 
             print("\nSelection efficiency calculations are done!")
 
-            latexTable(selecEffDict,years,"Selection")
+            newLatexTable(selecEffDict,years,"Selection")
 
             prettyEffDict = pprint.pformat(selecEffDict)
             dictF = open(dict_path + "Selection_Eff_Dict.py","w")
@@ -622,8 +648,26 @@ def latexTable(dict, years, type):
     csvF.write("& & Efficiency & Err. & Efficiency & Err. & Ratio & Ratio Err. \\\\ \\cline{1-8}\n")
 
     for year in years:
+        if year == "2017": #temp fix as 2017 data only has one polarity for Xic
+            continue
         csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict["Lc_{}_MagDown".format(year)]["val"],dict["Lc_{}_MagDown".format(year)]["err"],dict["Xic_{}_MagDown".format(year)]["val"],dict["Xic_{}_MagDown".format(year)]["err"],dict["Xic_{}_MagDown".format(year)]["val"]/dict["Lc_{}_MagDown".format(year)]["val"],"Todo"))
         csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {} \\\\ \\cline{{1-8}}\n".format("{MagUp}",dict["Lc_{}_MagUp".format(year)]["val"],dict["Lc_{}_MagUp".format(year)]["err"],dict["Xic_{}_MagUp".format(year)]["val"],dict["Xic_{}_MagUp".format(year)]["err"],dict["Xic_{}_MagUp".format(year)]["val"]/dict["Lc_{}_MagUp".format(year)]["val"],"Todo"))
+
+    csvF.write("\end{tabular}")
+    csvF.close()
+
+def newLatexTable(dict,years,type): #same as the latextable funciton above, except this one works with the new dictionary layout for the selection efficiency
+    csvF = open(table_path + type + "_Eff_Values.tex","w")
+    csvF.write("\\begin{tabular}{ll|c|c|c|c|c|c|}\n")
+    csvF.write("\\cline{3-6}\n")
+    csvF.write("& & \\multicolumn{2}{c|}{$\Xi_c$} & \multicolumn{2}{c|}{$\\Lambda_c$} \\\\ \\cline{3-8}\n")
+    csvF.write("& & Efficiency & Err. & Efficiency & Err. & Ratio & Ratio Err. \\\\ \\cline{1-8}\n")
+
+    for year in years:
+        if year == "2017": #temp fix as 2017 data only has one polarity for Xic
+            continue
+        csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict[year]["MagDown"]["Lc"]["val"],dict[year]["MagDown"]["Lc"]["err"],dict[year]["MagDown"]["Xic"]["val"],dict[year]["MagDown"]["Xic"]["err"],dict[year]["MagDown"]["ratio"]["val"],dict[year]["MagDown"]["ratio"]["err"]))
+        csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\cline{{1-8}}\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
 
     csvF.write("\end{tabular}")
     csvF.close()
