@@ -45,7 +45,7 @@ def yearTables():
                 diff = round(BukinValue) - round(GaussValue)
                 relDiff = diff/round(GaussValue)*100
 
-                D  = str(round(diff))
+                D  = str(round(diff))+ " ± "+str(round(GaussYear[year][pol][filename]['yield_err']+round(BukinYear[year][pol][filename]['yield_err'])))
                 rD = str(round(relDiff,1))+"\\%"
 
                 if particle == "Lc":
@@ -135,4 +135,4 @@ def MCTables():
 
 if __name__ == "__main__":
     yearTables()
-    MCTables()
+    # MCTables()
