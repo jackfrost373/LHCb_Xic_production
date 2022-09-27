@@ -1,70 +1,63 @@
-import ROOT, os
+import ROOT,sys,os
 
-#This is a function that returns the wanted path to use in the below Shape_fit_fullPath
-#as the fullPath variable. BasePath variable is the place you store the folders name in the style year_MagPol
-#For the other variables, it is just easy to make arrays containing the years an magPols
-#of interest and loop over them (see MainProgram.py for an example)
-#mode can be "single" or "pt_combined" or "y_combined, "year""
-def pathFinder(basePath, year, magPol, filename, mode):
-	if mode == "single":
-		if basePath[-1] != '/':
-			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/y_ptbins/" + filename
-		else :
-			fullPath = basePath + str(year) + "_" + magPol + "/bins/y_ptbins/" + filename
-			
-	elif mode == "pt_combined":
-		if basePath[-1] != '/':
-			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/ptbins/" + filename
-		else :
-			fullPath = basePath + str(year) + "_" + magPol + "/bins/ptbins/" + filename
-			
-	elif mode == "y_combined":
-		if basePath[-1] != '/':
-			fullPath = basePath + '/' + str(year) + "_" + magPol + "/bins/ybins/" + filename
-		else :
-			fullPath = basePath + str(year) + "_" + magPol + "/bins/ybins/" + filename
-			
-	elif mode == "year":
-		if basePath[-1] != '/':
-			fullPath = basePath + '/' + str(year) + "_" + magPol + "/" + filename
-		else :
-			fullPath = basePath + str(year) + "_" + magPol + "/" + filename
-			
-	return fullPath
+sys.path.append('../') #This one is to be able to access Imports.py, one folder up from this script
+sys.path.append('./')
 
-#You just need to give the full path of the data file, the function will parse the important 
-#information from it it is important that the data file is arranged in a structure like this :
-#   .../year_MagPol/bins/file.root 
-def shapeFit(shape,fittingDict,fullPath, PDF = True, PDFpath = "./PDF_output/", fitComp = False,strategy = 1):
-	
-	ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH
 
-	parsePath = fullPath.split('/')
-	filename = parsePath[-1]
-	parseFName =  filename.split('_')
-	if parseFName[-1] == "total.root":
-		parseFolder = parsePath[-2].split('_')
-	else:
-		parseFolder = parsePath[-4].split('_')
-	year = parseFolder[0]
-	magPol = parseFolder[1]
-	particle = parseFName[0]
+from GaussCB_year_TotalFit_Dict import fittingDict as GaussCB_yearFitDict
+from Bukin_year_TotalFit_Dict import fittingDict as Bukin_yearFitDict
+from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH,getMC,getMCCuts
 
-	fullname = year + "_" + magPol + "_" + filename
+def main():
+	pdfpath = PLOT_PATH + "MassFitting/MC/PDF_output/Year/"
+	dictpath = OUTPUT_DICT_PATH + "Massfitting/MC/"
+	GaussDict ={}
+	BukinDict ={}
+	ROOT.gROOT.SetBatch(True)
+	for year in [2011,2012,2016,2017,2018]:
+		for particle in ["Lc","Xic"]:
+			for mag in ["MagDown","MagUp"]:
+				if year == 2018 and particle == "Xic":
+					continue
+				mctree = getMC(year = year,particle = particle,polarity = mag,cuts = True)
+				if year > 2012:
+					run =2
+				else: 
+					run =1
+				if mctree.GetEntries() == 0:
+					continue
+				
+				if not year in GaussDict:
+					GaussDict[year]={}
+					BukinDict[year]={}
+				if not mag in GaussDict[year]:
+					GaussDict[year][mag]={}
+					BukinDict[year][mag]={}
 
-	mcfile = ROOT.TFile(fullPath, "READONLY")
-	mctree = mcfile.Get("DecayTree")
-	mctree.SetName("MCtree")
-	return fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp,strategy)
-	
+				GaussDict[year][mag][f"MC_{particle}"], objList = fit(mctree,"GaussCB",GaussCB_yearFitDict,f"{year}_{mag}_{particle}_total.root",particle,True,pdfpath)
+				BukinDict[year][mag][f"MC_{particle}"], objList = fit(mctree,"Bukin",Bukin_yearFitDict,f"{year}_{mag}_{particle}_total.root",particle,True,pdfpath)
+				
+	dictF = open(dictpath + "GaussCB_MC_DictFile.py","w")
+	dictF.write("mainDict = " + str(GaussDict))
+	dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
+	dictF.close()
+	dictG = open(dictpath + "Bukin_MC_DictFile.py","w")
+	dictG.write("mainDict = " + str(BukinDict))
+	dictG.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
+	dictG.close()
 
-#fitComp is a boolean that can add graphically the components of the fitted shape
-def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = False,strategy = 1):
+
+
+
+def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = True,strategy = 1):
 	splitfullname = fullname.split('.root')
 	shortfullname = splitfullname[0]
+
 	# return lists for persistency in memory
 	varlist = []
 	shapelist = []
+
+	nEntries = mctree.GetEntries()
 	
 	if shape == "GaussCB":		
 		if fullname in fittingDict["GaussCB"][particle]:
@@ -129,6 +122,8 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			Bukin_rho1_range = fittingDict["Bukin"][particle]["general"]["Bukin_rho1_range"]
 			Bukin_rho2_range = fittingDict["Bukin"][particle]["general"]["Bukin_rho2_range"]
 
+	exponential_range = [0,0,0]
+
 	print(mass_range)
 
 
@@ -147,12 +142,12 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	
 	nbins = 100
 	masshist = ROOT.TH1F("masshist","Histogram of Lc mass",nbins,mass_range[0],mass_range[1])
-
 	mctree.Draw("lcplus_MM>>mymasshist")
 	masshist = ROOT.gDirectory.Get("mymasshist")
 	
 	mass = ROOT.RooRealVar("lcplus_MM","Mass",mass_range[0],mass_range[1],"MeV/c^{2}")
-	
+
+
 	#Here is where the different fit shapes are implemented with their various parameters
 	if shape == "GaussCB":
 		gauss_mean  = ROOT.RooRealVar("gauss_mean","Mean",peak_range[0], peak_range[1], peak_range[2])
@@ -165,17 +160,17 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		myCB	    = ROOT.RooCBShape("myCB","Crystal Ball", mass, gauss_mean, cb_width, cb_alpha, cb_n)
 		shapelist+=[myCB]
 		exponential = ROOT.RooRealVar("exponential","C", exponential_range[0], exponential_range[1], exponential_range[2])
-		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", mctree.GetEntries()/2, mctree.GetEntries()/50, mctree.GetEntries()*1.25)
+		exponential_Norm  = ROOT.RooRealVar("exponential_Norm","Exponential Yield", 0, 0, 0)
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
 		shapelist+=[myexponential]
 		combined_Norm = ROOT.RooRealVar("combined_Norm","Normalization for gaussCB", 0.5,0,1)
 
 		Actual_signalshape = ROOT.RooAddPdf ("Actual_signalshape", "Shape of the interesting events", myGauss, myCB, combined_Norm)
 		shapelist+=[Actual_signalshape]
-		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", mctree.GetEntries()/2, mctree.GetEntries()/50, mctree.GetEntries()*1.25)
+		Actual_signalshape_Norm = ROOT.RooRealVar("Actual_signalshape_Norm","Signal Yield", nEntries/2, nEntries/50, nEntries*1.25)
 
 		fullshape = ROOT.RooAddPdf("fullshape","Signal shape", ROOT.RooArgList(Actual_signalshape, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
-		
+
 	if shape == "Bukin":
 		Bukin_Xp = ROOT.RooRealVar("Bukin_Xp", "Peak position",Bukin_Xp_range[0],Bukin_Xp_range[1],Bukin_Xp_range[2])
 		Bukin_Sigp = ROOT.RooRealVar("Bukin_Sigp", "Peak width",Bukin_Sigp_range[0],Bukin_Sigp_range[1],Bukin_Sigp_range[2])
@@ -185,17 +180,16 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		
 		exponential = ROOT.RooRealVar("exponential","C",exponential_range[0],exponential_range[1],exponential_range[2])
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
-		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, mctree.GetEntries()/50, mctree.GetEntries()*2)
-
+		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", 0, 0, 0)
+		
 		Bukin_PDF = ROOT.RooBukinPdf("Actual_signalshape", "Bukin shape", mass, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
 
-		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/nbins*3/normalisation_factor, mctree.GetEntries()/50, mctree.GetEntries()*3)
+		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", nEntries, nEntries/10, nEntries*2)
 		
 		fullshape = ROOT.RooAddPdf("signalshape", "Signal Shape", ROOT.RooArgList(Bukin_PDF, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
-			
 
 	masshist_RooFit = ROOT.RooDataSet("masshist_RooFit","masshist RooFit", mctree , ROOT.RooArgSet(mass))
-	
+
 	#Fit the data using the desired shape
 	fullshape.fitTo(masshist_RooFit,ROOT.RooFit.Strategy(strategy))
 	frame = mass.frame()
@@ -219,18 +213,18 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 	
 		
 	w=ROOT.RooWorkspace("w")
-	getattr(w,'import')(masshist_RooFit)	
-	getattr(w,'import')(fullshape)
-	w.writeToFile("MassFitting/{0}_model.root".format(shortfullname))
+	# getattr(w,'import')(masshist_RooFit)	
+	# getattr(w,'import')(fullshape)
+	# w.writeToFile("MassFitting/MC_{0}_model.root".format(shortfullname))
 
 	signal_yield = Actual_signalshape_Norm.getValV()
 	signal_error = Actual_signalshape_Norm.getError()
 	chi2ndf = frame.chiSquare()
 
 	#Show parameters on graph
-	# fullshape.paramOn(frame, ROOT.RooFit.ShowConstants(True), ROOT.RooFit.Layout(0.56,0.9,0.9))
+	fullshape.paramOn(frame, ROOT.RooFit.ShowConstants(True), ROOT.RooFit.Layout(0.56,0.9,0.9))
 
-	frame.SetTitle(fullname + " - chi2ndf : " + str(chi2ndf))
+	frame.SetTitle("MC_" + fullname + f" events: {round(signal_yield)} / {nEntries} " )
 
 	pullhist = frame.pullHist()
 	
@@ -253,7 +247,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
-			"nEvents" : mctree.GetEntries(),
+			"nEvents" : nEntries,
 			# "gauss_mean_val" : gauss_mean.getValV(),
 			# "gauss_mean_err" : gauss_mean.getError(),
 			# "gauss_width_val" : gauss_width.getValV(),
@@ -271,7 +265,7 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 			"yield_val" : signal_yield,
 			"yield_err" : signal_error,
 			"chi2ndf" : chi2ndf,
-			"nEvents" : mctree.GetEntries(),
+			"nEvents" : nEntries,
 		}
 	
 	pullpad2.cd()
@@ -294,10 +288,13 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 
 	#PDF CREATION#
 	if PDF == True:
-		strName = PDFpath + shape + fullname + ".pdf"
+		strName = PDFpath + shape + "_MC_" + fullname + ".pdf"
 		c1.SaveAs(strName)	
 	
 	masshist.Delete()
 	ROOT.gDirectory.Delete("mymasshist")
 	
 	return mainDict, [varlist,shapelist]
+
+if __name__ == "__main__":
+	main()
