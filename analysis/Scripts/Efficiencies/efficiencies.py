@@ -57,7 +57,6 @@ def main(argv):
         if opt == "-s":
 
             selecEffDict = {}
-            years = []
 
             print("\nCreation of the selection efficiency files")
 
@@ -80,9 +79,6 @@ def main(argv):
                 pol = MC_jobs_Dict[job][1]
                 subjobs = MC_jobs_Dict[job][2]
                 identifier = MC_jobs_Dict[job][4]
-
-                if year not in years:
-                    years.append(year)
 
                 filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
 
@@ -114,31 +110,20 @@ def main(argv):
                     selecEffDict[year][pol]={}
                 if not particle in selecEffDict[year][pol]:
                     selecEffDict[year][pol][particle]={}
-                if not "ratio" in selecEffDict[year][pol]:
-                    selecEffDict[year][pol]["ratio"]={}
-
+                
+                selecEffDict[year][pol][particle]["nEvents"]=k
                 selecEffDict[year][pol][particle]["val"]=eff
                 selecEffDict[year][pol][particle]["err"]=binom_error
-                if not ("Xic" in selecEffDict[year][pol] and "Lc" in selecEffDict[year][pol]):
-                    continue
 
-                selecEffDict[year][pol]["ratio"]["val"]= selecEffDict[year][pol]["Xic"]["val"]/selecEffDict[year][pol]["Lc"]["val"]
-                selecEffDict[year][pol]["ratio"]["err"] = (
-                    sqrt(
-                        (selecEffDict[year][pol]["Xic"]["err"]/selecEffDict[year][pol]["Xic"]["val"])**2
-                        + (selecEffDict[year][pol]["Lc"]["err"]/selecEffDict[year][pol]["Lc"]["val"])**2
-                    )
-                    * selecEffDict[year][pol]["ratio"]["val"]
-                )
-
+            selecEffDict = weightedAverage(selecEffDict,True,True)
 
             print("\nSelection efficiency calculations are done!")
 
-            newLatexTable(selecEffDict,years,"Selection")
+            newLatexTable(selecEffDict,"Selection")
 
             prettyEffDict = pprint.pformat(selecEffDict)
             dictF = open(dict_path + "Selection_Eff_Dict.py","w")
-            dictF.write("selDict = " + str(prettyEffDict))
+            dictF.write("effDict = " + str(prettyEffDict))
             dictF.close()
 
         elif opt == "-t":
@@ -215,9 +200,10 @@ def main(argv):
             cuts = "lcplus_L0HadronDecision_TOS"
 
             f_text = open(dict_path + "PID_eff_Dict.py", "w")
-            f_text.write("PIDDict = {\n")
 
             directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+            
+            effDict = {}
 
             for job in MC_jobs_Dict:
                 if job == "NA": #AT the moment only do Magdown, will need to implement to us magdown as proxy for magup
@@ -228,6 +214,13 @@ def main(argv):
                 mag = MC_jobs_Dict[job][1]
                 n_subjobs = MC_jobs_Dict[job][2]
                 ID = MC_jobs_Dict[job][4]
+
+                if not year in effDict:
+                    effDict[year] = {}
+                if not mag in effDict[year]:
+                    effDict[year][mag]={}
+                # if not particle in effDict[year][pol]:
+                #     effDict[year][pol][particle]={}
 
                 if int(year) <= 2012:
                     turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS == 1"
@@ -244,8 +237,8 @@ def main(argv):
                 for subjob in range(n_subjobs) :
                     Lc_MC_tree.Add("{0}/{1}/{2}".format(Lc_MC_filedir,subjob,Lc_MC_filename))
 
-                string = calcPIDefficiency(year=year, mag=mag, bdtbin=0, tupleloc=tupleloc, pidbinvars = ["P", "ETA", "nTracks"], b2hhbinvars = ["P", "ETA", "nTracks"], optionstring = "_MC", ignoreB2hhStatErr = False, correctKinematics = False, binningscheme = "", extra_cuts = turbo, MC_tree = Lc_MC_tree, mother_particle = particle)
-                f_text.write(string)
+
+                effDict[year][mag][particle] = calcPIDefficiency(year=year, mag=mag, bdtbin=0, tupleloc=tupleloc, pidbinvars = ["P", "ETA", "nTracks"], b2hhbinvars = ["P", "ETA", "nTracks"], optionstring = "_MC", ignoreB2hhStatErr = False, correctKinematics = False, binningscheme = "", extra_cuts = turbo, MC_tree = Lc_MC_tree, mother_particle = particle)
 
                 #for ybin in ybins:
                 #    for ptbin in ptbins:
@@ -255,8 +248,12 @@ def main(argv):
                 #                  ignoreB2hhStatErr = False, correctKinematics = False, binningscheme="", extra_cuts=(yptcut + " && " + turbo), MC_tree = Lc_MC_tree, mother_particle = particle, ybin=ybin, ptbin=pt$
                 #      f_text.write(string)
 
-            f_text.write("}")
+            effDict = weightedAverage(effDict,True,True)
+            prettyEffDict = pprint.pformat(effDict)
+            f_text.write("effDict = " + str(prettyEffDict))
             f_text.close()
+
+            newLatexTable(effDict,"PID")
 
         else:
             sys.exit()
@@ -456,7 +453,8 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     #dummyfile.cd()
     #tree.Write()
     #dummyfile.Close()
-    print("\nnEntries in file after cuts: {0}".format(treeload.GetEntries(cuts_b2hh)))
+    nEvents = treeload.GetEntries(cuts_b2hh)
+    print("\nnEntries in file after cuts: {0}".format(nEvents))
 
 #This section is relevant when calculating efficiencies for data rather than for MC.
     # add sWeights
@@ -633,12 +631,65 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
     # compute total eff, assuming full correlation for the error
     totaleff = effs["pplus"][0] * effs["kminus"][0]*effs["piplus"][0]
     totaleff_error = (effs["pplus"][1] / effs["pplus"][0] + effs["kminus"][1] / effs["kminus"][0] + effs["piplus"][1] / effs["piplus"][0]) * totaleff
-    return ("'{2}_{3}_{4}': {{'err': {1:.8f}, 'val': {0:.8f}}},\n".format(totaleff, totaleff_error, mother_particle, year, magProx, ybin[0], ybin[1], ptbin[0], ptbin[1]))
+
+    return({"val":totaleff,"err":totaleff_error,"nEvents":nEvents})
+
+    # return ("'{2}_{3}_{4}': {{'err': {1:.8f}, 'val': {0:.8f}}},\n".format(totaleff, totaleff_error, mother_particle, year, magProx, ybin[0], ybin[1], ptbin[0], ptbin[1]))
     #return ("For particle {2} year: {3} Mag{4}, bin: y{5}-{6} pt{7}-{8} the total eff for pKpi:  \t= {0:.8f} +- {1:.8f}".format(totaleff, totaleff_error, mother_particle, year, mag, ybin[0], ybin[1], ptbin[0], ptbin[1]))
     #return [totaleff, totaleff_error]
 
 #################################################
 
+def weightedAverage(dict,integrate=True,ratio=True):
+    
+    total = {"nEvents":{"Lc":0,"Xic":0},"val":{"Lc":0,"Xic":0},"err":{"Lc":0,"Xic":0}}
+
+    for year in dict:
+        for pol in dict[year]:
+            for particle in dict[year][pol]:
+
+                if particle == "ratio":
+                    continue
+
+                total["nEvents"][particle]+=dict[year][pol][particle]["nEvents"]
+                for key in ["val","err"]:
+                    total[key][particle]+=dict[year][pol][particle][key]*dict[year][pol][particle]["nEvents"]
+            
+            if (not ratio) or (not("Xic" in dict[year][pol] and "Lc" in dict[year][pol])):
+                continue
+            
+            if not "ratio" in dict[year][pol]:
+                dict[year][pol]["ratio"]={}
+
+            dict[year][pol]["ratio"]["val"]= dict[year][pol]["Xic"]["val"]/dict[year][pol]["Lc"]["val"]
+            dict[year][pol]["ratio"]["err"] = (
+                sqrt(
+                    (dict[year][pol]["Xic"]["err"]/dict[year][pol]["Xic"]["val"])**2
+                    + (dict[year][pol]["Lc"]["err"]/dict[year][pol]["Lc"]["val"])**2
+                )
+                * dict[year][pol]["ratio"]["val"]
+            )
+            
+
+    weighted = {"ratio":{},"Lc":{},"Xic":{}}
+    for particle in ["Lc","Xic"]:
+        for key in ["val","err"]:
+            weighted[particle][key]=total[key][particle]/total["nEvents"][particle]
+    
+    weighted["ratio"]["val"] = weighted["Xic"]["val"]/weighted["Lc"]["val"]
+
+    weighted["ratio"]["err"]= (
+        sqrt(
+            (weighted["Xic"]["err"]/weighted["Xic"]["val"])**2
+            + (weighted["Lc"]["err"]/weighted["Lc"]["val"])**2
+            )
+            * weighted["ratio"]["val"]
+    )
+
+    if not integrate:
+        return weighted
+
+    return {"weightedAverage":weighted,"single":dict}
 
 def latexTable(dict, years, type):
     csvF = open(table_path + type + "_Eff_Values.tex","w")
@@ -656,18 +707,25 @@ def latexTable(dict, years, type):
     csvF.write("\end{tabular}")
     csvF.close()
 
-def newLatexTable(dict,years,type): #same as the latextable funciton above, except this one works with the new dictionary layout for the selection efficiency
+def newLatexTable(dict,type,weightedAverage = True): #same as the latextable funciton above, except this one works with the new dictionary layout for the selection efficiency
     csvF = open(table_path + type + "_Eff_Values.tex","w")
     csvF.write("\\begin{tabular}{ll|c|c|c|c|c|c|}\n")
     csvF.write("\\cline{3-6}\n")
-    csvF.write("& & \\multicolumn{2}{c|}{$\Xi_c$} & \multicolumn{2}{c|}{$\\Lambda_c$} \\\\ \\cline{3-8}\n")
+    csvF.write("& & \\multicolumn{2}{c|}{$\Lambda_c$} & \multicolumn{2}{c|}{$\\Xi_c$} \\\\ \\cline{3-8}\n")
     csvF.write("& & Efficiency & Err. & Efficiency & Err. & Ratio & Ratio Err. \\\\ \\cline{1-8}\n")
 
-    for year in years:
+    if weightedAverage:
+        avrgDict = dict["weightedAverage"]
+        dict = dict["single"]
+
+    for year in dict:
         if year == "2017": #temp fix as 2017 data only has one polarity for Xic
             continue
         csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict[year]["MagDown"]["Lc"]["val"],dict[year]["MagDown"]["Lc"]["err"],dict[year]["MagDown"]["Xic"]["val"],dict[year]["MagDown"]["Xic"]["err"],dict[year]["MagDown"]["ratio"]["val"],dict[year]["MagDown"]["ratio"]["err"]))
-        csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\cline{{1-8}}\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
+        csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\hline\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
+    
+    if weightedAverage:
+        csvF.write("\\hline \multicolumn{{2}}{{|l|}}{{Weighted Average}}&{:.3e}&{:.3e}&{:.3e}&{:.3e}&{:.3f}&{:.3f} \\\\ \\hline".format(avrgDict["Lc"]["val"],avrgDict["Lc"]["err"],avrgDict["Xic"]["val"],avrgDict["Xic"]["err"],avrgDict["ratio"]["val"],avrgDict["ratio"]["err"]))
 
     csvF.write("\end{tabular}")
     csvF.close()
