@@ -8,11 +8,11 @@ import sys
 sys.path.append('./')
 
 import ROOT, getopt, os
-from Imports import DATA_jobs_Dict, getDataCuts
+from Imports import SWEIGHTS_PATH, DATA_jobs_Dict, getDataCuts
 
 #Input dir is where the original ntuples are, sWeights contains our friend trees
 inputdir = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga"
-sweightsdir = "/data/bfys/cpawley/sWeights/"
+sweightsdir = SWEIGHTS_PATH
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]

@@ -16,8 +16,8 @@ plotVariable   = False  # make an sPlot using sWeights in RooDataSet from worksp
 testFriendTree = True  # test sWeights from friend tree to do an sPlot.
 
 
-inputdir = "/dcache/bfys/scalo/binned_files/"
-outputdir = "/dcache/bfys/cpawley/sWeights/"
+inputdir = TUPLE_PATH
+outputdir = SWEIGHTS_PATH
 cuts=Imports.getDataCuts()
 
 #folders_dict = {"39":["2018_MagDown",2155] , "31":["2017_MagDown", 1843], "40":["2016_MagDown",1859], "41":["2015_MagDown", 579], "42":["2012_MagDown", 1155], "43":["2011_MagDown", 907], "45":["2011_MagUp", 817], "46":["2012_MagUp", 1342], "47":["2015_MagUp", 370], "48":["2016_MagUp", 1771], "49":["2017_MagUp", 1839], "50":["2018_MagUp", 2298] } #a dictionary containing the details of the all the years' data according to joblog.txt

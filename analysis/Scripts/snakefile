@@ -1,4 +1,4 @@
-from Imports import WORKING_DIR, TUPLE_PATH
+from Imports import WORKING_DIR, TUPLE_PATH, SWEIGHTS_PATH
 DICT_OUTPUT_PATH = WORKING_DIR + "Dict_output/"
 MASS_PDF_PATH = WORKING_DIR + "MassFitting/PDF_output/"
 
@@ -89,7 +89,7 @@ rule sWeights_all:
 	output: "sWeights all"
 
 rule dalitz_plots_years:
-     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"{year}_{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand("/data/bfys/cpawley/sWeights/{year}_{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
+     input: ["Imports.py", "dalitzPlane.py", expand(TUPLE_PATH+"{year}_{magpol}/{particle}_total.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"]), expand(SWEIGHTS_PATH+"{year}_{magpol}/{particle}_total_sWeight_swTree.root", year=config["years"], magpol=config["mag_pols"],particle=config["particle_types"])]
      output: expand(WORKING_DIR+"dalitz/{year}_{magpol}/{particle}_total_Dalitz.pdf",year=config["years"],magpol=config["mag_pols"],particle=config["particle_types"])
      shell: "python dalitzPlane.py -m year -y {year} -o {magpol} -p {particle}"
 
