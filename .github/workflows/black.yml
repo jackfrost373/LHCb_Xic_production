@@ -1,12 +1,37 @@
 name: Lint
 
-on: [pull_request]
+on: [pull_request] #edited
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: psf/black@stable
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Black/Stable
+        uses: psf/black@stable
         with: 
           options: --verbose --diff --color --extend-exclude /(\pidcalib|\datafiles|\analysis/\examples|\analysis/\Scripts/\Archive|\analysis/\Scripts/\.snakemake|\analysis/\Scripts/\Dict_output)/
+
+  push_to_docker:  
+    name: Build and push Docker image to Docker Hub
+    # ...but only when a `release` is `published` (combined with `on`)
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Build and push image to the Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
+          push: true
+          tag_with_ref: true
+          tag_with_sha: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xic.lc_production_ratio_analysis:latest
+          context:
+            file: ../../analysis/Scripts/Docker/dockerfile
