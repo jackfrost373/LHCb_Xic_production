@@ -4,9 +4,9 @@ sys.path.append("../")
 
 from array import array
 import Imports
-from Imports import PLOT_PATH, OUTPUT_DICT_PATH
+from Imports import WORKING_DIR, OUTPUT_DICT_PATH
 
-sys.path.append(PLOT_PATH + "Dict_output/Efficiencies/")
+sys.path.append(WORKING_DIR + "Dict_output/Efficiencies/")
 
 years = [2012,2016,2017,2018]
 
@@ -97,7 +97,7 @@ def plotEff(Dict,title,range_yMin,range_yMax):
     cE.Draw()
 
     what = title.split()
-    cE.SaveAs(PLOT_PATH + "Efficiencies/" + what[0] + "_Eff_Graph.pdf")
+    cE.SaveAs(WORKING_DIR + "Efficiencies/" + what[0] + "_Eff_Graph.pdf")
 
 def main(argv):
 

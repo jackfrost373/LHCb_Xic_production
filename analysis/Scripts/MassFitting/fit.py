@@ -24,7 +24,7 @@ from Bukin_year_TotalFit_Dict import fittingDict as Bukin_yearFitDict
 import os.path
 import textwrap
 import Imports
-from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH
+from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, WORKING_DIR
 
 #folder structure : 
 #	/dcache/bfys/scalo/binned_files/2011_MagUp/bins/y_ptbins
@@ -44,7 +44,7 @@ sys.path.append(Dict_PATH)
 #This is the PDF output base path. On local computer, just output into the same directory
 # as the script, with the directory structure below. If on Stomboot, output into the other
 #BASE_PDF_OUTPUT = "./"
-BASE_PDF_OUTPUT = PLOT_PATH + "MassFitting/"
+BASE_PDF_OUTPUT = WORKING_DIR + "MassFitting/"
 
 PDF_PATH_S = BASE_PDF_OUTPUT + "PDF_output/Single/"
 PDF_PATH_C = BASE_PDF_OUTPUT + "PDF_output/Combined/"
