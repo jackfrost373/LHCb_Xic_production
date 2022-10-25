@@ -12,7 +12,7 @@ jobs:
       - name: Black/Stable
         uses: psf/black@stable
         with: 
-          options: --verbose here is another change --color --extend-exclude /(\pidcalib|\datafiles|\analysis/\examples|\analysis/\Scripts/\Archive|\analysis/\Scripts/\.snakemake|\analysis/\Scripts/\Dict_output)/
+          options: --verbose --color --extend-exclude /(\pidcalib|\datafiles|\analysis/\examples|\analysis/\Scripts/\Archive|\analysis/\Scripts/\.snakemake|\analysis/\Scripts/\Dict_output)/
 
   push_to_docker:  
     name: Build and push Docker image to Docker Hub
