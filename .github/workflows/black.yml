@@ -34,4 +34,4 @@ jobs:
           tag_with_sha: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xic.lc_production_ratio_analysis:latest
           context:
-            file: ../../analysis/Scripts/Docker/dockerfile
+          file: ../../analysis/Scripts/Docker/dockerfile
