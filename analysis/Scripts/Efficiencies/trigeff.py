@@ -1,9 +1,9 @@
 import sys
+sys.path.append('../')
 import ROOT, os,  Imports
 from ROOT import TChain, TH1
-from Imports import RAW_TUPLE_PATH
 
-directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
+directory = Imports.RAW_TUPLE_PATH
 
 cuts_L0 = "lcplus_L0HadronDecision_TOS==1"
 cuts_Hlt1 = " && lcplus_Hlt1TrackAllL0Decision_TOS==1"
