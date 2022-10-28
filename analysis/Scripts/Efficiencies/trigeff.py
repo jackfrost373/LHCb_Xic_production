@@ -39,7 +39,7 @@ def trigEff():
                                     trigEffDict[year] = {}
                                 if not polarity in trigEffDict[year]:
                                     trigEffDict[year][polarity]={}
-                                if not particle in trigEffDict[year][polarity][particle]={}:
+                                if not particle in trigEffDict[year][polarity]:
                                     trigEffDict[year][polarity][particle]={}
 
 
