@@ -111,11 +111,11 @@ def main(argv):
                 if not particle in selecEffDict[year][pol]:
                     selecEffDict[year][pol][particle]={}
                 
-                selecEffDict[year][pol][particle]["nEvents"]=k
+                # selecEffDict[year][pol][particle]["nEvents"]=k
                 selecEffDict[year][pol][particle]["val"]=eff
                 selecEffDict[year][pol][particle]["err"]=binom_error
 
-            selecEffDict = weightedAverage(selecEffDict,True,True)
+            selecEffDict = ratio(selecEffDict)
 
             print("\nSelection efficiency calculations are done!")
 
@@ -248,7 +248,7 @@ def main(argv):
                 #                  ignoreB2hhStatErr = False, correctKinematics = False, binningscheme="", extra_cuts=(yptcut + " && " + turbo), MC_tree = Lc_MC_tree, mother_particle = particle, ybin=ybin, ptbin=pt$
                 #      f_text.write(string)
 
-            effDict = weightedAverage(effDict,True,True)
+            effDict = ratio(effDict)
             prettyEffDict = pprint.pformat(effDict)
             f_text.write("effDict = " + str(prettyEffDict))
             f_text.close()
@@ -640,22 +640,11 @@ def calcPIDefficiency( year="2016", mag="Up", bdtbin=0, tupleloc=tupleloc,
 
 #################################################
 
-def weightedAverage(dict,integrate=True,ratio=True):
-    
-    total = {"nEvents":{"Lc":0,"Xic":0},"val":{"Lc":0,"Xic":0},"err":{"Lc":0,"Xic":0}}
-
+def ratio(dict):
     for year in dict:
         for pol in dict[year]:
-            for particle in dict[year][pol]:
 
-                if particle == "ratio":
-                    continue
-
-                total["nEvents"][particle]+=dict[year][pol][particle]["nEvents"]
-                for key in ["val","err"]:
-                    total[key][particle]+=dict[year][pol][particle][key]*dict[year][pol][particle]["nEvents"]
-            
-            if (not ratio) or (not("Xic" in dict[year][pol] and "Lc" in dict[year][pol])):
+            if not("Xic" in dict[year][pol] and "Lc" in dict[year][pol]):
                 continue
             
             if not "ratio" in dict[year][pol]:
@@ -669,27 +658,7 @@ def weightedAverage(dict,integrate=True,ratio=True):
                 )
                 * dict[year][pol]["ratio"]["val"]
             )
-            
-
-    weighted = {"ratio":{},"Lc":{},"Xic":{}}
-    for particle in ["Lc","Xic"]:
-        for key in ["val","err"]:
-            weighted[particle][key]=total[key][particle]/total["nEvents"][particle]
-    
-    weighted["ratio"]["val"] = weighted["Xic"]["val"]/weighted["Lc"]["val"]
-
-    weighted["ratio"]["err"]= (
-        sqrt(
-            (weighted["Xic"]["err"]/weighted["Xic"]["val"])**2
-            + (weighted["Lc"]["err"]/weighted["Lc"]["val"])**2
-            )
-            * weighted["ratio"]["val"]
-    )
-
-    if not integrate:
-        return weighted
-
-    return {"weightedAverage":weighted,"single":dict}
+    return dict
 
 def latexTable(dict, years, type):
     csvF = open(table_path + type + "_Eff_Values.tex","w")
@@ -707,16 +676,12 @@ def latexTable(dict, years, type):
     csvF.write("\end{tabular}")
     csvF.close()
 
-def newLatexTable(dict,type,weightedAverage = True): #same as the latextable funciton above, except this one works with the new dictionary layout for the selection efficiency
+def newLatexTable(dict,type): #same as the latextable funciton above, except this one works with the new dictionary layout for the selection efficiency
     csvF = open(table_path + type + "_Eff_Values.tex","w")
     csvF.write("\\begin{tabular}{ll|c|c|c|c|c|c|}\n")
     csvF.write("\\cline{3-6}\n")
     csvF.write("& & \\multicolumn{2}{c|}{$\Lambda_c$} & \multicolumn{2}{c|}{$\\Xi_c$} \\\\ \\cline{3-8}\n")
     csvF.write("& & Efficiency & Err. & Efficiency & Err. & Ratio & Ratio Err. \\\\ \\cline{1-8}\n")
-
-    if weightedAverage:
-        avrgDict = dict["weightedAverage"]
-        dict = dict["single"]
 
     for year in dict:
         if year == "2017": #temp fix as 2017 data only has one polarity for Xic
@@ -724,9 +689,6 @@ def newLatexTable(dict,type,weightedAverage = True): #same as the latextable fun
         csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict[year]["MagDown"]["Lc"]["val"],dict[year]["MagDown"]["Lc"]["err"],dict[year]["MagDown"]["Xic"]["val"],dict[year]["MagDown"]["Xic"]["err"],dict[year]["MagDown"]["ratio"]["val"],dict[year]["MagDown"]["ratio"]["err"]))
         csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\hline\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
     
-    if weightedAverage:
-        csvF.write("\\hline \multicolumn{{2}}{{|l|}}{{Weighted Average}}&{:.3e}&{:.3e}&{:.3e}&{:.3e}&{:.3f}&{:.3f} \\\\ \\hline".format(avrgDict["Lc"]["val"],avrgDict["Lc"]["err"],avrgDict["Xic"]["val"],avrgDict["Xic"]["err"],avrgDict["ratio"]["val"],avrgDict["ratio"]["err"]))
-
     csvF.write("\end{tabular}")
     csvF.close()
 
