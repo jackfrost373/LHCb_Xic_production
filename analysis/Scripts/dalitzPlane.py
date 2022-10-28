@@ -13,9 +13,9 @@ particle = "Lc" # valid types :- Xic or Lc (For MC studies)
 addsWeights = True
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees are in sweightdir
-inputdir = "/dcache/bfys/jtjepkem/binned_files/"
-sweightsdir = "/data/bfys/cpawley/sWeights/"
-outputdir = "/data/bfys/cpawley/dalitz/"
+inputdir = Imports.TUPLE_PATH
+sweightsdir = Imports.SWEIGHTS_PATH
+outputdir = Imports.DALTIZ_PATH
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]

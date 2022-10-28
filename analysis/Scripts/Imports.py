@@ -2,9 +2,11 @@ TUPLE_PATH = "/dcache/bfys/jtjepkem/binned_files/"
 TUPLE_PATH_NOTRIG = "/dcache/bfys/jtjepkem/binned_files_noTrig/"
 RAW_TUPLE_PATH = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
 
-PLOT_PATH = "/data/bfys/cpawley/LcAnalysis_plots/"
-TABLE_PATH = PLOT_PATH + "Tables/"
-OUTPUT_DICT_PATH = PLOT_PATH + "Dict_output/"
+WORKING_DIR = "/data/bfys/cpawley/LcAnalysis_plots/"
+TABLE_PATH = WORKING_DIR + "Tables/"
+OUTPUT_DICT_PATH = WORKING_DIR + "Dict_output/"
+SWEIGHTS_PATH = WORKING_DIR + "sWeights/"
+DALTIZ_PATH = WORKING_DIR + "dalitz/"
 
 #Important! When we decide the fate of Turbo/Stripping/ etc. These HLT2 checks must be tidied up
 
@@ -88,7 +90,7 @@ MC_jobs_Dict = {
 	"106":["2016","MagUp", 286,"Xic","26103090"],
 
 	"145":["2017","MagDown", 285,"Lc","25103064"],
-	"150":["2017","MagDown", 181,"Xic","26103091"], 
+	"150":["2017","MagDown", 181,"Xic","26103091"], #data apears to be missing
 	"144":["2017","MagUp", 284,"Lc","25103064"],
 	"NA":["2017","MagUp", 181,"Xic","26103091"],
 
@@ -99,3 +101,56 @@ MC_jobs_Dict = {
 }
 
 #this needs changing - job 150 is MagDown only (used as a proxy for MagUp)
+
+def getMC(year,polarity, particle,cuts=True):
+	from ROOT import TChain
+	import os
+	excludedJobs = [
+		"NA",
+		# "150",
+		# "103",
+		# "16",
+		# "97",
+		# "98"
+	]
+	if year > 2012:
+		run =2
+	else: 
+		run =1
+	year = str(year)
+	MC_tree = TChain("tuple_Lc2pKpi/DecayTree")
+
+	for job in MC_jobs_Dict:
+		if job in excludedJobs:
+			continue
+
+		par = MC_jobs_Dict[job][3]
+		y = MC_jobs_Dict[job][0]
+		pol = MC_jobs_Dict[job][1]
+		subjobs = MC_jobs_Dict[job][2]	
+		identifier = MC_jobs_Dict[job][4]
+		filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
+
+		if not y == year:
+			continue
+		if not pol == polarity:
+			continue
+		if not particle == par:
+			continue
+		
+		print(f"adding job {job}")
+		for subjob in os.listdir(RAW_TUPLE_PATH + job):
+			if job == "150":
+				if not os.path.exists(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename): #temp fix
+					continue
+			MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
+	if MC_tree.GetEntries() == 0:
+		return MC_tree
+	
+	if cuts:	
+		MC_tree = MC_tree.CopyTree(getMCCuts(particle,run))
+
+	return MC_tree
+		
+
+

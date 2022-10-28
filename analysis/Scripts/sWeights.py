@@ -16,8 +16,8 @@ plotVariable   = True  # make an sPlot using sWeights in RooDataSet from workspa
 testFriendTree = False  # test sWeights from friend tree to do an sPlot.
 
 #Input dir is where the reduce tuples are, output is where we will make our plots and our friend trees
-inputdir = "/dcache/bfys/jtjepkem/binned_files/"
-outputdir = PLOT_PATH+"sWeights/"
+inputdir = TUPLE_PATH
+outputdir = SWEIGHTS_PATH
 
 #Years, Mag pol and part. types hardcoded
 years = [2011,2012,2015,2016,2017,2018]

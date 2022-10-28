@@ -1,7 +1,7 @@
 import sys, getopt, ROOT, math, textwrap
 from array import array
 import Imports
-from Imports import OUTPUT_DICT_PATH, PLOT_PATH
+from Imports import OUTPUT_DICT_PATH, WORKING_DIR
 
 Import_Path = OUTPUT_DICT_PATH
 sys.path.append(Import_Path)
@@ -17,7 +17,7 @@ from Massfitting.BukinyearFit_DictFile import mainDict as Bukin_yearTotDict
 from Massfitting.BukinsingleFit_DictFile import mainDict as Bukin_singleDict
 
 
-GRAPH_PATH = PLOT_PATH + "Yield_Ratios/Graphs/"
+GRAPH_PATH = WORKING_DIR + "Yield_Ratios/Graphs/"
 years = [2011,2012,2016,2017,2018]
 
 color = 0
