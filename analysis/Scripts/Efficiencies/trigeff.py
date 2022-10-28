@@ -19,8 +19,6 @@ trigEffDict = {}
 
 Dict_PATH = OUTPUT_DICT_PATH + "Efficiencies/"
 
-f = open( Dict_PATH + "trigDict.py","w")
-
 tempfileDir = "/dcache/bfys/jhemink/test2.root"
 
 def trigEff():
@@ -31,19 +29,14 @@ def trigEff():
             for particle in particles:
                 
                 for entry in Imports.MC_jobs_Dict:
+                    
+                    if entry == "NA":
+                        continue
+
                     if Imports.MC_jobs_Dict[entry][0]==year:
                         if Imports.MC_jobs_Dict[entry][1]==polarity:
                             if Imports.MC_jobs_Dict[entry][3]==particle:
-                                
-                                if not year in trigEffDict:
-                                    trigEffDict[year] = {}
-                                if not polarity in trigEffDict[year]:
-                                    trigEffDict[year][polarity]={}
-                                if not particle in trigEffDict[year][polarity][particle]={}:
-                                    trigEffDict[year][polarity][particle]={}
-
-
-
+                            
                                 tempFile = ROOT.TFile.Open(tempfileDir,"RECREATE")
 
                                 tree =  ROOT.TChain("tuple_Lc2pKpi/DecayTree")
@@ -80,11 +73,15 @@ def trigEff():
                                 #binomial error= ((1/N)*((k*(1-(k/N)))**(0.5))), where k is the number of entries with applied cuts, and N is the number of entries without the cuts.
                                 #print("Total efficiency for  " + str(particle) + " is "+ str(total_efficiency) + " +/- " + str(total_error))
 
+                                if not year in trigEffDict:
+                                    trigEffDict[year] = {}
+                                if not polarity in trigEffDict[year]:
+                                    trigEffDict[year][polarity]={}
+                                if not particle in trigEffDict[year][polarity]:
+                                    trigEffDict[year][polarity][particle]={}
+
                                 trigEffDict[year][polarity][particle]["val"] = total_efficiency
                                 trigEffDict[year][polarity][particle]["err"] = binom_error
                                 
-                                
-    # f.write( str(trigEffDict))
     os.remove(tempfileDir)
     return trigEffDict
-    # f.close()
