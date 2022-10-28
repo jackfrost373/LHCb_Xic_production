@@ -19,7 +19,7 @@ def main(argv):
     ROOT.gROOT.SetBatch(True) #STOP SHOWING THE GRAPH FOR ROOT
 
     try:
-        opts, args = getopt.getopt(argv,"hstp")
+        opts, args = getopt.getopt(argv,"hstpo")
     except getopt.GetoptError:
         print("The arguments are wrong")
         sys.exit(2)
@@ -32,7 +32,7 @@ def main(argv):
         arguments.append(arg)
 
     if not options:
-        options = ["-s","-t","-p"]
+        options = ["-s","-t","-p","-o"]
 
     if "-h" in options:
         print(textwrap.dedent(
@@ -45,6 +45,7 @@ def main(argv):
             -s : Selection
             -t : Trigger
             -p : PID
+            -o : Overall efficiency (requires all other efficiencies to have run at least ones)
 
             Running with no parameter will output all the data at once.
             """))
@@ -127,67 +128,20 @@ def main(argv):
             dictF.close()
 
         elif opt == "-t":
+            from trigeff import trigEff
 
             print("\nCreation of the trigger efficiency files")
 
-            trigEffDict = {}
-            years = []
-
-            n = len(MC_jobs_Dict)
-            i = 0
-
-            for job in MC_jobs_Dict:
-                #FOR THE PROGRESSION BAR
-                if i < n:
-                    j = (i + 1) / n
-                    sys.stdout.write('\r')
-                    sys.stdout.write("[%-20s] %d%%" % ('='*int(20*j), 100*j))
-                    sys.stdout.flush()
-                    i += 1
-                if job == "NA":
-                    continue
-
-                particle = MC_jobs_Dict[job][3]
-                year = MC_jobs_Dict[job][0]
-                pol = MC_jobs_Dict[job][1]
-                subjobs = MC_jobs_Dict[job][2]
-                identifier = MC_jobs_Dict[job][4]
-
-                if year not in years:
-                    years.append(year)
-
-                filename = "MC_Lc2pKpiTuple_" + identifier + ".root"
-
-                if int(year) <= 2012:
-                    run = 1
-                    cuts = "lcplus_L0HadronDecision_TOS == 1 && lcplus_Hlt1TrackAllL0Decision_TOS == 1"
-                    turbo = "lcplus_Hlt2CharmHadD2HHHDecision_TOS==1"
-                else:
-                    run = 2
-                    cuts = Imports.getDataCuts(run)
-                    turbo = "lcplus_Hlt1TrackMVADecision_TOS==1"
-
-                #WHAT DO I NEED FOR TRIGGER CUTS?!!
-
-                Lc_MC_tree = TChain("tuple_Lc2pKpi/DecayTree") # !!! QUESTION : NOT BETTER ISTEAD OF CHAIN; JUST GETENTRIES FROM EACH ONE BY ONE, ONCE WITHOUT CUT AND ONCE WITH?
-
-                for subjob in os.listdir(RAW_TUPLE_PATH + job):
-                    Lc_MC_tree.Add(RAW_TUPLE_PATH + job + "/" + subjob + "/" + filename)
-
-                N=float(Lc_MC_tree.GetEntries( turbo + " && lcplus_L0HadronDecision_TOS==1"))
-                k = float(Lc_MC_tree.GetEntries(cuts + " && " + turbo ))
-                eff = float(k/N)
-                binom_error = (1/N)*((k*(1-k/N))**(0.5))
-
-                trigEffDict[particle + "_" + str(year) + "_" + pol] = {'val': eff, 'err': binom_error}
+            trigEffDict = trigEff()
+            trigEffDict = ratio(trigEffDict)
 
             print("\nTrigger efficiency calculations are done!")
 
-            latexTable(trigEffDict,years,"Trigger")
+            newLatexTable(trigEffDict,"Trigger")
 
             prettyEffDict = pprint.pformat(trigEffDict)
             dictF = open(dict_path + "Trigger_Eff_Dict.py","w")
-            dictF.write("trigDict = " + str(prettyEffDict))
+            dictF.write("effDict = " + str(prettyEffDict))
             dictF.close()
 
 
@@ -199,7 +153,7 @@ def main(argv):
 
             cuts = "lcplus_L0HadronDecision_TOS"
 
-            f_text = open(dict_path + "PID_eff_Dict.py", "w")
+            
 
             directory = "/dcache/bfys/jdevries/ntuples/LcAnalysis/ganga/"
             
@@ -250,10 +204,59 @@ def main(argv):
 
             effDict = ratio(effDict)
             prettyEffDict = pprint.pformat(effDict)
+            f_text = open(dict_path + "PID_eff_Dict.py", "w")
             f_text.write("effDict = " + str(prettyEffDict))
             f_text.close()
 
             newLatexTable(effDict,"PID")
+
+        elif opt == "-o":
+            sys.path.append(dict_path)
+            from Selection_Eff_Dict import effDict as Selection
+            from PID_eff_Dict import effDict as PID
+            from Trigger_Eff_Dict import effDict as Trigger
+
+            overallEffDict = {}
+
+            for year in Selection:
+                
+                if not year in (PID and Trigger):
+                    continue
+                
+                for polarity in Selection[year]:
+
+                    if not polarity in (PID[year] and Trigger[year]):
+                        continue
+
+                    for particle in Selection[year][polarity]:
+
+                        if not particle in (PID[year][polarity] and Trigger[year][polarity]):
+                            continue
+
+                        if not year in overallEffDict:
+                            overallEffDict[year] = {}
+                        if not polarity in overallEffDict[year]:
+                            overallEffDict[year][polarity]={}
+                        if not particle in overallEffDict[year][polarity]:
+                            overallEffDict[year][polarity][particle]={}
+                        
+                        overallEffDict[year][polarity][particle]["val"] = (Selection[year][polarity][particle]["val"] 
+                                                                        * PID [year][polarity][particle]["val"]
+                                                                        * Trigger[year][polarity][particle]["val"])
+                        
+                        overallEffDict[year][polarity][particle]["err"] = (
+                            sqrt(
+                                (Selection[year][polarity][particle]["err"]/Selection[year][polarity][particle]["val"])**2
+                                + (PID[year][polarity][particle]["err"]/PID[year][polarity][particle]["val"])**2
+                                + (Trigger[year][polarity][particle]["err"]/Trigger[year][polarity][particle]["val"])**2
+                            ) 
+                            * overallEffDict[year][polarity][particle]["val"]
+                            )
+            prettyOverallEffDict = pprint.pformat(overallEffDict)
+            f_text = open(dict_path + "Total_eff_Dict.py", "w")
+            f_text.write("effDict = " + str(prettyOverallEffDict))
+            f_text.close()
+            newLatexTable(overallEffDict,"Total")
 
         else:
             sys.exit()
@@ -686,6 +689,11 @@ def newLatexTable(dict,type): #same as the latextable funciton above, except thi
     for year in dict:
         if year == "2017": #temp fix as 2017 data only has one polarity for Xic
             continue
+
+        for polarity in dict[year]:
+            if not "ratio"in dict[year][polarity]:
+                dict[year][polarity]["ratio"]={"val":0,"err":0}
+
         csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict[year]["MagDown"]["Lc"]["val"],dict[year]["MagDown"]["Lc"]["err"],dict[year]["MagDown"]["Xic"]["val"],dict[year]["MagDown"]["Xic"]["err"],dict[year]["MagDown"]["ratio"]["val"],dict[year]["MagDown"]["ratio"]["err"]))
         csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\hline\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
     
