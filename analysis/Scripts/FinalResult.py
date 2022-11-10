@@ -20,8 +20,8 @@ def main():
 
     for year in effDict:
         
-        if year == "2017": #temp fix
-            continue
+        # if year == "2017": #temp fix
+        #     continue
         
         intYear = int(year)
 
@@ -75,7 +75,7 @@ def main():
                     * result[year][polarity][particle]["val"]
                 )
     result = ratio(result)
-    # table(result)
+    table(result)
     prettyDict = pprint.pformat(result)
     dictF = open(OUTPUT_DICT_PATH + "FinalResult.py","w")
     dictF.write("resultDict = " + str(prettyDict))
@@ -90,15 +90,38 @@ def table(dict):
 
     for year in dict:
 
-        if year == "2017": #temp fix as 2017 data only has one polarity for Xic
-            continue
+        # if year == "2017": #temp fix as 2017 data only has one polarity for Xic
+        #     dict[year]["MagUp"]["Xic"]={}
+        #     dict[year]["MagUp"]["ratio"]={}
+        #     dict[year]["MagUp"]["Xic"]["val"]=0
+        #     dict[year]["MagUp"]["Xic"]["err"]=0
+        #     dict[year]["MagUp"]["ratio"]["val"]=0
+        #     dict[year]["MagUp"]["ratio"]["err"]=0
+
+        # if not "MagUp" in dict[year]:
+            # dict[year]["MagUp"]={}
+            # dict[year]["MagUp"]["Lc"]={}
+            # dict[year]["MagUp"]["Xic"]={}
+            # dict[year]["MagUp"]["ratio"]={}
+            # dict[year]["MagUp"]["Lc"]["val"]=0
+            # dict[year]["MagUp"]["Lc"]["err"]=0
+            # dict[year]["MagUp"]["Xic"]["val"]=0
+            # dict[year]["MagUp"]["Xic"]["err"]=0
+            # dict[year]["MagUp"]["ratio"]["val"]=0
+            # dict[year]["MagUp"]["ratio"]["err"]=0
+
+
+
 
         for polarity in dict[year]:
             if not "ratio"in dict[year][polarity]:
                 dict[year][polarity]["ratio"]={"val":0,"err":0}
 
         csvF.write("\multicolumn{{1}}{{|l|}}{{\multirow{{2}}{{*}}{}}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\\n".format("{" + str(year) + "}", "{MagDown}",dict[year]["MagDown"]["Lc"]["val"],dict[year]["MagDown"]["Lc"]["err"],dict[year]["MagDown"]["Xic"]["val"],dict[year]["MagDown"]["Xic"]["err"],dict[year]["MagDown"]["ratio"]["val"],dict[year]["MagDown"]["ratio"]["err"]))
-        csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\hline\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
+        if not "MagUp" in dict[year]:
+            csvF.write("\multicolumn{1}{|l|}{} & \multicolumn{1}{|l|}{MagUp} & NA & NA & NA & NA & NA & NA \\\\ \\hline\n")
+        else:
+            csvF.write("\multicolumn{{1}}{{|l|}}{{}} & \multicolumn{{1}}{{|l|}}{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.3f} & {:.3f} \\\\ \\hline\n".format("{MagUp}",dict[year]["MagUp"]["Lc"]["val"],dict[year]["MagUp"]["Lc"]["err"],dict[year]["MagUp"]["Xic"]["val"],dict[year]["MagUp"]["Xic"]["err"],dict[year]["MagUp"]["ratio"]["val"],dict[year]["MagUp"]["ratio"]["err"]))
     
     csvF.write("\end{tabular}")
     csvF.close()
