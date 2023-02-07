@@ -1,6 +1,6 @@
 from math import sqrt
 import sys,pprint
-from Imports import TABLE_PATH, OUTPUT_DICT_PATH
+from Imports import TABLE_PATH, OUTPUT_DICT_PATH,getYbins,getPTbins
 
 effDictPath = OUTPUT_DICT_PATH + "Efficiencies/"
 massFittingDictPath = OUTPUT_DICT_PATH + "Massfitting/"
@@ -126,5 +126,157 @@ def table(dict):
     csvF.write("\end{tabular}")
     csvF.close()
 
+def combinedBinning():
+    from GaussCBcombinedFit_DictFile import mainDict as gaussCombinedDict
+
+    result = {}
+
+    for year in effDict:
+        
+        # if year == "2017": #temp fix
+        #     continue
+        
+        intYear = int(year)
+
+        if not intYear in gaussCombinedDict:
+            continue
+
+        for polarity in effDict[year]:
+            
+            if not polarity in gaussCombinedDict[intYear]:
+                continue
+            
+            for key in gaussCombinedDict[intYear][polarity]:
+                words = key.split("_")
+                particle = words[0]
+                binType = words[1].replace("bin","")
+                binValues = words[2].replace(".root","")
+
+                if not year in result:
+                    result[year]={}
+                if not polarity in result[year]:
+                    result[year][polarity]={}
+                if not binType in result[year][polarity]:
+                    result[year][polarity][binType]={}
+                if not binValues in result[year][polarity][binType]:
+                    result[year][polarity][binType][binValues]={}
+                if not particle in result[year][polarity][binType][binValues]:
+                    result[year][polarity][binType][binValues][particle]={}
+                
+
+                
+                gaussYield = gaussCombinedDict[intYear][polarity][key]["yield_val"]
+                gaussErr = gaussCombinedDict[intYear][polarity][key]["yield_err"]
+                
+                eff = effDict[year][polarity][particle]["val"]
+                effErr = effDict[year][polarity][particle]["err"]
+
+                #SECONDARIES RESULTS HERE
+                #
+                #
+                #
+
+                result[year][polarity][binType][binValues][particle]["val"]=gaussYield/eff
+
+                #do we also need to add other errors here?
+                # right now includes uncertainty in yield and uncertainty in efficiency
+                result[year][polarity][binType][binValues][particle]["err"]=(
+                    sqrt(
+                        (gaussErr/gaussYield)**2
+                        +(effErr/eff)**2
+                    )
+                    * result[year][polarity][binType][binValues][particle]["val"]
+                )
+            
+    result = combinedBinningRatio(result)
+    combinedBinningRatioTable(result)
+    prettyDict = pprint.pformat(result)
+    dictF = open(OUTPUT_DICT_PATH + "Combined_FinalResult.py","w")
+    dictF.write("resultDict = " + str(prettyDict))
+    dictF.close()
+
+def combinedBinningRatio(dict):
+    ptBins = getPTbinsString()
+    yBins = getYbinsString()
+    for year in ["2011","2012","2016","2017","2018"]:
+        if not year in dict:
+            dict[year] = {}
+        for pol in ["MagDown","MagUp"]:
+            if not pol in dict[year]:
+                dict[year][pol]={"pt":{},"y":{}}
+            for binType in dict[year][pol]:
+                for binValues in getBinsString(binType):
+                    if not binValues in dict[year][pol][binType]:
+                        dict[year][pol][binType][binValues]={}
+                    if not("Xic" in dict[year][pol][binType][binValues] and "Lc" in dict[year][pol][binType][binValues]):
+                        dict[year][pol][binType][binValues]["ratio"] = {"val":999,"err":999}
+                        continue
+                    
+                    if not "ratio" in dict[year][pol][binType][binValues]:
+                        dict[year][pol][binType][binValues]["ratio"]={}
+
+                    dict[year][pol][binType][binValues]["ratio"]["val"]= dict[year][pol][binType][binValues]["Xic"]["val"]/dict[year][pol][binType][binValues]["Lc"]["val"]
+                    dict[year][pol][binType][binValues]["ratio"]["err"] = (
+                        sqrt(
+                            (dict[year][pol][binType][binValues]["Xic"]["err"]/dict[year][pol][binType][binValues]["Xic"]["val"])**2
+                            + (dict[year][pol][binType][binValues]["Lc"]["err"]/dict[year][pol][binType][binValues]["Lc"]["val"])**2
+                        )
+                        * dict[year][pol][binType][binValues]["ratio"]["val"]
+                    )
+    return dict
+
+def combinedBinningRatioTable(dict):
+    binTypeString = {"pt": "P_t","y":"\\gamma"}
+    for pol in ["MagDown","MagUp"]:
+        table = open(TABLE_PATH + pol + "_Combined_Ratios_table.tex","w",encoding = "utf-8")
+        
+        table.write("\\begin{tabular}{|c|c|c|c|c|c|c|} \n \\hline \n \\multicolumn{2}{|c|}{Bin}")
+        for year in ["2011","2012","2016","2017","2018"]:
+            table.write(f"&{year}")
+        
+        table.write("\\\\ \n \\hline")
+
+        for binType in dict[year][pol]:
+            nBins = "{"+ str(len(dict[year][pol][binType])) + "}"
+
+            table.write("\\multirow"+nBins+"{*}{"+binTypeString[binType]+"}")
+
+            for binValues in getBinsString(binType):
+
+                table.write(f"& {binValues}")
+
+                for year in ["2011","2012","2016","2017","2018"]:
+                    val = dict[year][pol][binType][binValues]["ratio"]["val"]
+                    err = dict[year][pol][binType][binValues]["ratio"]["err"]
+
+                    if val == 999:
+                        string = "NA"
+                    else:
+                        string = f"{val:.2e}"  #±{err:.2e}"
+
+                    table.write(f"& {string}")
+                
+                table.write("\\\\ \\cline{2-7} \n")
+            table.write("\\hline \n")
+
+        table.write("\\end{tabular}")
+        table.close()
+def getBinsString(binType):
+    if binType == "pt":
+        return getPTbinsString()
+    elif binType == "y":
+        return getYbinsString()
+    return None
+def getPTbinsString():
+    return bins2String(getPTbins())
+def getYbinsString():
+    return bins2String(getYbins())
+def bins2String(bins):
+    return [f"{bin[0]}-{bin[1]}" for bin in bins]
+
+
+                
+
+
 if __name__ == "__main__":
-    main()
+    combinedBinning()
