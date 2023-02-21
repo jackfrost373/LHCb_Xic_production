@@ -6,7 +6,7 @@ fittingDict = {
 				"peak_range" : [2469, 2455, 2485],
 				
 				"normalisation_factor" : 0.1,
-
+				"exponential_normalisation_factor" : 0.1,
 				
 				"exponential_range" : [-0.02, -.5, 0],
 				
