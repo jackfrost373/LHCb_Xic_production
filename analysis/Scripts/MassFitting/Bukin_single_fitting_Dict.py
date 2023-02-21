@@ -1,7 +1,7 @@
 fittingDict = {
 	"Bukin" : {
 		"Xic" : {
-		    "general" : {
+			"general" : {
 				"mass_range" : [2420, 2520],
 				"peak_range" : [2469, 2455, 2485],
 				

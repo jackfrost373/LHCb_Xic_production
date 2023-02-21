@@ -2,7 +2,7 @@
 
 import ROOT, os, Plot_comparison, Imports
 from ROOT import TChain, TCanvas, TH1
-from Imports import PLOT_PATH, TUPLE_PATH, RAW_TUPLE_PATH
+from Imports import WORKING_DIR, TUPLE_PATH, RAW_TUPLE_PATH
 
 #change the following string variable to select which particle you want to study
 particle = "Xic"
