@@ -1,6 +1,7 @@
 import ROOT, sys
 sys.path.append('../')
 from Imports import OUTPUT_DICT_PATH, TABLE_PATH
+from math import sqrt
 tablePath = TABLE_PATH
 dictPath = OUTPUT_DICT_PATH + "Massfitting/"
 
@@ -20,8 +21,8 @@ def yearTables():
     LcTable = open(tablePath + "Year_Lc_yields_table.tex","w",encoding="utf-8")
     XicTable = open(tablePath + "Year_Xic_yields_table.tex","w",encoding="utf-8")
 
-    LcTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity& GaussCB yield& Bukin yield&Difference& Relative difference\\\\ \n \\hline \n \\hline \n")
-    XicTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity&GaussCB yield& Bukin yield&Difference& Relative difference\\\\ \n \\hline \n \\hline \n")
+    LcTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity& GaussCB yield& Bukin yield&Difference& Rel. difference\\\\ \n \\hline \n \\hline \n")
+    XicTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity&GaussCB yield& Bukin yield&Difference& Rel. difference\\\\ \n \\hline \n \\hline \n")
 
     for year in GaussYear:
         if GaussYear[year]=={}:
@@ -45,7 +46,7 @@ def yearTables():
                 diff = round(BukinValue) - round(GaussValue)
                 relDiff = diff/round(GaussValue)*100
 
-                D  = str(round(diff))+ " ± "+str(round(GaussYear[year][pol][filename]['yield_err']+round(BukinYear[year][pol][filename]['yield_err'])))
+                D  = str(round(diff))+ " ± "+str(round(sqrt(round(GaussYear[year][pol][filename]['yield_err'])^2+round(BukinYear[year][pol][filename]['yield_err'])^2)))
                 rD = str(round(relDiff,1))+"\\%"
 
                 if particle == "Lc":
