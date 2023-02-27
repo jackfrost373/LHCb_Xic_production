@@ -13,7 +13,9 @@ Before running the script make sure you have two folders in the programme direct
 -	PDF_output/Year
 These are for the output of the script and are necessary for a functionning run.
 
-The parameters are
+To make all fits, use only "-a" as a flag.
+			
+For making subsets of the fits the parameters are
 -	s : shape (GaussCB or Bukin)
 -	m : mode (single, combined or year)
 -	y : year (e.g. 2011) 
