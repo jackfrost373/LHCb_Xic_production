@@ -14,8 +14,8 @@ def yearTables():
     from BukinyearFit_DictFile import mainDict as BukinYear
     from GaussCByearFit_DictFile import mainDict as GaussYear
 
-    LcTable = open(tablePath + "Year_Lc_yields_table.tex","w",encoding="utf-8")
-    XicTable = open(tablePath + "Year_Xic_yields_table.tex","w",encoding="utf-8")
+    LcTable = open(tablePath + "Year_Lc_yields_compare_table.tex","w",encoding="utf-8")
+    XicTable = open(tablePath + "Year_Xic_yields_compare_table.tex","w",encoding="utf-8")
 
     LcTable.write("\\begin{table}[h]\n\\centering")
     XicTable.write("\\begin{table}[h]\n\\centering")
@@ -40,12 +40,12 @@ def yearTables():
 
                 GaussValue = GaussYear[year][pol][filename]['yield_val']
                 BukinValue = BukinYear[year][pol][filename]['yield_val']
-                GaussYield = str(round(GaussValue))+" ± "+str(round(GaussYear[year][pol][filename]['yield_err']))
-                BukinYield = str(round(BukinValue))+" ± "+str(round(BukinYear[year][pol][filename]['yield_err']))
+                GaussYield = str(round(GaussValue))+" $\\pm$ "+str(round(GaussYear[year][pol][filename]['yield_err']))
+                BukinYield = str(round(BukinValue))+" $\\pm$ "+str(round(BukinYear[year][pol][filename]['yield_err']))
                 diff = round(BukinValue) - round(GaussValue)
                 relDiff = diff/round(GaussValue)*100
 
-                D  = str(round(diff))+ " ± "+str(round(sqrt(round(GaussYear[year][pol][filename]['yield_err'])^2+round(BukinYear[year][pol][filename]['yield_err'])^2)))
+                D  = str(round(diff))+ " $\\pm$ "+str(round(sqrt(round(GaussYear[year][pol][filename]['yield_err'])^2+round(BukinYear[year][pol][filename]['yield_err'])^2)))
                 rD = str(round(relDiff,1))+"\\%"
 
                 if particle == "Lc":
@@ -58,8 +58,8 @@ def yearTables():
             elif particle == "Xic":
                 XicTable.write("\\hline \n")
     
-    LcTable.write("\\end{tabular}\n\\caption{Lc yields compared to alternate fitshape}\n\\label{table:LcYieldCompare}\n\\end{table}")
-    XicTable.write("\\end{tabular}\n\\caption{Xic yields compared to alternate fitshape}\n\\label{table:XicYieldCompare}\n\\end{table}")
+    LcTable.write("\\end{tabular}\n\\caption{$\Lambda_c$ yields compared to alternate fit shape}\n\\label{table:LcYieldCompare}\n\\end{table}")
+    XicTable.write("\\end{tabular}\n\\caption{$\Xi_c$ yields compared to alternate fit shape}\n\\label{table:XicYieldCompare}\n\\end{table}")
 
 def MCTables():
 
