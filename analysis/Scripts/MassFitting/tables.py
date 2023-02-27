@@ -11,15 +11,14 @@ def yearTables():
 
     sys.path.append(dictPath)
 
-    # from BukincombinedFit_DictFile import mainDict as BukinCombined
-    # from BukinsingleFit_DictFile import mainDict as BukinSingle
     from BukinyearFit_DictFile import mainDict as BukinYear
-    # from GaussCBsingleFit_DictFile import mainDict as GaussSingle
-    # from GaussCBcombinedFit_DictFile import mainDict as GaussCombined
     from GaussCByearFit_DictFile import mainDict as GaussYear
 
     LcTable = open(tablePath + "Year_Lc_yields_table.tex","w",encoding="utf-8")
     XicTable = open(tablePath + "Year_Xic_yields_table.tex","w",encoding="utf-8")
+
+    LcTable.write("\\begin{table}[h]\n\\centering")
+    XicTable.write("\\begin{table}[h]\n\\centering")
 
     LcTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity& GaussCB yield& Bukin yield&Difference& Rel. difference\\\\ \n \\hline \n \\hline \n")
     XicTable.write("\\begin{tabular}{ c|c|c|c|c|c }\n \\hline \n Year & Polarity&GaussCB yield& Bukin yield&Difference& Rel. difference\\\\ \n \\hline \n \\hline \n")
@@ -59,8 +58,8 @@ def yearTables():
             elif particle == "Xic":
                 XicTable.write("\\hline \n")
     
-    LcTable.write("\\end{tabular}")
-    XicTable.write("\\end{tabular}")
+    LcTable.write("\\end{tabular}\n\\caption{Lc yields compared to alternate fitshape}\n\\label{table:LcYieldCompare}\n\\end{table}")
+    XicTable.write("\\end{tabular}\n\\caption{Xic yields compared to alternate fitshape}\n\\label{table:XicYieldCompare}\n\\end{table}")
 
 def MCTables():
 
@@ -132,8 +131,53 @@ def MCTables():
     
     MCTable.write("\\end{tabular}")
 
+def GaussYieldsTable():
+    sys.path.append(dictPath)
+    from GaussCByearFit_DictFile import mainDict as GaussYear
+
+    table = open(tablePath + "GaussYields_table.tex","w",encoding="utf-8")
+
+    table.write("\\begin{table}[h]\\centering\n")
+    table.write("\\begin{tabular}{ll|c|c|c|c|}\n")
+    table.write("\\cline{3-6}\n")
+    table.write("& & \\multicolumn{2}{c|}{$\Lambda_c$} & \multicolumn{2}{c|}{$\\Xi_c$} \\\\ \\hline\n")
+    table.write("\multicolumn{1}{|c|}{Year} & \multicolumn{1}{|c|}{Polarity} & Yield & Err. & Yield & Err.\\\\\n")
+
+    for year in GaussYear:
+        if GaussYear[year] == {}:
+            continue
+        
+        table.write("\hline\n")
+        table.write(f"\multicolumn{{1}}{{|c|}}{{\\multirow{{2}}{{*}}{{{year}}}}}")
+
+        for polarity in ["MagDown","MagUp"]:
+            if not polarity in GaussYear[year]:
+                GaussYear[year][polarity] = {}
+
+            if polarity == "MagUp":
+                table.write("\multicolumn{1}{|c|}{}")
+
+            if not "Lc_total.root" in GaussYear[year][polarity]:
+                LcYield = "NA"
+                LcErr = "NA"
+            else:
+                LcYield = round(GaussYear[year][polarity]["Lc_total.root"]["yield_val"])
+                LcErr = round(GaussYear[year][polarity]["Lc_total.root"]["yield_err"])
+            
+            if not "Xic_total.root" in GaussYear[year][polarity]:
+                XicYield = "NA"
+                XicErr = "NA"
+            else:
+                XicYield = round(GaussYear[year][polarity]["Xic_total.root"]["yield_val"])
+                XicErr = round(GaussYear[year][polarity]["Xic_total.root"]["yield_err"])
+
+            table.write(f" & \multicolumn{{1}}{{|c|}}{{{polarity}}} & {LcYield} & {LcErr} & {XicYield} & {XicErr} \\\\ \n")
+
+    table.write("\\hline\n\end{tabular}\\caption{Table of yields for each year depending on the magnet polarity and particle in question for GaussCB.}\n\\label{table:yield}\n\\end{table}")
+    table.close()
 
 
 if __name__ == "__main__":
     yearTables()
     # MCTables()
+    GaussYieldsTable()
