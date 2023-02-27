@@ -9,6 +9,7 @@ from Bukin_year_TotalFit_Dict import fittingDict as Bukin_yearFitDict
 from Imports import TUPLE_PATH, OUTPUT_DICT_PATH, PLOT_PATH,getMC,getMCCuts
 
 def main():
+  tempFile = "/dcache/bfys/jhemink/test.root" #change this
 	pdfpath = PLOT_PATH + "MassFitting/MC/PDF_output/Year/"
 	dictpath = OUTPUT_DICT_PATH + "Massfitting/MC/"
 	GaussDict ={}
@@ -17,7 +18,7 @@ def main():
 	for year in [2011,2012,2016,2017,2018]:
 		for particle in ["Lc","Xic"]:
 			for mag in ["MagDown","MagUp"]:
-				file = ROOT.TFile.Open("/dcache/bfys/jhemink/test.root","RECREATE")
+				file = ROOT.TFile.Open(tempFile,"RECREATE")
 				mctree = getMC(year = year,particle = particle,polarity = mag,cuts = True)
 				if year > 2012:
 					run =2
@@ -37,7 +38,7 @@ def main():
 				BukinDict[year][mag][f"MC_{particle}"], objList = fit(mctree,"Bukin",Bukin_yearFitDict,f"{year}_{mag}_{particle}_total.root",particle,True,pdfpath)
 				
 				file.Close()
-				
+        
 	dictF = open(dictpath + "GaussCB_MC_DictFile.py","w")
 	dictF.write("mainDict = " + str(GaussDict))
 	dictF.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
@@ -47,7 +48,7 @@ def main():
 	dictG.write("\ndef dictSearch(shape,year, magPol, filename):\n\tparamArray=[]\n\tfor i,j in mainDict[shape][year][magPol][filename].items():\n\t\tparamArray.append(j)\n\treturn paramArray")
 	dictG.close()
 	
-	os.remove("/dcache/bfys/jhemink/test.root")
+	os.remove(tempFile)
 
 
 
