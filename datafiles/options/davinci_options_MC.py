@@ -19,7 +19,7 @@ eventtype = 25103064
 #eventtype = 15164101 # Lb -> (Xi_c -> L pi) pi with DecProdCut
 #eventtype = 16264060 # Xibc -> (Xi_c -> p K pi) pi, Xibc lifetime = 0.4ps, DecProdCut, DaugInLhcb 
 
-eventtype = 25103064 # New created Lc
+#eventtype = 25103064 # New created Lc
 #eventtype = 26103091 # New created Xic - no longer used
 #eventtype = 26103092 # New created Xic with new lifetime
 
@@ -37,8 +37,9 @@ if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) :
 
 if(eventtype == 25103064 or eventtype == 26103091 or eventtype == 26103092) : # new MC
   MDST = True
-  Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' 
-  lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?
+  if(year in ['2015','2016','2017','2018']) :
+    Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' 
+    lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?
 
 ############################################################
 
@@ -80,7 +81,7 @@ tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
 
-'''
+
 # Build combinations ourselves instead of depending on stripping output.
 if(Turbo) :
   from PhysConf.Selections import AutomaticData
@@ -99,7 +100,7 @@ if(Turbo) :
                     'K-' : '(PT > 200*MeV) & (P > 2000*MeV) & (MIPCHI2DV(PRIMARY) > 4)',
                     'pi+': '(PT > 200*MeV) & (P > 2000*MeV) & (MIPCHI2DV(PRIMARY) > 4)'},
      CombinationCut="( (ADAMASS('Lambda_c+') < 110*MeV) | (ADAMASS('Xi_c+') < 110*MeV) )",
-     MotherCut="( (VFASPF(VCHI2/VDOF)< 10) & ( (ADMASS('Lambda_c+') < 80*MeV) | (ADMASS('Xi_c+') < 80*MeV) )"
+     MotherCut="( (VFASPF(VCHI2/VDOF)< 10) & ( (ADMASS('Lambda_c+') < 80*MeV) | (ADMASS('Xi_c+') < 80*MeV) ) )"
   )
 
   from PhysConf.Selections import Selection, SelectionSequence
@@ -108,9 +109,9 @@ if(Turbo) :
   DaVinci().UserAlgorithms += [ Lc2pKpi_seq.sequence() ]
   tuple_Lc2pKpi.Inputs = [ Lc2pKpi_sel.outputLocation() ]
 
-if(Turbo and year in ["2015","2016"]) : tuple_Lc2pKpi.InputPrimaryVertices = '/Event/Turbo/Primary'
+#if(Turbo and year in ["2015","2016"]) : tuple_Lc2pKpi.InputPrimaryVertices = '/Event/Turbo/Primary'
 
-'''
+
 
 # (detached) B -> (Lc -> p K pi) mu nu
 #line = "SelLc2PKPiforCharmFromBSemi"

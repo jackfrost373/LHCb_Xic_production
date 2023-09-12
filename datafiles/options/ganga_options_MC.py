@@ -18,7 +18,7 @@ eventtype = 25103064
 #eventtype = 25103036 # Xic -> p K pi with Tightcut, but with Lc used as decay with corrected mass 2468. changed lifetime/pt as well.
 #eventtype = 25103046 # Xic -> p K pi with Tightcut, Lc is used to mimic Xic, 'Xic partner for 25103006'.
 #eventtype = 25203000 # NEW Lc -> pKpi with Dalitz
-eventtype = 25103064 # NEW Lc -> pKpi with Dalitz and optimised cuts on the generator level
+#eventtype = 25103064 # NEW Lc -> pKpi with Dalitz and optimised cuts on the generator level
 #eventtype = 26103090 # NEW Xic -> pKpi without using Lc as proxy
 
 #eventtype = 15264011 # Lb -> (Lc -> p K pi) pi with DecProdCut
@@ -47,8 +47,8 @@ j.inputfiles = [ LocalFile('./options/mcdatabase.py') ] # for DaVinci db tags
 app = "DaVinci"
 version  = "v44r5"
 platform = "x86_64-slc6-gcc62-opt" # default grid
-#projectpath = "/project/bfys/jdevries/cmtuser"
-projectpath = "/project/bfys/cpawley/cmtuser"
+projectpath = "/project/bfys/jdevries/cmtuser"
+#projectpath = "/project/bfys/cpawley/cmtuser"
 if(restripversion == "stripping21") : 
   version  = "v36r1p5"
   platform = "x86_64-slc6-gcc48-opt"
@@ -83,7 +83,7 @@ if not query:
   #j.remove()
 else :
   j.inputdata = query.getDataset()
-  #j.inputdata = query.getDataset()[:3] # for local testing
+  #j.inputdata = query.getDataset()[:1] # for local testing
 
   j.submit()
   #queues.add(j.submit)

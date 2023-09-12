@@ -149,23 +149,36 @@ db[26103090] = [
 ('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-Pythia8/Sim09f/Trig0x6139160F/Reco16/Turbo03/Stripping28r1NoPrescalingFlagged/26103090/ALLSTREAMS.DST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 754, 2006283, 90980),
 ]
 
-# Our new Lc request with tightcutsv2
+
+# New Lc production with tightcutsv2
 db[25103064] = [
-('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-mu100', 4056, 10003317, 106119),
-('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-md100', 4059, 10007458, 108253),
-('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-md100', 2902, 7121612, 128812),
-('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-mu100', 2857, 7006362, 128814),
 ('/MC/2011/Beam3500GeV-2011-MagDown-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-md100', 1094, 3036549, 128816),
 ('/MC/2011/Beam3500GeV-2011-MagUp-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-mu100', 1079, 3000757, 128818),
-('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 4068, 10011069, 130101),
-('/MC/2018/Beam6500GeV-2018-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4080, 10060619, 130103),
-('/MC/2016/Beam6500GeV-2016-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4410, 10869713, 130105),
-('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 3415, 8398608, 130107),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-md100', 2902, 7121612, 128812),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-mu100', 2857, 7006362, 128814),
 ('/MC/2015/Beam6500GeV-2015-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-md100', 907, 2232039, 130109),
 ('/MC/2015/Beam6500GeV-2015-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-mu100', 1268, 3113322, 130111),
+('/MC/2016/Beam6500GeV-2016-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4410, 10869713, 130105),
+('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 3415, 8398608, 130107),
+('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-mu100', 4056, 10003317, 106119),
+('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09h/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-md100', 4059, 10007458, 108253),
+('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 4068, 10011069, 130101),
+('/MC/2018/Beam6500GeV-2018-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/25103064/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4080, 10060619, 130103)
 ]
 
-# Our new Xic request (2nd version)
+# New Xic production with tightcuts
 db[26103092] = [
+('/MC/2011/Beam3500GeV-2011-MagDown-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-md100', 1130, 3000029, 136951),
+('/MC/2011/Beam3500GeV-2011-MagUp-Nu2-Pythia8/Sim09k/Trig0x40760037/Reco14c/Stripping21r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-1', 'sim-20160614-1-vc-mu100', 1117, 3006305, 136953),
+('/MC/2012/Beam4000GeV-2012-MagDown-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-md100', 3574, 8488616, 136955),
+('/MC/2012/Beam4000GeV-2012-MagUp-Nu2.5-Pythia8/Sim09k/Trig0x409f0045/Reco14c/Stripping21NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-2', 'sim-20160321-2-vc-mu100', 3554, 8442996, 136957),
+('/MC/2015/Beam6500GeV-2015-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-md100', 843, 2005734, 136959),
+('/MC/2015/Beam6500GeV-2015-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x411400a2/Reco15a/Turbo02/Stripping24r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20161124-vc-mu100', 831, 2001117, 136961),
+('/MC/2016/Beam6500GeV-2016-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-md100', 4238, 10232579, 136963),
+('/MC/2016/Beam6500GeV-2016-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x6139160F/Reco16/Turbo03a/Stripping28r1NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20170721-2-vc-mu100', 4185, 10115377, 136965),
+('/MC/2017/Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-md100', 10285, 24870035, 136967),
+('/MC/2017/Beam6500GeV-2017-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x62661709/Reco17/Turbo04a-WithTurcal/Stripping29r2NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-1-vc-mu100', 4936, 11917079, 136969),
 ('/MC/2018/Beam6500GeV-2018-MagDown-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-md100', 8271, 19981546, 136389),
+('/MC/2018/Beam6500GeV-2018-MagUp-Nu1.6-25ns-Pythia8/Sim09k/Trig0x617d18a4/Reco18/Turbo05-WithTurcal/Stripping34NoPrescalingFlagged/26103092/ALLSTREAMS.MDST', 'dddb-20170721-3', 'sim-20190430-vc-mu100', 4145, 10001026, 136391)
 ]
+

@@ -1,6 +1,6 @@
 
 year = '2017'
-decay = 'Lc2pKpi'
+decay = 'Xib2XicMuX'
 magnet = 'MagDown'
 
 # Before running on the grid, please ensure in the davinci options that:
@@ -20,6 +20,11 @@ magnet = 'MagDown'
 
 Turbo = False
 streamsuffix = "CHARM.MDST"
+
+if (year == "2015_5TeV") :
+  Turbo = True
+  streamsuffix = "TURBO.MDST"
+
 
 '''
 if (decay=="Lc2pKpi" or decay=="Xic2pKpi") :
@@ -44,11 +49,18 @@ yeardict["2016"] = { "recsel" : "Reco16/Stripping28r1" , "energy" : "6500" , "ev
 yeardict["2017"] = { "recsel" : "Reco17/Stripping29r2" , "energy" : "6500" , "eventtype" : "90000000" }
 yeardict["2018"] = { "recsel" : "Reco18/Stripping34"   , "energy" : "6500" , "eventtype" : "90000000" }
 
+if (decay=="Lc2pKpi_noipchi2") :
+  yeardict["2011"]["recsel"] = "Reco14/Stripping21r1p2"
+  yeardict["2012"]["recsel"] = "Reco14/Stripping21r0p2"
+
+
 if(Turbo) :
   #yeardict["2015"] = { "recsel" : "Turbo02",  "energy" : "6500" , "eventtype" : "94000000" , "suffix" : "TURBO.MDST" }
   yeardict["2016"] = { "recsel" : "Turbo03a", "energy" : "6500" , "eventtype" : "94000000" }
   yeardict["2017"] = { "recsel" : "Turbo04",  "energy" : "6500" , "eventtype" : "94000000" }
   yeardict["2018"] = { "recsel" : "Turbo05",  "energy" : "6500" , "eventtype" : "94000000" }
+  yeardict["2015_5TeV"] = { "recsel" : "Turbo01aEM"   , "energy" : "2510" , "eventtype" : "94000000" }
+
 
 recsel    = yeardict[year]["recsel"]
 energy    = yeardict[year]["energy"]
@@ -63,6 +75,7 @@ app = "DaVinci"
 version = "v44r5"
 platform = "x86_64-slc6-gcc62-opt"
 projectpath = "/project/bfys/jdevries/cmtuser"
+#projectpath = "/project/bfys/cpawley/cmtuser"
 from os import path
 if not path.isdir("{0}/{1}Dev_{2}".format(projectpath,app,version)) :
   prepareGaudiExec('DaVinci','v44r5', myPath=projectpath)
@@ -85,7 +98,7 @@ j.splitter = SplitByFiles(filesPerJob=filesperjob, ignoremissing = True)
 
 # Get data to run over
 #j.application.readInputData('./data/Collision17_MagDown_Reco17_Stripping29r2_CHARM/Collision17_MagDown_Reco17_Stripping29r2_CHARM_full_mdst.py')
-dataloc = '/LHCb/Collision{0}/Beam{1}GeV-VeloClosed-{2}/Real Data/{3}/{4}/{5}'.format(year[2:],energy,magnet,recsel,eventtype,streamsuffix)
+dataloc = '/LHCb/Collision{0}/Beam{1}GeV-VeloClosed-{2}/Real Data/{3}/{4}/{5}'.format(year[:4][2:],energy,magnet,recsel,eventtype,streamsuffix)
 print("Querying for data {0}".format(dataloc))
 query = BKQuery(dataloc)
 
