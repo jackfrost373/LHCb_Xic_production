@@ -183,6 +183,9 @@ mctuple.Branches = { 'lcplus' : '[Lambda_c+ => p+ K- pi+]CC',
                      'kminus' : '[Lambda_c+ => p+ ^K- pi+]CC',
                      'piplus' : '[Lambda_c+ => p+ K- ^pi+]CC' }
 #mctuple.ToolList = ["MCTupleToolKinematic"]
+mctuple.ToolList = ['TupleToolRecoStats', 'MCTupleToolAngles', 'MCTupleToolHierarchy', 
+                    'MCTupleToolKinematic', 'MCTupleToolPrimaries', 'MCTupleToolReconstructed', 
+                    "MCTupleToolInteractions" ]
 DaVinci().UserAlgorithms += [mctuple]
 
 
