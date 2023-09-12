@@ -1,6 +1,6 @@
 
 year = '2017'
-decay = 'Lc2pKpi'
+decay = 'Xib2XicMuX'
 
 # when running ganga, make sure year matches the dst year
 
@@ -42,6 +42,13 @@ if (decay == "Lc2pKpi" or decay == "Xic2pKpi") :
       stream = "Charmmultibody"
   '''
 
+  if year == "2015_5TeV" :
+    #dst-dump gives  | *Turbo/Hlt2CharmHadLc2KPPi_XSecTurbo/Particles
+    Turbo = True
+    striplines = ["Hlt2CharmHadLc2KPPi_XSecTurbo"]
+    stream = "Turbo"
+
+
 if (decay == "Lb2LcMuX" or decay == "Xib2XicMuX") :
   striplines  = ["B2DMuNuX_Lc", "B2DMuNuX_Lc_FakeMuon"]
   stream      = "Semileptonic"
@@ -50,6 +57,7 @@ if (decay == "Lb2LcMuX" or decay == "Xib2XicMuX") :
 
 if (decay == "Xib2XicMuX") :
   striplines = [ stripline.replace("L","Xi") for stripline in striplines ]
+  decaystring = decaystring.replace("Lambda","Xi")
 
 if (decay == "Lc2pKpi_noipchi2") :
   # (prompt) Lc -> p K pi 
@@ -67,7 +75,7 @@ mytuple.setDescriptorTemplate( decaystring )
 if(inputtype=="DST")  : mytuple.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,stripline) for stripline in striplines ] 
 if(inputtype=="MDST") : mytuple.Inputs = ['Phys/{0}/Particles'.format(stripline) for stripline in striplines ]
 if(Turbo)             : mytuple.Inputs = ['{0}/Particles'.format(stripline) for stripline in striplines ]
-if(Turbo and year in ["2015","2016"]) : mytuple.InputPrimaryVertices = '/Event/Turbo/Primary'
+if(Turbo and year[:4] in ["2015","2016"]) : mytuple.InputPrimaryVertices = '/Event/Turbo/Primary'
 
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 if( "Lc2pKpi" in decay ) :
@@ -144,11 +152,11 @@ if(inputtype=="MDST") :
   DaVinci().RootInTES = "/Event/{0}".format(stream)
 if(Turbo)             : 
   DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
-  if(year in ["2015","2016"]) :
+  if(year[:4] in ["2015","2016"]) :
     DaVinci().RootInTES = "/Event/Turbo".format(stream)
 
 DaVinci().InputType = inputtype
-DaVinci().DataType = year
+DaVinci().DataType = year[:4]
 DaVinci().Simulation = False
 DaVinci().Lumi = True
 DaVinci().PrintFreq = 1000
