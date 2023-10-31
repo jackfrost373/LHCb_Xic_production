@@ -2,7 +2,7 @@
 magnet = 'MagDown'
 pythia = "Pythia8"
 year = '2017'
-eventtype = 25103064
+eventtype = 26103092
 
 # Select eventtype. Find details for eventtypes at http://lhcbdoc.web.cern.ch/lhcbdoc/decfiles/
 #eventtype = 25103000 # Lc -> p K pi with DecProdCut
@@ -37,9 +37,10 @@ if(year in ['2016','2017','2018'] and eventtype in [25203000, 26103090]) :
 
 if(eventtype == 25103064 or eventtype == 26103091 or eventtype == 26103092) : # new MC
   MDST = True
-  if(year in ['2015','2016','2017','2018']) :
-    Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' 
-    lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?
+  #if(year in ['2015','2016','2017','2018']) :
+    #Turbo = True # does not work: missing destination '/Event/AllStreams/MC/Particles' ? 
+    #lines = ["Hlt2CharmHad{0}pToPpKmPipTurbo".format(p) for p in ["Lc","Xic"] ] # does not work: contains 0 events?
+    #lines += ["Hlt2CharmHadLc2KPPi_XSecTurbo"]
 
 ############################################################
 
@@ -70,7 +71,11 @@ from DecayTreeTuple.Configuration import *
 # (prompt) Lc -> p K pi 
 stream = "AllStreams"
 tuple_Lc2pKpi = DecayTreeTuple( 'tuple_Lc2pKpi' )
-tuple_Lc2pKpi.Inputs = ['/Event/{0}/Phys/{1}/Particles'.format(stream,line) for line in lines]
+tuple_Lc2pKpi.Inputs =             ['/Event/{0}/Phys/{1}/Particles'.format(stream,line) for line in lines]
+if(MDST)  : tuple_Lc2pKpi.Inputs = ['Phys/{0}/Particles'.format(line) for line in lines ]
+if(Turbo) : tuple_Lc2pKpi.Inputs = ['{0}/Particles'.format(line) for line in lines ]
+if(Turbo and year[:4] in ["2015","2016"]) : mytuple.InputPrimaryVertices = '/Event/Turbo/Primary'
+
 tuple_Lc2pKpi.Decay = '[Lambda_c+ -> ^p+ ^K- ^pi+]CC'
 tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
                             'pplus'  : '[Lambda_c+ -> ^p+ K- pi+]CC',
@@ -82,6 +87,7 @@ dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrai
 dtftool.constrainToOriginVertex = True
 
 
+'''
 # Build combinations ourselves instead of depending on stripping output.
 if(Turbo) :
   from PhysConf.Selections import AutomaticData
@@ -108,6 +114,7 @@ if(Turbo) :
   Lc2pKpi_seq = SelectionSequence('Lc2pKpi_seq', TopSelection=Lc2pKpi_sel)
   DaVinci().UserAlgorithms += [ Lc2pKpi_seq.sequence() ]
   tuple_Lc2pKpi.Inputs = [ Lc2pKpi_sel.outputLocation() ]
+'''
 
 #if(Turbo and year in ["2015","2016"]) : tuple_Lc2pKpi.InputPrimaryVertices = '/Event/Turbo/Primary'
 
@@ -140,10 +147,12 @@ tupletools.append("TupleToolRecoStats")  # nPVs, nTracks, etc.
 tupletools.append("TupleToolMCTruth")    # MC Truth information
 tupletools.append("TupleToolMCBackgroundInfo") # BKGCAT information
 
-triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
- "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
- "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision",
- "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
+triggerlist = [
+  "L0HadronDecision","L0MuonDecision","L0ElectronDecision",
+  "Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
+  "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadD2HHHWideMassDecision", 
+  "Hlt2CharmHadLambdaC2KPPiDecision", "Hlt2CharmHadLambdaC2KPPiWideMassDecision",
+  "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision", "Hlt2CharmHadLc2KPPi_XSecTurboDecision" ]
 
 for tup in tuples:
     # add tools
@@ -184,8 +193,8 @@ mctuple.Branches = { 'lcplus' : '[Lambda_c+ => p+ K- pi+]CC',
                      'piplus' : '[Lambda_c+ => p+ K- ^pi+]CC' }
 #mctuple.ToolList = ["MCTupleToolKinematic"]
 mctuple.ToolList = ['TupleToolRecoStats', 'MCTupleToolAngles', 'MCTupleToolHierarchy', 
-                    'MCTupleToolKinematic', 'MCTupleToolPrimaries', 'MCTupleToolReconstructed', 
-                    "MCTupleToolInteractions" ]
+                    'MCTupleToolKinematic', 'MCTupleToolPrimaries', 'MCTupleToolReconstructed']
+#                    "MCTupleToolInteractions" ]
 DaVinci().UserAlgorithms += [mctuple]
 
 
@@ -211,9 +220,13 @@ DaVinci().EvtMax = -1
 DaVinci().DDDBtag  = dddbtag 
 DaVinci().CondDBtag = conddbtag
 
-if(MDST) :
+if(MDST) : 
   DaVinci().RootInTES = "/Event/{0}".format(stream)
   DaVinci().InputType="MDST"
+if(Turbo)             : 
+  DaVinci().RootInTES = "/Event/{0}/Turbo".format(stream)
+  if(year[:4] in ["2015","2016"]) :
+    DaVinci().RootInTES = "/Event/Turbo".format(stream)
   
 
 # output
@@ -283,5 +296,16 @@ if(Turbo) :
   ]
   for dtt in tuples :
     TeslaTruthUtils.makeTruth(dtt, relations, mc_tools)
+'''
+
+
+'''
+# for local testing
+# lb-run DaVinci/v44r5 gaudirun.py davinci_options_MC.py
+from Gaudi.Configuration import * 
+from GaudiConf import IOHelper
+IOHelper('ROOT').inputFiles([
+  '/data/bfys/jdevries/dst/MC_2017_Beam6500GeV-2017-MagDown-Nu1.6-25ns-Pythia8_Sim09k_Trig0x62661709_Reco17_Turbo04a-WithTurcal_Stripping29r2NoPrescalingFlagged_26103092_ALLSTREAMS/00136967_00000010_7.AllStreams.mdst'
+  ], clear=True)
 '''
 

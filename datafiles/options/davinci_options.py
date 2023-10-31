@@ -55,9 +55,9 @@ if (decay == "Lb2LcMuX" or decay == "Xib2XicMuX") :
   decaystring = '${lambdab0}[Lambda_b0 -> ${lambdacplus}( Lambda_c+ -> ${kminus}K- ${pplus}p+ ${piplus}pi+ ) ${muplus}[mu+]cc ]CC'
   inputtype   = "DST"
 
-if (decay == "Xib2XicMuX") :
-  striplines = [ stripline.replace("L","Xi") for stripline in striplines ]
-  decaystring = decaystring.replace("Lambda","Xi")
+  if (decay == "Xib2XicMuX") :
+    striplines = [ stripline.replace("L","Xi") for stripline in striplines ]
+    decaystring = decaystring.replace("Lambda","Xi")
 
 if (decay == "Lc2pKpi_noipchi2") :
   # (prompt) Lc -> p K pi 
@@ -103,10 +103,13 @@ tupletools.append("TupleToolTrackInfo")  # TRACK info
 tupletools.append("TupleToolPrimaries")  # nPV, PV pos, PVnTracks
 tupletools.append("TupleToolRecoStats")  # nPVs, nTracks, etc.
 
-triggerlist = ["Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
- "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadLambdaC2KPPiDecision",
- "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision",
- "L0HadronDecision","L0MuonDecision","L0ElectronDecision"]
+triggerlist = [
+  "L0HadronDecision","L0MuonDecision","L0ElectronDecision",
+  "Hlt1TrackAllL0Decision", "Hlt1TrackMVADecision",
+  "Hlt2CharmHadD2HHHDecision", "Hlt2CharmHadD2HHHWideMassDecision", 
+  "Hlt2CharmHadLambdaC2KPPiDecision", "Hlt2CharmHadLambdaC2KPPiWideMassDecision",
+  "Hlt2CharmHadLcpToPpKmPipTurboDecision", "Hlt2CharmHadXicpToPpKmPipTurboDecision", "Hlt2CharmHadLc2KPPi_XSecTurboDecision" ]
+  
 
 for tup in tuples:
     # add tools
@@ -119,8 +122,8 @@ for tup in tuples:
     tistostool.VerboseHlt1 = True
     tistostool.VerboseHlt2 = True
     tistostool.TriggerList = triggerlist
-    #striptool = tup.addTupleTool("TupleToolStripping")
-    #striptool.TriggerList = ["Stripping{0}Decision".format(stripline) for stripline in striplines]
+    striptool = tup.addTupleTool("TupleToolStripping")
+    striptool.TriggerList = ["Stripping{0}Decision".format(stripline) for stripline in striplines]
 
     # add custom variables with functors
     hybridtool = tup.addTupleTool('LoKi::Hybrid::TupleTool')
