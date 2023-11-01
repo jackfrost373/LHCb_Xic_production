@@ -182,14 +182,15 @@ def fit(mctree, shape, fittingDict, fullname, particle, PDF, PDFpath, fitComp = 
 		Bukin_xi = ROOT.RooRealVar("Bukin_xi", "Peak asymmetry parameter",Bukin_xi_range[0],Bukin_xi_range[1],Bukin_xi_range[2])
 		Bukin_rho1 = ROOT.RooRealVar("Bukin_rho1", "Parameter of the left tail",Bukin_rho1_range[0],Bukin_rho1_range[1],Bukin_rho1_range[2])
 		Bukin_rho2 = ROOT.RooRealVar("Bukin_rho2", "Parameter of the right tail", Bukin_rho2_range[0],Bukin_rho2_range[1],Bukin_rho2_range[2])
-		
+
 		exponential = ROOT.RooRealVar("exponential","C",exponential_range[0],exponential_range[1],exponential_range[2])
 		myexponential = ROOT.RooExponential("myexponential","Exponential", mass, exponential)
-		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, mctree.GetEntries()/50, mctree.GetEntries()*2)
+		exponential_Norm = ROOT.RooRealVar("exponential Norm", "exponential Yield", mctree.GetEntries()/nbins*3/exponential_normalisation_factor, mctree.GetEntries()/30, mctree.GetEntries()*2)
 
 		Bukin_PDF = ROOT.RooBukinPdf("Actual_signalshape", "Bukin shape", mass, Bukin_Xp, Bukin_Sigp, Bukin_xi, Bukin_rho1, Bukin_rho2)
 
-		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/nbins*3/normalisation_factor, mctree.GetEntries()/50, mctree.GetEntries()*3)
+
+		Actual_signalshape_Norm = ROOT.RooRealVar("actual_signalshape_Norm", "Signal Yield", mctree.GetEntries()/2, mctree.GetEntries()/50, mctree.GetEntries()*1.25)
 		
 		fullshape = ROOT.RooAddPdf("signalshape", "Signal Shape", ROOT.RooArgList(Bukin_PDF, myexponential), ROOT.RooArgList(Actual_signalshape_Norm, exponential_Norm) )
 			

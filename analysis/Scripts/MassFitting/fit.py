@@ -102,7 +102,9 @@ def main(argv):
 				PDF_output/Year
 			These are for the output of the script and are necessary for a functionning run.
 
-			The parameters are
+			To make all fits, use only "-a" as a flag.
+			
+			For making subsets of the fits the parameters are
 				-s : shape (GaussCB or Bukin) (default: GaussCB)
 				-m : mode (single, combined or year)
 				-y : year (e.g. 2011) 
@@ -1082,4 +1084,12 @@ def main(argv):
 
 
 if __name__ == "__main__":
-	main(sys.argv[1:])
+	if sys.argv[1]=="-a":
+		for mode in ["year","combined","single"]:
+			if mode in ["year","combined"]:
+				continue
+			for shape in ["Bukin","GaussCB"]:
+				main(["-s",shape,"-m",mode])
+	
+	else:
+		main(sys.argv[1:])

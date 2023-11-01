@@ -8,12 +8,12 @@ fittingDict = {
 				"normalisation_factor" : 0.1,
 				"exponential_normalisation_factor" : 0.1,
 				
-				"exponential_range" : [-0.02, -.5, 0],
+				"exponential_range" : [-0.02, -1, 0],
 				
-				"width_range" : [6, 3, 20],
+				"width_range" : [6, 3, 11],
 				
-				"cb_width_range" : [6, 1, 15],
-				"cb_alpha_range" : [24,1,25.0],
+				"cb_width_range" : [6, 3, 13],
+				"cb_alpha_range" : [19,1,25.0],
 				"cb_n_range" : [9.0,0.0,10.0]
 			},
 			"2018_MagDown_Xic_ybin_3.5-4.0_ptbin_6000-7000.root" : {
@@ -36,18 +36,18 @@ fittingDict = {
 		"Lc" : {
 			"general" : {
 				"mass_range" : [2240, 2340],
-				"peak_range" : [2290,2260,2320],
+				"peak_range" : [2290,2260,2305],
 				
 				"normalisation_factor" : 0.1,
 				"exponential_normalisation_factor" : 0.1,
 				
-				"exponential_range" : [-0.001, -2, 0.1],
+				"exponential_range" : [-0.001, -0.5, 0.01],
 				
-				"width_range" : [6,4,20],
+				"width_range" : [6,3,11],
 				
-				"cb_width_range" : [17,8,15],
-				"cb_alpha_range" : [24,1,25],
-				"cb_n_range" : [9.0,0.0,10.0],
+				"cb_width_range" : [17,3,13],
+				"cb_alpha_range" : [19,1,25.0],
+				"cb_n_range" : [9.0,0.0,15],
 			},
 			# "2011_MagDown_Lc_bin_y2.0-2.5_pt5000-6000.root" : {
 			# 	"mass_range" : [2240, 2340],
