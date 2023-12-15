@@ -85,7 +85,7 @@ tuple_Lc2pKpi.addBranches({ 'lcplus' : '[Lambda_c+ -> p+ K- pi+]CC',
 # add DecayTreeFitter tool to constrain origin to PV and refit kinematics
 dtftool = tuple_Lc2pKpi.lcplus.addTupleTool('TupleToolDecayTreeFitter/PVConstrainedDTF')
 dtftool.constrainToOriginVertex = True
-
+  
 
 '''
 # Build combinations ourselves instead of depending on stripping output.
@@ -185,17 +185,25 @@ for tup in tuples:
 
 # MCParticle ntuple
 from Configurables import MCDecayTreeTuple
-mctuple = MCDecayTreeTuple( 'mctuple_Lc2pKpi' )
-mctuple.Decay = '[Lambda_c+ => ^p+ ^K- ^pi+]CC'
-mctuple.Branches = { 'lcplus' : '[Lambda_c+ => p+ K- pi+]CC',
-                     'pplus'  : '[Lambda_c+ => ^p+ K- pi+]CC',
-                     'kminus' : '[Lambda_c+ => p+ ^K- pi+]CC',
-                     'piplus' : '[Lambda_c+ => p+ K- ^pi+]CC' }
+mctupleLc = MCDecayTreeTuple( 'mctuple_Lc2pKpi' )
+mctupleLc.Decay = '[Lambda_c+ => ^p+ ^K- ^pi+]CC'
+mctupleLc.Branches = { 'lcplus' : '[Lambda_c+ => p+ K- pi+]CC',
+                       'pplus'  : '[Lambda_c+ => ^p+ K- pi+]CC',
+                       'kminus' : '[Lambda_c+ => p+ ^K- pi+]CC',
+                       'piplus' : '[Lambda_c+ => p+ K- ^pi+]CC' }
+mctupleXic = MCDecayTreeTuple( 'mctuple_Xic2pKpi' )
+mctupleXic.Decay = '[Xi_c+ => ^p+ ^K- ^pi+]CC'
+mctupleXic.Branches = { 'lcplus' : '[Xi_c+ => p+ K- pi+]CC',
+                       'pplus'  : '[Xi_c+ => ^p+ K- pi+]CC',
+                       'kminus' : '[Xi_c+ => p+ ^K- pi+]CC',
+                       'piplus' : '[Xi_c+ => p+ K- ^pi+]CC' }
 #mctuple.ToolList = ["MCTupleToolKinematic"]
-mctuple.ToolList = ['TupleToolRecoStats', 'MCTupleToolAngles', 'MCTupleToolHierarchy', 
-                    'MCTupleToolKinematic', 'MCTupleToolPrimaries', 'MCTupleToolReconstructed']
-#                    "MCTupleToolInteractions" ]
-DaVinci().UserAlgorithms += [mctuple]
+mctupleLc.ToolList = ['TupleToolRecoStats', 'MCTupleToolAngles', 'MCTupleToolHierarchy', 
+                      'MCTupleToolKinematic', 'MCTupleToolPrimaries', 'MCTupleToolReconstructed']
+#                      "MCTupleToolInteractions" ]
+mctupleXic.ToolList = mctupleLc.ToolList
+DaVinci().UserAlgorithms += [mctupleLc, mctupleXic]
+
 
 
 
